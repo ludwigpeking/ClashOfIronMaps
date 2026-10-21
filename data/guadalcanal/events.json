@@ -1,0 +1,52 @@
+{
+ "events": [
+  {
+   "t": 87.0,
+   "kind": "burning",
+   "at": "preston",
+   "until": 96.0,
+   "source": "tracks",
+   "id": "tracks:burning:-:preston:8700"
+  },
+  {
+   "t": 92.0,
+   "kind": "burning",
+   "at": "walke",
+   "until": 102.0,
+   "source": "tracks",
+   "id": "tracks:burning:-:walke:9200"
+  },
+  {
+   "t": 92.0,
+   "kind": "burning",
+   "at": "gwin",
+   "until": 108.0,
+   "source": "tracks",
+   "id": "tracks:burning:-:gwin:9200"
+  },
+  {
+   "t": 121.0,
+   "kind": "burning",
+   "at": "south_dakota",
+   "until": 140.0,
+   "source": "tracks",
+   "id": "tracks:burning:-:south_dakota:12100"
+  },
+  {
+   "t": 90.0,
+   "kind": "burning",
+   "at": "ayanami",
+   "until": 240.0,
+   "source": "tracks",
+   "id": "tracks:burning:-:ayanami:9000"
+  },
+  {
+   "t": 127.0,
+   "kind": "burning",
+   "at": "kirishima",
+   "until": 320.0,
+   "source": "tracks",
+   "id": "tracks:burning:-:kirishima:12700"
+  }
+ ]
+}

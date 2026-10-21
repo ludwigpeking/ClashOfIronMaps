@@ -1,0 +1,2519 @@
+<meta charset="utf-8">
+<title>Clash of Iron Maps</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans+Condensed:wght@400;500;600&display=swap">
+<style>
+/* Layout: a chart table - the map fills the screen, one control strip on
+   top, a ship panel on the right (below the map on a phone). */
+:root {
+  --sea: #e6ecef;          /* chart paper, cool */
+  --panel: #f6f8f9;
+  --ink: #1d2830;
+  --muted: #5d6b74;
+  --rule: #c5cfd5;
+  --british: #b3342b;      /* the charts' red */
+  --german: #24598a;       /* the charts' blue */
+  --brass: #b07a10;        /* pins, selection */
+  --grid: rgba(29, 40, 48, 0.08);
+  --gunfire: #d9731a;      /* firing lines */
+  --burst: #c4161c;        /* hits, explosions */
+  --torpedo: #0f7f8c;      /* torpedo runs */
+  --beam: rgba(214, 178, 40, 0.55);  /* searchlights */
+  --land: #d9cfb6;         /* chart buff */
+  --shoal: #cbdbe3;        /* under 10 m: Horns Reef, the coastal banks */
+  --depth-line: rgba(36, 89, 138, 0.35);  /* 20 m line */
+  --font-ui: "IBM Plex Sans Condensed", "Arial Narrow", Arial, sans-serif;
+  --font-data: "IBM Plex Mono", Consolas, "Courier New", monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --sea: #0e161b; --panel: #141f26; --ink: #d6dfe4; --muted: #8d9ba4; --rule: #2a3a44;
+    --british: #e2655b; --german: #6ea8db; --brass: #e1b04b; --grid: rgba(214, 223, 228, 0.07);
+    --gunfire: #f0a050; --burst: #ff5a4f; --torpedo: #4fd0dc; --beam: rgba(250, 225, 120, 0.5);
+    --land: #2b2c25; --shoal: #15252e; --depth-line: rgba(110, 168, 219, 0.3);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --sea: #0e161b; --panel: #141f26; --ink: #d6dfe4; --muted: #8d9ba4; --rule: #2a3a44;
+  --british: #e2655b; --german: #6ea8db; --brass: #e1b04b; --grid: rgba(214, 223, 228, 0.07);
+  --gunfire: #f0a050; --burst: #ff5a4f; --torpedo: #4fd0dc; --beam: rgba(250, 225, 120, 0.5);
+    --land: #2b2c25; --shoal: #15252e; --depth-line: rgba(110, 168, 219, 0.3);
+  color-scheme: dark;
+}
+html, body { height: 100%; }
+body {
+  background: var(--sea); color: var(--ink); font-family: var(--font-ui); font-size: 14px;
+  display: flex; flex-direction: column; overflow: hidden;
+}
+header {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px;
+  padding-block: 8px; padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  background: var(--panel); border-bottom: 1px solid var(--rule);
+}
+header h1 { font-size: 15px; font-weight: 600; margin: 0; letter-spacing: 0.02em; white-space: nowrap; }
+.clock { font-family: var(--font-data); font-weight: 600; font-variant-numeric: tabular-nums; min-width: 12ch; }
+.group { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+label { color: var(--muted); font-size: 12px; display: inline-flex; align-items: center; gap: 4px; }
+button, select, input[type="text"] {
+  font: inherit; font-size: 13px; color: var(--ink); background: var(--sea);
+  border: 1px solid var(--rule); border-radius: 4px; padding: 3px 9px;
+}
+button { cursor: pointer; }
+button:hover { border-color: var(--muted); }
+button.on { background: var(--brass); color: var(--panel); border-color: var(--brass); }
+button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid var(--brass); outline-offset: 1px; }
+#time { flex: 1 1 260px; min-width: 160px; accent-color: var(--brass); }
+main { flex: 1; display: flex; min-height: 0; }
+#stage { flex: 1; position: relative; min-width: 0; }
+canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; cursor: grab; }
+canvas.dragging { cursor: grabbing; }
+/* The notes float over the map's right edge; the map keeps the whole width. */
+aside {
+  position: absolute; top: 8px; right: max(8px, env(safe-area-inset-right, 0px)); z-index: 4;
+  width: min(290px, calc(100% - 16px)); max-height: calc(100% - 16px); overflow-y: auto;
+  background: color-mix(in srgb, var(--panel) 80%, transparent);
+  -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+  border: 1px solid var(--rule); border-radius: 6px; padding: 10px 12px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+aside .notes-head { display: flex; justify-content: flex-end; margin: -4px -6px -6px 0; }
+aside .notes-head button { padding: 0 7px; font-size: 12px; border-color: transparent; background: transparent; }
+aside.folded > section { display: none; }
+aside.folded { width: auto; padding: 4px 6px; }
+aside.folded .notes-head { margin: 0; }
+aside details summary { cursor: pointer; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--muted); font-weight: 600; }
+aside h2 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 0; font-weight: 600; }
+.ship-name { font-size: 18px; font-weight: 600; }
+.facts { display: grid; grid-template-columns: auto 1fr; gap: 2px 10px; font-size: 13px; }
+.facts dt { color: var(--muted); }
+.facts dd { margin: 0; font-family: var(--font-data); font-variant-numeric: tabular-nums; }
+.pin-row { display: grid; grid-template-columns: auto 1fr auto; gap: 6px; align-items: center; font-size: 12px; }
+.pin-row .when { font-family: var(--font-data); }
+.pin-row input { width: 100%; min-width: 0; padding: 2px 6px; font-size: 12px; }
+.hint { color: var(--muted); font-size: 12px; line-height: 1.45; }
+.clash-list { display: flex; flex-direction: column; gap: 2px; max-height: 220px; overflow-y: auto; margin-top: 6px; }
+.clash-list button { text-align: left; font-family: var(--font-data); font-size: 11px; padding: 2px 6px;
+  display: flex; justify-content: space-between; gap: 8px; }
+.clash-list button.now { border-color: var(--british); }
+/* The story editor splits the view: the left 40 % for it, the right 60 % for the map. */
+.story-editor { flex: 0 0 40%; min-width: 0; overflow-y: auto; background: var(--panel);
+  border-right: 1px solid var(--rule);
+  padding: 10px 12px; padding-left: max(12px, env(safe-area-inset-left, 0px));
+  display: flex; flex-direction: column; gap: 6px; font-size: 13px; }
+[hidden] { display: none !important; }   /* as the published skeleton has it, so a local copy behaves the same */
+.story-editor[hidden] { display: none; }
+.file-notice { position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); max-width: min(520px, calc(100% - 32px));
+  background: var(--panel); border: 1px solid var(--burst); border-radius: 6px; padding: 14px 16px; color: var(--ink);
+  font-size: 14px; line-height: 1.5; box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2); }
+.story-head { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.story-head strong { font-size: 14px; margin-right: 4px; }
+.story-list { display: flex; flex-direction: column; gap: 2px; min-height: 160px; overflow-y: auto; flex: 1 1 auto;
+  border: 1px solid var(--rule); border-radius: 4px; padding: 3px; }
+/* with a line open, the list gives the form the room */
+.story-editor.has-form .story-list { flex: none; max-height: 40vh; }
+.story-row { display: grid; grid-template-columns: 6ch 3.5em minmax(0, 1fr) minmax(0, 1.1fr); gap: 8px;
+  text-align: left; align-items: baseline; padding: 3px 6px; font-size: 12px; border-color: transparent; }
+.story-row span { min-width: 0; overflow: hidden; }
+.story-row .line { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 1.35; }
+.story-row .when { font-family: var(--font-data); }
+.story-row .kind { color: var(--muted); }
+.story-row .happens { font-family: var(--font-data); font-size: 11px; display: flex; flex-wrap: wrap; gap: 1px 10px;
+  line-height: 1.35; max-height: 2.7em; }
+.story-row .happens .bad { color: var(--burst); font-weight: 600; }
+.story-row.bad { border-color: var(--burst); }
+.story-row.selected { background: var(--sea); border-color: var(--brass); box-shadow: inset 3px 0 0 var(--brass); }
+.story-row.edited .when::after { content: " *"; color: var(--brass); }
+.story-head button.save { font-weight: 600; }
+.story-head button.save.dirty { border-color: var(--brass); box-shadow: inset 0 0 0 1px var(--brass); color: var(--brass); }
+.story-row.unsaved .when::after { content: " ●"; color: var(--brass); }
+.story-row.deleted { text-decoration: line-through; opacity: 0.6; }
+.story-form { display: flex; flex-direction: column; gap: 6px; border-top: 1px solid var(--rule); padding-top: 6px; }
+.story-grid { display: grid; grid-template-columns: repeat(3, auto minmax(0, 1fr)); gap: 3px 8px; align-items: center; }
+.story-grid label { justify-content: flex-end; text-align: right; white-space: nowrap; }
+.story-grid input, .story-grid select { width: 100%; min-width: 0; }
+.story-editor input[type="text"], .story-editor input[type="number"], .story-editor select, .story-editor textarea {
+  font: inherit; font-size: 12px; color: var(--ink); background: var(--sea); border: 1px solid var(--rule);
+  border-radius: 4px; padding: 2px 6px; }
+.story-editor input:disabled { opacity: 0.45; }
+.story-section { font-weight: 600; color: var(--ink); }
+.story-picker { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.story-picker .grow { flex: 1 1 200px; min-width: 0; }
+.story-cast { display: flex; gap: 4px; flex-wrap: wrap; min-height: 24px; }
+.story-cast .chip { display: inline-flex; gap: 4px; align-items: center; border: 1px solid var(--rule); border-radius: 12px;
+  padding: 1px 2px 1px 8px; font-size: 12px; }
+.story-cast .chip button { padding: 0 6px; border: none; font-size: 11px; }
+.story-happens { display: flex; flex-direction: column; gap: 6px; }
+.happening { border: 1px solid var(--rule); border-radius: 4px; padding: 4px 6px; }
+.happening-head { display: flex; gap: 8px; align-items: baseline; margin-bottom: 3px; }
+.happening-head .check { flex: 1; font-family: var(--font-data); font-size: 11px; color: var(--muted); }
+.happening-head .check.bad { color: var(--burst); font-weight: 600; }
+.check-label { color: var(--ink); font-size: 12px; }
+.story-subtitles { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.story-subtitles textarea { min-height: 92px; resize: vertical; width: 100%; }
+.story-editor .why { color: var(--muted); font-size: 12px; line-height: 1.45; }
+@media (max-width: 760px) {
+  .story-grid { grid-template-columns: auto minmax(0, 1fr); }
+  .story-subtitles { grid-template-columns: 1fr; }
+  .story-row { grid-template-columns: 6ch minmax(0, 1fr); }
+  .story-row .kind, .story-row .happens { display: none; }
+}
+button.danger { border-color: var(--burst); color: var(--burst); }
+.status { font-size: 12px; color: var(--muted); }
+.status.warn { color: var(--brass); }
+.legend { display: flex; gap: 12px; flex-wrap: wrap; font-size: 12px; color: var(--muted); }
+.swatch { display: inline-block; width: 10px; height: 10px; border-radius: 2px; vertical-align: -1px; margin-right: 4px; }
+@media (max-width: 760px) {
+  main { flex-direction: column; }
+  .story-editor { flex: 0 0 50%; border-right: none; border-bottom: 1px solid var(--rule); }
+  aside { max-height: 45%; }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+/* FILM MODE (?film=1): the map alone fills the frame - the film's map
+   inserts are drawn from it frame by frame (godot/tools/capture_editor_film.mjs). */
+body.film > *:not(main), body.film main > *:not(#stage), body.film #stage > *:not(canvas) { display: none !important; }
+body.film canvas { cursor: default; }
+@font-face { font-family: "FilmFont"; src: url("data/fonts/LXGWWenKai.ttf"); }
+</style>
+
+<header>
+  <h1><select id="battle" aria-label="Battle" title="Which battle">
+      <option value="jutland">Jutland 日德蘭</option><option value="tsushima">Tsushima 對馬</option>
+      <option value="yalu">Yalu 黃海</option><option value="guadalcanal">Guadalcanal 瓜島</option>
+    </select> · track editor</h1>
+  <div class="group">
+    <button id="play" type="button">Play</button>
+    <span class="clock" id="clock">—</span>
+  </div>
+  <input type="range" id="time" min="0" max="730" step="0.5" value="0" aria-label="Battle time">
+  <div class="group">
+    <label for="speed">Speed</label>
+    <select id="speed">
+      <option value="1">1 min/s</option><option value="3" selected>3 min/s</option>
+      <option value="8">8 min/s</option><option value="20">20 min/s</option>
+    </select>
+    <label for="underlay" id="underlayLabel">Chart</label>
+    <select id="underlay"><option value="">none</option></select>
+    <label for="opacity">Opacity</label>
+    <input type="range" id="opacity" min="0" max="1" step="0.05" value="0.55" style="width:70px">
+  </div>
+  <div class="group">
+    <label id="showMarksLabel"><input type="checkbox" id="showMarks" checked> Chart marks</label>
+    <label id="showTracedLabel"><input type="checkbox" id="showTraced"> Traced night lines</label>
+    <label><input type="checkbox" id="showClashes" checked> Clashes</label>
+    <label><input type="checkbox" id="showAction" checked> Action</label>
+    <label><input type="checkbox" id="showCoast" checked> Coast</label>
+    <label for="trail">Trail</label>
+    <select id="trail"><option value="0">none</option><option value="10" selected>10 min</option>
+      <option value="30">30 min</option><option value="9999">all</option></select>
+    <label for="names">Names</label>
+    <select id="names"><option value="off">off</option><option value="en" selected>English</option>
+      <option value="zh">中文</option></select>
+    <button id="edit" type="button">Edit pins</button>
+    <button id="storyToggle" type="button" title="The story editor - the game's event editor (` key)">Story editor `</button>
+  </div>
+</header>
+<main>
+  <div id="storyEditor" class="story-editor" hidden></div>
+  <div id="stage"><canvas id="map" aria-label="Map of the ships at the chosen time"></canvas>
+  <aside id="notes">
+    <div class="notes-head"><button id="notesFold" type="button" title="Fold the notes away from the map">Hide notes</button></div>
+    <section>
+      <h2>Ship</h2>
+      <div id="shipInfo" class="hint">Click a ship on the map to see her track, her marks on the official charts and how far she sits from them.</div>
+    </section>
+    <section>
+      <h2>Story</h2>
+      <div id="storySummary" class="hint">Loading the story…</div>
+      <button id="storyOpen" type="button" style="margin-top:6px">Open the story editor</button>
+    </section>
+    <section>
+      <h2>Clashes</h2>
+      <div id="clashSummary" class="hint">Loading the clash list…</div>
+      <div id="clashList" class="clash-list"></div>
+    </section>
+    <section>
+      <h2>Pins</h2>
+      <div id="pinList" class="hint">No pins yet. Turn on <b>Edit pins</b>, then drag a ship to where she should be at this minute. The track builder bends her track through every pin.</div>
+      <div id="saveStatus" class="status"></div>
+    </section>
+    <section>
+      <details id="readingNotes"><summary>Reading the map</summary>
+      <div class="legend">
+        <span><span class="swatch" style="background:var(--british)"></span><span id="firstSideName">British</span></span>
+        <span><span class="swatch" style="background:var(--german)"></span><span id="secondSideName">German</span></span>
+        <span><span class="swatch" style="background:var(--brass)"></span>pin / selected</span>
+        <span><span class="swatch" style="background:var(--gunfire)"></span>gunfire</span>
+        <span><span class="swatch" style="background:var(--burst)"></span>hit</span>
+        <span><span class="swatch" style="background:var(--torpedo)"></span>torpedo</span>
+      </div>
+      <p class="hint">Gunfire is a line in the firing side's colour from the guns to the target, with the range on it and salvoes running along it; a torpedo runs at <span id="torpedoKnots">about 29</span> knots and stops at its reach (<span id="torpedoReach">11</span> km). A red dashed line or a red cross marks fire or a torpedo that could not have reached: a wrong ship, a wrong time or a wrong track. The story editor (` key) flags these; pick one to go there and correct it.</p>
+      <p class="hint" id="readingHint">Dashed lines (Traced night lines) are the night tracks traced from Harper XV, and fainter from Groos 35 as that chart places them; the ships at night should sail on the Harper lines. Dots are positions read off the official track charts (Harper 1919 British, Groos 1925 German) within three minutes of the shown time; a ringed dot is the selected ship's own mark. Hulls are to scale when zoomed in. Drag the map to pan, wheel or pinch to zoom.</p>
+      </details>
+      <p class="hint" id="loadStatus">Loading tracks…</p>
+    </section>
+  </aside></div>
+</main>
+
+<script>
+(function () {
+  "use strict";
+  // The battle: #tsushima in the link, or the one last chosen. Each
+  // battle's files sit in data/<battle>/ beside the page; every battle keeps
+  // its own story edits, pins and preferences.
+  var BATTLE_IDS = ["jutland", "tsushima", "yalu", "guadalcanal"];
+  var battleId = (location.hash || "").replace("#", "");
+  if (BATTLE_IDS.indexOf(battleId) < 0) {
+    try { battleId = localStorage.getItem("battle-editor-battle") || "jutland"; } catch (error) { battleId = "jutland"; }
+    if (BATTLE_IDS.indexOf(battleId) < 0) { battleId = "jutland"; }
+  }
+  var battleFolder = "data/" + battleId + "/";
+  var storagePrefix = battleId === "jutland" ? "jutland-editor-" : battleId + "-editor-";
+  var storyCollection = battleId === "jutland" ? "story_edits" : "story_edits_" + battleId;
+  var pinCollection = battleId === "jutland" ? "pins" : "pins_" + battleId;
+  var BATTLE = { clock_zero_minutes: 0, clock_zone: "", days: ["", ""], sides: [] };
+  // FILM MODE (?film=1&lang=ja): the page is a map camera for an edited film.
+  // No panels, nothing remembered from earlier visits, the film's language
+  // for names and places, and the window.film* functions below.
+  var filmParameters = new URLSearchParams(location.search);
+  var filmMode = filmParameters.get("film") === "1";
+  var filmLanguage = filmParameters.get("lang") || "en";
+  // What the capture script sets for the clip: trails, the caption, the key,
+  // the dates in the film's words, the ship to follow in full.
+  var film = { trailMinutes: 20, trailTypes: null, trailShips: null, caption: "", source: "", dates: ["", ""],
+               sideNames: {}, showKey: true, labelScale: 1.7 };
+  if (filmMode) {
+    document.body.classList.add("film");
+    document.documentElement.setAttribute("data-theme", "light");
+  }
+  function labelFontFamily() {
+    return filmMode ? '"FilmFont", ' + cssColour("--font-ui") : cssColour("--font-ui");
+  }
+  function labelScale() { return filmMode ? film.labelScale : 1; }
+  var battleMenu = document.getElementById("battle");
+  battleMenu.value = battleId;
+  battleMenu.addEventListener("change", function () {
+    try { localStorage.setItem("battle-editor-battle", battleMenu.value); } catch (error) { }
+    if (location.hash === "#" + battleMenu.value) { location.reload(); } else { location.hash = battleMenu.value; }
+  });
+  // a link to another battle's #name in this same page loads that battle
+  window.addEventListener("hashchange", function () { location.reload(); });
+  function sideName(side) {
+    var found = BATTLE.sides.filter(function (entry) { return entry.id === side; })[0];
+    return found ? found.en : side;
+  }
+  var canvas = document.getElementById("map");
+  var context = canvas.getContext("2d");
+  var timeInput = document.getElementById("time");
+  var clockLabel = document.getElementById("clock");
+  var playButton = document.getElementById("play");
+  var editButton = document.getElementById("edit");
+  var shipInfo = document.getElementById("shipInfo");
+  var pinList = document.getElementById("pinList");
+  var saveStatus = document.getElementById("saveStatus");
+  var loadStatus = document.getElementById("loadStatus");
+  var underlaySelect = document.getElementById("underlay");
+
+  var state = {
+    minute: 0, playing: false, minutesPerSecond: 3, editing: false,
+    centreX: 15, centreY: 40, pixelsPerKm: 6,
+    ships: [], shipById: {}, marks: [], traced: [], clashes: [], events: [], underlays: [], images: {},
+    chartEvents: [],
+    selectedId: null, pins: {}, store: null
+  };
+
+  function readPreference(key, fallback) {
+    try { var value = localStorage.getItem(storagePrefix + key); return value === null ? fallback : value; }
+    catch (error) { return fallback; }
+  }
+  function writePreference(key, value) {
+    try { localStorage.setItem(storagePrefix + key, value); } catch (error) { }
+  }
+
+  function cssColour(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+
+  function clockText(minute) {
+    var total = Math.round(BATTLE.clock_zero_minutes + minute);
+    var day = BATTLE.days[total >= 1440 ? 1 : 0];
+    return day + " " + clockShort(minute) + " " + BATTLE.clock_zone;
+  }
+  function clockShort(minute) {
+    var total = Math.round(BATTLE.clock_zero_minutes + minute) % 1440;
+    var hours = Math.floor(total / 60), minutes = total % 60;
+    return (hours < 10 ? "0" : "") + hours + ":" + (minutes < 10 ? "0" : "") + minutes;
+  }
+
+  // ---- geometry --------------------------------------------------------
+  function positionAt(track, minute) {
+    if (!track.length || minute < track[0][0] || minute > track[track.length - 1][0]) { return null; }
+    var low = 0, high = track.length - 1;
+    while (high - low > 1) {
+      var middle = (low + high) >> 1;
+      if (track[middle][0] <= minute) { low = middle; } else { high = middle; }
+    }
+    var first = track[low], second = track[high];
+    var span = second[0] - first[0];
+    var share = span > 0 ? (minute - first[0]) / span : 0;
+    return [first[1] + (second[1] - first[1]) * share, first[2] + (second[2] - first[2]) * share];
+  }
+  function headingAt(track, minute) {
+    var ahead = positionAt(track, minute + 0.5) || positionAt(track, minute);
+    var behind = positionAt(track, minute - 0.5) || positionAt(track, minute);
+    if (!ahead || !behind) { return 0; }
+    return Math.atan2(ahead[0] - behind[0], ahead[1] - behind[1]);
+  }
+  function speedKnotsAt(track, minute) {
+    var ahead = positionAt(track, minute + 0.5), behind = positionAt(track, minute - 0.5);
+    if (!ahead || !behind) { return null; }
+    return Math.hypot(ahead[0] - behind[0], ahead[1] - behind[1]) / 1.852 * 60;
+  }
+  function toScreen(x, y) {
+    return [canvas.clientWidth / 2 + (x - state.centreX) * state.pixelsPerKm,
+            canvas.clientHeight / 2 - (y - state.centreY) * state.pixelsPerKm];
+  }
+  function toKm(screenX, screenY) {
+    return [state.centreX + (screenX - canvas.clientWidth / 2) / state.pixelsPerKm,
+            state.centreY - (screenY - canvas.clientHeight / 2) / state.pixelsPerKm];
+  }
+
+  // ---- pins: the ship's position at a minute, as the user wants it ------
+  function pinKey(shipId, minute) { return shipId + "@" + minute.toFixed(1); }
+  function shipPins(shipId) {
+    var list = [];
+    Object.keys(state.pins).forEach(function (key) {
+      var pin = state.pins[key];
+      if (pin.ship === shipId) { list.push(pin); }
+    });
+    list.sort(function (first, second) { return first.t - second.t; });
+    return list;
+  }
+  function savePin(pin) {
+    state.pins[pinKey(pin.ship, pin.t)] = pin;
+    renderPins();
+    persistPin(pin, false);
+  }
+  function removePin(pin) {
+    delete state.pins[pinKey(pin.ship, pin.t)];
+    renderPins();
+    persistPin(pin, true);
+  }
+  var pendingWrites = {};
+  function persistPin(pin, removing) {
+    var key = pinKey(pin.ship, pin.t).replace("@", "_").replace(".", "-");
+    if (!state.store) {
+      try { localStorage.setItem(storagePrefix + "pins", JSON.stringify(state.pins)); } catch (error) { }
+      saveStatus.textContent = window.claude ? "Pins are kept in this browser only: sign in to claude.ai to share them with Claude."
+                                             : "Pins are kept in this browser only.";
+      saveStatus.className = "status warn";
+      return;
+    }
+    clearTimeout(pendingWrites[key]);
+    pendingWrites[key] = setTimeout(function () {
+      var reference = state.store.collection(pinCollection).doc(key);
+      var write = removing ? reference.delete() : reference.set({
+        ship: pin.ship, t: pin.t, x: Math.round(pin.x * 1000) / 1000, y: Math.round(pin.y * 1000) / 1000,
+        note: pin.note || ""
+      });
+      saveStatus.textContent = "Saving…";
+      saveStatus.className = "status";
+      write.then(function () {
+        saveStatus.textContent = "Saved. Claude reads these pins for the next build.";
+      }).catch(function (error) {
+        saveStatus.textContent = "Not saved (" + (error && error.code ? error.code : "error") + "). Your pins stay on this page; try again.";
+        saveStatus.className = "status warn";
+      });
+    }, 400);
+  }
+
+  // ---- drawing ---------------------------------------------------------
+  function resize() {
+    var ratio = window.devicePixelRatio || 1;
+    canvas.width = Math.round(canvas.clientWidth * ratio);
+    canvas.height = Math.round(canvas.clientHeight * ratio);
+    context.setTransform(ratio, 0, 0, ratio, 0, 0);
+    draw();
+  }
+
+  function drawGrid() {
+    var step = state.pixelsPerKm > 25 ? 1 : (state.pixelsPerKm > 6 ? 10 : 50);
+    var topLeft = toKm(0, 0), bottomRight = toKm(canvas.clientWidth, canvas.clientHeight);
+    context.strokeStyle = cssColour("--grid");
+    context.lineWidth = 1;
+    context.beginPath();
+    for (var x = Math.ceil(topLeft[0] / step) * step; x <= bottomRight[0]; x += step) {
+      var screenX = toScreen(x, 0)[0];
+      context.moveTo(screenX, 0); context.lineTo(screenX, canvas.clientHeight);
+    }
+    for (var y = Math.ceil(bottomRight[1] / step) * step; y <= topLeft[1]; y += step) {
+      var screenY = toScreen(0, y)[1];
+      context.moveTo(0, screenY); context.lineTo(canvas.clientWidth, screenY);
+    }
+    context.stroke();
+    // scale bar
+    var barKm = step === 1 ? 2 : (step === 10 ? 10 : 50);
+    var barPixels = barKm * state.pixelsPerKm;
+    var left = filmMode ? 70 : 16, bottom = filmMode ? 260 : canvas.clientHeight - 16;
+    context.strokeStyle = cssColour("--ink");
+    context.fillStyle = cssColour("--ink");
+    context.lineWidth = 2;
+    context.beginPath(); context.moveTo(left, bottom); context.lineTo(left + barPixels, bottom); context.stroke();
+    context.font = filmMode ? "20px " + labelFontFamily() : "12px " + cssColour("--font-data");
+    var nauticalMiles = (barKm / 1.852).toFixed(1);
+    context.fillText(filmMode && filmLanguage === "ja" ? barKm + " km（" + nauticalMiles + " 海里）"
+                     : barKm + " km (" + nauticalMiles + " nm)", left, bottom - 8);
+  }
+
+  function drawUnderlay() {
+    var chosen = underlaySelect.value;
+    if (!chosen) { return; }
+    var chart = state.underlays.filter(function (entry) { return entry.id === chosen; })[0];
+    var image = state.images[chosen];
+    if (!chart || !image || !image.complete) { return; }
+    var affine = chart.pixel_to_km;   // x = a px + b py + c ; y = d px + e py + f
+    var ratio = window.devicePixelRatio || 1;
+    var s = state.pixelsPerKm, w = canvas.clientWidth / 2, h = canvas.clientHeight / 2;
+    // screen = (w + (x - cx) s, h - (y - cy) s) with x, y affine in px, py
+    var a = affine[0] * s, b = affine[1] * s, c = w + (affine[2] - state.centreX) * s;
+    var d = -affine[3] * s, e = -affine[4] * s, f = h - (affine[5] - state.centreY) * s;
+    context.save();
+    context.globalAlpha = parseFloat(document.getElementById("opacity").value);
+    context.setTransform(a * ratio, d * ratio, b * ratio, e * ratio, c * ratio, f * ratio);
+    context.drawImage(image, 0, 0);
+    context.restore();
+    context.setTransform(ratio, 0, 0, ratio, 0, 0);
+  }
+
+  // Name tags by type: capital ships large and shown from far out, cruisers
+  // mid, destroyers and torpedo boats small and only when zoomed in.
+  var NAME_TAGS = {
+    BB: { pixels: 13, bold: true, fromScale: 4, rank: 1, abbreviate: false },
+    BC: { pixels: 13, bold: true, fromScale: 4, rank: 1, abbreviate: false },
+    CA: { pixels: 11, bold: false, fromScale: 7, rank: 2, abbreviate: false },
+    CL: { pixels: 11, bold: false, fromScale: 7, rank: 2, abbreviate: false },
+    DD: { pixels: 9, bold: false, fromScale: 14, rank: 3, abbreviate: true },
+    TB: { pixels: 9, bold: false, fromScale: 14, rank: 3, abbreviate: true }
+  };
+
+  // Minor ships go by a short form on the map (the panel names them in
+  // full): the first four letters and a stop ("Spar." for Sparrowhawk),
+  // numbers kept (V48), two characters in Chinese.
+  function shipLabel(ship, nameMode, tag) {
+    var full = (ship.names && ship.names[nameMode]) || (nameMode === "zh" && ship.zh ? ship.zh : ship.en);
+    if (!tag.abbreviate || /^[A-Z]{1,2}\d+$/.test(full)) { return full; }
+    // Japanese names stay whole: a Russian name in katakana cut to two
+    // characters reads as nothing.
+    if (nameMode === "ja") { return full; }
+    if (nameMode === "zh" && ship.zh) { return full.length > 2 ? full.slice(0, 2) : full; }
+    return full.length > 5 ? full.slice(0, 4) + "." : full;
+  }
+
+  // Labels never overlap, by these rules (user 2026-10-15):
+  //  - placed by class, larger first; within a class formation leaders
+  //    first (King George V before Ajax, Lion before Tiger);
+  //  - a name whose own spot is taken by a larger or equal ship's name is
+  //    simply not shown (a destroyer's name eclipsed by a battleship's);
+  //  - only a formation leader (and the selected ship) may be set away
+  //    from its ship, with a leader line, when its own spot is taken;
+  //  - every label keeps the spot it had last frame unless that spot is
+  //    now taken, so leaders do not jump as the ships move.
+  var LABEL_DIRECTIONS = [[1, 0], [1, -1], [1, 1], [-1, 0], [-1, -1], [-1, 1], [0, -1], [0, 1]];
+  var LABEL_RINGS = [0, 16, 30, 46, 64];
+  var labelSpots = {};
+  // Each label's collider is its text grown by a margin; two colliders may
+  // run into each other a little (user 2026-10-15: "should allow them to go
+  // into the padding of each other a bit"), but the names themselves stay
+  // apart (user 2026-10-15: "the names are colliding into each other ...
+  // let the collider be a little larger").
+  var LABEL_MARGIN_WIDE_PIXELS = 4;
+  var LABEL_MARGIN_TALL_PIXELS = 2;
+  var LABEL_OVERLAP_ALLOWED = 0.1;   // share of the smaller collider's area
+  function boxesOverlap(first, second) {
+    var width = Math.min(first[2], second[2]) - Math.max(first[0], second[0]);
+    var height = Math.min(first[3], second[3]) - Math.max(first[1], second[1]);
+    if (width <= 0 || height <= 0) { return false; }
+    var smaller = Math.min((first[2] - first[0]) * (first[3] - first[1]),
+                           (second[2] - second[0]) * (second[3] - second[1]));
+    return width * height > LABEL_OVERLAP_ALLOWED * smaller;
+  }
+  function labelBox(label, width, height, turn, ring) {
+    var direction = LABEL_DIRECTIONS[turn];
+    var reach = label.clearance + LABEL_RINGS[ring];
+    var anchorX = label.x + direction[0] * reach;
+    var anchorY = label.y + direction[1] * (reach * 0.8 + height * 0.5);
+    var left = direction[0] < 0 ? anchorX - width : (direction[0] === 0 ? anchorX - width / 2 : anchorX);
+    var top = anchorY - height / 2;
+    var textBox = [left, top + height * 0.12, left + width, top + height * 0.9];
+    return { textBox: textBox,
+             box: [textBox[0] - LABEL_MARGIN_WIDE_PIXELS, textBox[1] - LABEL_MARGIN_TALL_PIXELS,
+                   textBox[2] + LABEL_MARGIN_WIDE_PIXELS, textBox[3] + LABEL_MARGIN_TALL_PIXELS],
+             left: left, top: top, turn: turn, ring: ring };
+  }
+  function placeLabels(labels) {
+    labels.sort(function (first, second) {
+      if (first.rank !== second.rank) { return first.rank - second.rank; }
+      return (first.leader ? 0 : 1) - (second.leader ? 0 : 1);
+    });
+    var placed = [];
+    var stillShown = {};
+    labels.forEach(function (label) {
+      context.font = (label.selected || label.tag.bold ? "600 " : "") + label.tag.pixels * labelScale() + "px " + labelFontFamily();
+      var width = context.measureText(label.text).width;
+      var height = label.tag.pixels * labelScale();
+      function free(spot) { return !placed.some(function (other) { return boxesOverlap(spot.box, other); }); }
+      var mayMove = label.leader || label.selected;
+      var chosen = null;
+      var remembered = labelSpots[label.id];
+      if (remembered && (mayMove || remembered.ring === 0)) {
+        var again = labelBox(label, width, height, remembered.turn, remembered.ring);
+        if (free(again)) { chosen = again; }
+      }
+      if (!chosen) {
+        var beside = labelBox(label, width, height, 0, 0);
+        if (free(beside)) { chosen = beside; }
+      }
+      for (var ring = 0; ring < LABEL_RINGS.length && !chosen && mayMove; ring++) {
+        for (var turn = 0; turn < LABEL_DIRECTIONS.length && !chosen; turn++) {
+          var spot = labelBox(label, width, height, turn, ring);
+          if (free(spot)) { chosen = spot; }
+        }
+      }
+      if (!chosen) { return; }
+      placed.push(chosen.box);
+      stillShown[label.id] = { turn: chosen.turn, ring: chosen.ring };
+      if (chosen.ring > 0) {
+        context.strokeStyle = label.colour;
+        context.globalAlpha = 0.55;
+        context.lineWidth = 0.8;
+        context.beginPath();
+        context.moveTo(label.x, label.y);
+        context.lineTo(Math.max(chosen.textBox[0], Math.min(label.x, chosen.textBox[2])),
+                       Math.max(chosen.textBox[1], Math.min(label.y, chosen.textBox[3])));
+        context.stroke();
+        context.globalAlpha = 1;
+      }
+      context.fillStyle = label.colour;
+      context.textBaseline = "top";
+      context.fillText(label.text, chosen.left, chosen.top);
+      context.textBaseline = "alphabetic";
+    });
+    labelSpots = stillShown;
+  }
+
+  // the first side in the charts' red, the second in their blue
+  function sideColour(side) { return side === BATTLE.sides[0].id ? cssColour("--british") : cssColour("--german"); }
+
+  function drawTraced() {
+    if (!document.getElementById("showTraced").checked) { return; }
+    context.lineWidth = 1.2;
+    context.setLineDash([5, 3]);
+    state.traced.forEach(function (line) {
+      context.strokeStyle = sideColour(line.side);
+      context.globalAlpha = line.chart === "harper_15" ? 0.75 : 0.45;
+      context.beginPath();
+      line.points.forEach(function (point, index) {
+        var screen = toScreen(point[0], point[1]);
+        if (index === 0) { context.moveTo(screen[0], screen[1]); } else { context.lineTo(screen[0], screen[1]); }
+      });
+      context.stroke();
+      if (state.pixelsPerKm > 10) {
+        context.fillStyle = sideColour(line.side);
+        context.font = "10px " + cssColour("--font-data");
+        line.points.forEach(function (point) {
+          if (point[2] === null) { return; }
+          var screen = toScreen(point[0], point[1]);
+          context.fillText(clockShort(point[2]), screen[0] + 4, screen[1] - 3);
+        });
+      }
+    });
+    context.setLineDash([]);
+    context.globalAlpha = 1;
+  }
+
+  // Clashes: two ships closer than they could have been (from the build's
+  // audit). Both are ringed and joined while the clash lasts.
+  function drawClashes() {
+    if (!document.getElementById("showClashes").checked) { return; }
+    var minute = state.minute;
+    context.strokeStyle = cssColour("--british");
+    context.lineWidth = 2;
+    state.clashes.forEach(function (clash) {
+      if (minute < clash.from - 1 || minute > clash.to + 1) { return; }
+      var first = state.shipById[clash.ships[0]], second = state.shipById[clash.ships[1]];
+      if (!first || !second) { return; }
+      var a = positionAt(first.track, minute), b = positionAt(second.track, minute);
+      if (!a || !b) { return; }
+      var pointA = toScreen(a[0], a[1]), pointB = toScreen(b[0], b[1]);
+      context.beginPath(); context.arc(pointA[0], pointA[1], 9, 0, Math.PI * 2); context.stroke();
+      context.beginPath(); context.arc(pointB[0], pointB[1], 9, 0, Math.PI * 2); context.stroke();
+      context.beginPath(); context.moveTo(pointA[0], pointA[1]); context.lineTo(pointB[0], pointB[1]); context.stroke();
+    });
+  }
+
+  function renderClashList() {
+    var summary = document.getElementById("clashSummary");
+    var list = document.getElementById("clashList");
+    list.innerHTML = "";
+    if (!state.clashes.length) { summary.textContent = "No clashes in this build."; return; }
+    var opposing = state.clashes.filter(function (clash) { return clash.sides === "opposing"; }).length;
+    summary.textContent = state.clashes.length + " places where two ships come closer than they could have (" +
+      opposing + " between opposing ships). Click one to go there.";
+    state.clashes.forEach(function (clash) {
+      var button = document.createElement("button");
+      button.type = "button";
+      var names = clash.ships.map(function (id) { var ship = state.shipById[id]; return ship ? ship.en : id; });
+      var left = document.createElement("span");
+      left.textContent = clockShort(clash.at) + " " + names.join(" / ");
+      var right = document.createElement("span");
+      right.textContent = Math.round(clash.closest_km * 1000) + " m";
+      button.appendChild(left); button.appendChild(right);
+      button.addEventListener("click", function () {
+        var first = state.shipById[clash.ships[0]], second = state.shipById[clash.ships[1]];
+        var a = first && positionAt(first.track, clash.at), b = second && positionAt(second.track, clash.at);
+        if (a && b) {
+          state.centreX = (a[0] + b[0]) / 2; state.centreY = (a[1] + b[1]) / 2;
+          state.pixelsPerKm = Math.max(state.pixelsPerKm, 60);
+        }
+        state.selectedId = clash.ships[0];
+        setPlaying(false);
+        setMinute(clash.at);
+      });
+      list.appendChild(button);
+    });
+  }
+
+  // ---- the story editor: the game's own event editor, on the web ---------
+  // The same form as the battle scene's story editor (demo/yalu_battle.gd,
+  // _build_story_editor): the LINE (clock, duration, category, silent,
+  // note, the zh and en subtitles), what we LOOK at (the cast, distance,
+  // height, bearing, motion, hover, lens, camera by, looks toward, frame,
+  // seaplane) and what HAPPENS (one block per happening with only its
+  // kind's fields - the game's HAPPENING_FIELDS). It edits the events of
+  // ships/jutland/story_events.json. Every change is kept in the page's
+  // database (collection "story_edits", one document per event) and Claude
+  // folds them into the story file. Each happening between two ships shows
+  // the range between them at its minute on these tracks, flagged when no
+  // gun, torpedo or searchlight of 1916 could have reached.
+  var GUN_REACH_KM = 21, TORPEDO_REACH_KM = 11, SEARCHLIGHT_REACH_KM = 6, FIRE_SHOWN_MINUTES = 3;
+  var STORY_KINDS = ["overall", "first_fire", "struck", "catch_fire", "flooding", "sinking", "famous_action",
+                     "fleeing", "tactic"];
+  var STORY_KIND_LABELS = { overall: "戰局", first_fire: "初砲", struck: "命中", catch_fire: "起火", flooding: "進水",
+                            sinking: "沉沒", famous_action: "壯烈", fleeing: "遁走", tactic: "戰術" };
+  var LOOK_MOTIONS = ["sway", "still", "orbit", "hover"];
+  var LOOK_MOTION_LABELS = ["微晃 sway", "靜止 still", "環繞 orbit", "盤旋 hover"];
+  var LOOK_FRAMES = ["auto", "individual", "local", "overall"];
+  var LOOK_FRAME_LABELS = ["自動 auto", "單艦 the ship", "全員 the cast", "全局 the fleets"];
+  var HAPPENING_KINDS = ["fire", "hit", "duel", "detonation", "burning", "flooding", "torpedo", "mute", "sinking",
+                         "searchlight", "starshell", "seaplane", "weather", "flagship", "depth_charges"];
+  var HAPPENING_LABELS = { fire: "砲擊 fire", hit: "命中 hit", duel: "對射 duel", detonation: "殉爆 detonation",
+                           burning: "起火 burning", flooding: "進水 flooding", torpedo: "魚雷 torpedo", mute: "啞砲 mute",
+                           sinking: "沉沒 sinking", searchlight: "探照燈 searchlight", starshell: "照明彈 starshell",
+                           seaplane: "水上飛機 seaplane", weather: "天氣 weather", flagship: "旗艦 flagship",
+                           depth_charges: "深水炸彈 depth charges" };
+  // [key, control, label, tooltip] - as the game has them
+  var HAPPENING_FIELDS = {
+    fire: [["by", "ship", "誰 by", "The ship that fires"], ["at", "ship", "向 at", "At whom - a miss, the shells fall round her"],
+           ["when", "minutes", "@ min", "Battle minutes after the event's moment"],
+           ["all_guns", "flag", "全砲 all guns", "Every gun that bears, not the main battery alone"]],
+    hit: [["by", "ship", "誰 by", "Who hits her; nobody = an unseen shooter"], ["at", "ship", "中 on", "The ship that is hit"],
+          ["when", "minutes", "@ min", "Battle minutes after the event's moment"],
+          ["where", "station", "部位 where", "Where the shell lands and the fire burns"],
+          ["side", "side", "舷 side", "Which side it strikes"],
+          ["explosion", "level", "爆 explosion", "0 none, 1-2 a blast, 3 a magazine"],
+          ["fire_level", "level", "火 fire level", "0 none, 1-3"], ["fire_minutes", "minutes", "火時 fire min", "How long it burns"],
+          ["all_guns", "flag", "全砲 all guns", "Every gun that bears, not the main battery alone"]],
+    duel: [["by", "ship", "誰 by", "Who fires; the camera follows the shell"], ["at", "ship", "中 on", "Who is hit"],
+           ["when", "minutes", "@ min", "Battle minutes after the event's moment"],
+           ["where", "station", "部位 where", "Where the shell lands and the fire burns"],
+           ["side", "side", "舷 side", "Which side it strikes"],
+           ["explosion", "level", "爆 explosion", "0 none, 1-2 a blast, 3 a magazine"],
+           ["fire_level", "level", "火 fire level", "0 none, 1-3"], ["fire_minutes", "minutes", "火時 fire min", "How long it burns"],
+           ["all_guns", "flag", "全砲 all guns", "Every gun that bears, not the main battery alone"]],
+    detonation: [["ship", "ship", "艦 ship", "Her magazine goes up"], ["when", "minutes", "@ min", "Battle minutes after the event's moment"],
+                 ["breaks", "flag", "斷裂 breaks", "The hull breaks in two at the magazine"],
+                 ["station", "share", "斷處 station", "Where she breaks, as a share of her length from amidships (- toward the bow)"]],
+    burning: [["ship", "ship", "艦 ship", "The ship that burns"], ["where", "station", "部位 where", "Where the fire burns"],
+              ["minutes", "minutes", "時長 min", "How long it burns"], ["level", "level", "火級 level", "1-3"],
+              ["when", "minutes", "@ min", "Battle minutes after the event's moment"]],
+    flooding: [["ship", "ship", "艦 ship", "The ship that takes water"], ["where", "flood_side", "進水處 where", "Where the water comes in"],
+               ["severity", "severity", "進水量 severity", "1 = her draft down by the full share and 11 degrees of list"]],
+    torpedo: [["by", "ship", "誰 by", "The boat that fires; nobody = an unseen boat"], ["at", "ship", "向 at", "The ship it runs at"],
+              ["hit", "flag", "命中 hit", "It strikes her; off = a miss past her"],
+              ["when", "minutes", "@ min", "Battle minutes after the event's moment"],
+              ["companions", "count0", "陪跑 misses", "Companion torpedoes of the spread that run past her"],
+              ["combed", "flag", "同向 combed", "She has turned away: the spread overtakes from astern"],
+              ["where", "station", "部位 where", "Where on her the fish strikes"],
+              ["severs", "flag", "斷艏 bow off", "The hull forward of where it strikes is blown off and sinks"],
+              ["detonates", "flag", "引爆 magazine", "The hit reaches a magazine"],
+              ["breaks", "flag", "斷裂 breaks", "The hull breaks in two when the magazine goes up"],
+              ["watch", "watch", "鏡頭 camera", "Which ship the camera stands by"]],
+    depth_charges: [["ship", "ship", "艦 ship", "The sinking ship whose depth charges go off"],
+              ["count", "count", "枚 count", "How many"],
+              ["when", "minutes", "@ min", "Battle minutes after the event's moment"]],
+    mute: [["minutes", "minutes0", "時長 min", "The cast's guns fall silent for this long; 0 = for the rest of the replay"]],
+    sinking: [["ship", "ship", "艦 ship", "The ship that goes down"], ["when", "sink_when", "時 when", "She founders here, or at the track file's own moment"],
+              ["delay", "minutes", "延遲 delay", "Battle minutes after the event's moment"],
+              ["minutes", "minutes", "歷時 min", "How long she takes to go"],
+              ["trim", "trim", "縱傾 trim", "Down by the bow, the stern, or on an even keel"],
+              ["list", "list", "橫傾 list", "The side she lists to"],
+              ["capsizes", "flag", "翻覆 capsizes", "She rolls right over"],
+              ["upends", "flag", "豎立 on end", "Her low end goes first and the other stands up out of the sea until she slides under"],
+              ["breaks", "flag", "斷裂 breaks", "Her hull breaks in two"]],
+    searchlight: [["by", "ship", "誰 by", "The ship that lights"], ["on", "ship", "照 on", "The ship it lights"],
+                  ["seconds", "seconds", "秒 s", "How long the beam holds"], ["when", "minutes", "@ min", "Battle minutes after the event's moment"]],
+    starshell: [["over", "ship", "上空 over", "The ship the shells burst over"], ["count", "count", "枚 count", "How many"],
+                ["seconds", "seconds", "秒 s", "How long they burn"], ["when", "minutes", "@ min", "Battle minutes after the event's moment"]],
+    seaplane: [["near", "ship", "母艦 near", "The ship she takes off beside"], ["when", "minutes", "@ min", "Battle minutes after the event's moment"]],
+    weather: [["visibility_km", "km", "能見度 km", "The mist from this event on"]],
+    flagship: []
+  };
+  var FIELD_CHOICES = {
+    station: ["auto", "bow", "fore_turret", "bridge", "midships", "aft_turret", "stern"],
+    side: ["auto", "port", "starboard"],
+    flood_side: ["bow", "stern", "port", "starboard", "bow-port", "bow-starboard", "stern-port", "stern-starboard"],
+    trim: ["auto", "bow", "stern", "level"],
+    list: ["auto", "port", "starboard", "upright"],
+    sink_when: ["here", "track"],
+    watch: ["shooter", "victim"]
+  };
+  var NUMBER_RANGES = { minutes: [0, 180, 0.05], minutes0: [0, 180, 0.05], seconds: [1, 120, 1], level: [0, 3, 1],
+                        km: [0, 60, 0.5], count: [1, 6, 1], count0: [0, 4, 1], severity: [0, 1, 0.05], share: [-0.5, 0.5, 0.01] };
+  // Lützow was sunk by her own escort's torpedo: not a wrong-side event.
+  var SCUTTLED_BY_OWN_SIDE = {};
+  var CONTROLLED_LINE_KEYS = ["t", "duration", "category", "zh", "en", "silent", "note", "look", "happens"];
+
+  var storyEditor = document.getElementById("storyEditor");
+  var storyStatus = null;
+  var story = { entries: [], byKey: {}, i18n: {}, edits: {}, selectedKey: null, filter: "flagged",
+                form: null, unsaved: {}, saveButton: null, saving: false };
+
+  function shipName(id) {
+    var ship = id && state.shipById[id];
+    return ship ? ship.en : (id || "—");
+  }
+  function shipPosition(id, minute) {
+    var ship = id && state.shipById[id];
+    return ship ? positionAt(ship.track, minute) : null;
+  }
+  function clockWithSeconds(minute) {
+    var total = Math.round((BATTLE.clock_zero_minutes + minute) * 60) % (1440 * 60);
+    var hours = Math.floor(total / 3600), minutes = Math.floor(total / 60) % 60, seconds = total % 60;
+    function two(value) { return (value < 10 ? "0" : "") + value; }
+    return hours + ":" + two(minutes) + (seconds ? ":" + two(seconds) : "");
+  }
+  function parseClock(textValue) {
+    var parts = /^\s*(\d{1,2}):(\d{2})(?::(\d{2}))?\s*$/.exec(textValue);
+    if (!parts) { return null; }
+    var hours = parseInt(parts[1], 10), minutes = parseInt(parts[2], 10), seconds = parts[3] ? parseInt(parts[3], 10) : 0;
+    if (hours > 23 || minutes > 59 || seconds > 59) { return null; }
+    var minuteOfDay = hours * 60 + minutes + seconds / 60;
+    // a clock earlier in the day than the battle's start is the next day
+    if (minuteOfDay < BATTLE.clock_zero_minutes - 60) { minuteOfDay += 1440; }
+    return Math.round((minuteOfDay - BATTLE.clock_zero_minutes) * 100) / 100;
+  }
+  function deepCopy(value) { return JSON.parse(JSON.stringify(value)); }
+  function normalisedJson(text) {
+    try { return JSON.stringify(JSON.parse(text)); } catch (error) { return text; }
+  }
+  function storyKey(minute, ordinal) { return "t" + Math.round(minute * 100) + "_" + ordinal; }
+  function documentKey(key) { return key.replace(/[^A-Za-z0-9_-]/g, "_"); }
+
+  // ---- the story: base events, edits on top, and what the map draws
+  function loadStory(storyFile, i18nFile) {
+    story.i18n = i18nFile || {};
+    var seen = {};
+    story.entries = [];
+    story.byKey = {};
+    (storyFile.events || []).forEach(function (event) {
+      var ordinal = seen[event.t] || 0;
+      seen[event.t] = ordinal + 1;
+      var key = storyKey(event.t, ordinal);
+      var entry = { key: key, original: deepCopy(event), event: deepCopy(event), edited: false, added: false,
+                    deleted: false, why: "", author: "" };
+      story.entries.push(entry);
+      story.byKey[key] = entry;
+    });
+  }
+  function applyStoryEdits() {
+    Object.keys(story.byKey).forEach(function (key) {
+      var entry = story.byKey[key];
+      if (entry.added && !story.edits[key]) {
+        delete story.byKey[key];
+        story.entries.splice(story.entries.indexOf(entry), 1);
+      }
+    });
+    story.entries.forEach(function (entry) {
+      if (entry.added) { return; }
+      entry.event = deepCopy(entry.original);
+      entry.edited = false; entry.deleted = false; entry.why = ""; entry.author = "";
+    });
+    Object.keys(story.edits).forEach(function (key) {
+      var record = story.edits[key];
+      var entry = story.byKey[key];
+      if (!entry) {
+        if (!record.added) { return; }
+        entry = { key: key, original: null, event: null, added: true };
+        story.entries.push(entry);
+        story.byKey[key] = entry;
+      }
+      try { entry.event = JSON.parse(record.event_json || "null") || entry.event; } catch (error) { }
+      entry.edited = true;
+      entry.deleted = !!record.deleted;
+      entry.why = record.why || "";
+      entry.author = record.author || "";
+    });
+    deriveDrawables();
+  }
+  function happeningMinute(event, happening) {
+    var minute = Number(event.t) || 0;
+    if (typeof happening.when === "number") { minute += happening.when; }
+    if (happening.kind === "sinking" && typeof happening.delay === "number") { minute += happening.delay; }
+    return minute;
+  }
+  function deriveDrawables() {
+    var drawables = state.chartEvents.slice();
+    story.entries.forEach(function (entry) {
+      if (entry.deleted || !entry.event) { return; }
+      (entry.event.happens || []).forEach(function (happening, index) {
+        var minute = happeningMinute(entry.event, happening);
+        var base = { storyKey: entry.key, index: index };
+        var kind = happening.kind;
+        if ((kind === "fire" || kind === "duel" || kind === "hit") && happening.by && happening.at) {
+          drawables.push(Object.assign({ t: minute, kind: "fire", by: happening.by, at: happening.at,
+                                         until: minute + FIRE_SHOWN_MINUTES }, base));
+        }
+        if ((kind === "hit" || kind === "duel") && happening.at) {
+          drawables.push(Object.assign({ t: minute + 0.4, kind: "hit", at: happening.at }, base));
+        } else if (kind === "torpedo" && (happening.by || happening.at)) {
+          drawables.push(Object.assign({ t: minute, kind: "torpedo", by: happening.by || null, at: happening.at || null,
+                                         hit: !!happening.hit }, base));
+        } else if (kind === "searchlight" && happening.by && happening.on) {
+          drawables.push(Object.assign({ t: minute, kind: "searchlight", by: happening.by, at: happening.on,
+                                         seconds: happening.seconds || 14 }, base));
+        } else if (kind === "detonation" && happening.ship) {
+          drawables.push(Object.assign({ t: minute, kind: "detonation", at: happening.ship }, base));
+        } else if (kind === "burning" && happening.ship) {
+          drawables.push(Object.assign({ t: minute, kind: "burning", at: happening.ship,
+                                         until: minute + (happening.minutes || 10) }, base));
+        }
+      });
+    });
+    drawables.sort(function (first, second) { return first.t - second.t; });
+    state.events = drawables;
+  }
+  function isSelectedDrawable(drawable) {
+    return !!drawable.storyKey && drawable.storyKey === story.selectedKey;
+  }
+
+  // ---- checks: the range of every happening between two ships
+  function happeningCheck(event, happening) {
+    var problems = [];
+    var shooter = happening.by || null;
+    var target = happening.at || happening.on || null;
+    var minute = happeningMinute(event, happening);
+    var rangeKm = null;
+    [shooter, target, happening.ship || null, happening.over || null].forEach(function (id) {
+      if (!id) { return; }
+      if (!state.shipById[id]) { problems.push(id + " is not in the cast"); }
+      else if (!shipPosition(id, minute)) { problems.push(shipName(id) + " is not on the map then"); }
+    });
+    var from = shooter && shipPosition(shooter, minute), to = target && shipPosition(target, minute);
+    if (from && to) { rangeKm = Math.hypot(from[0] - to[0], from[1] - to[1]); }
+    var shooterShip = shooter && state.shipById[shooter], targetShip = target && state.shipById[target];
+    var scuttling = shooter && target && (SCUTTLED_BY_OWN_SIDE[target] || []).indexOf(shooter) >= 0;
+    if (shooterShip && targetShip && shooterShip.side === targetShip.side && !scuttling &&
+        ["fire", "duel", "hit", "torpedo", "searchlight"].indexOf(happening.kind) >= 0) {
+      problems.push("both on the same side");
+    }
+    var reachKm = { fire: GUN_REACH_KM, duel: GUN_REACH_KM, hit: GUN_REACH_KM, torpedo: TORPEDO_REACH_KM,
+                    searchlight: SEARCHLIGHT_REACH_KM }[happening.kind];
+    if (reachKm && rangeKm !== null && rangeKm > reachKm) {
+      problems.push("beyond " + happening.kind + " reach (" + reachKm + " km)");
+    }
+    var text = (HAPPENING_LABELS[happening.kind] || happening.kind).split(" ").pop();
+    var names = [shooter, target, happening.ship, happening.over, happening.near].filter(function (id) { return !!id; });
+    if (names.length) { text += " " + names.map(shipName).join(" → "); }
+    if (rangeKm !== null) { text += " " + rangeKm.toFixed(1) + " km"; }
+    return { text: text, problems: problems, rangeKm: rangeKm, minute: minute };
+  }
+  function entryChecks(entry) {
+    return (entry.event && entry.event.happens || []).map(function (happening) {
+      return happeningCheck(entry.event, happening);
+    });
+  }
+  function entryFlagged(entry) {
+    return entryChecks(entry).some(function (check) { return check.problems.length > 0; });
+  }
+  function lineText(entry) {
+    var event = entry.event || {};
+    var translated = story.i18n[String(event.t)] || {};
+    return event.zh || event.en || translated.en || (event.silent ? "(silent)" : "");
+  }
+
+  // ---- the panel
+  function storyOpen() { return !storyEditor.hidden; }
+  function toggleStoryEditor(open) {
+    storyEditor.hidden = open === undefined ? !storyEditor.hidden : !open;
+    document.getElementById("storyToggle").classList.toggle("on", !storyEditor.hidden);
+    if (!storyEditor.hidden) { renderStoryEditor(); }
+    if (!window.ResizeObserver) { resize(); }
+  }
+  function sortedEntries() {
+    return story.entries.filter(function (entry) { return entry.event; })
+      .sort(function (first, second) { return first.event.t - second.event.t; });
+  }
+  function listedEntries() {
+    return sortedEntries().filter(function (entry) {
+      if (story.filter === "edited") { return entry.edited; }
+      if (entry.deleted) { return false; }
+      if (story.filter === "flagged") { return entryFlagged(entry); }
+      if (story.filter === "happens") { return (entry.event.happens || []).length > 0; }
+      return true;
+    });
+  }
+  function renderStorySummary() {
+    var summary = document.getElementById("storySummary");
+    if (!summary) { return; }
+    var live = story.entries.filter(function (entry) { return entry.event && !entry.deleted; });
+    var flagged = live.filter(entryFlagged).length;
+    var edited = story.entries.filter(function (entry) { return entry.edited; }).length;
+    summary.textContent = live.length + " story events; " + flagged + " with a happening out of reach, on the wrong side " +
+      "or off the map; " + edited + " edited here" +
+      (unsavedCount() ? ", " + unsavedCount() + " not saved yet (💾 Save or Ctrl+S)" : "") +
+      ". The editor is the game's own (` opens and closes it).";
+  }
+  function renderStoryEditor() {
+    renderStorySummary();
+    if (storyEditor.hidden) { return; }
+    storyEditor.innerHTML = "";
+    var head = element("div", "story-head");
+    head.appendChild(element("strong", "", "事件 Story"));
+    var filter = document.createElement("select");
+    [["flagged", "需檢查 flagged"], ["happens", "有發生 with happenings"], ["all", "全部 all"], ["edited", "已改 edited"]]
+      .forEach(function (choice) {
+        var option = document.createElement("option");
+        option.value = choice[0]; option.textContent = choice[1];
+        filter.appendChild(option);
+      });
+    filter.value = story.filter;
+    filter.title = "Which events the list shows";
+    filter.addEventListener("change", function () {
+      story.filter = filter.value;
+      writePreference("storyFilter", story.filter);
+      renderStoryEditor();
+    });
+    head.appendChild(filter);
+    story.saveButton = button("", "Save the changed events (Ctrl+S)", saveStory);
+    story.saveButton.classList.add("save");
+    head.appendChild(story.saveButton);
+    refreshSaveButton();
+    head.appendChild(button("✚ 新增 add", "Add an event at the map's time", addStoryEvent));
+    var removeButton = button("🗑 刪除 delete", "Delete this event (click twice)", function () {
+      if (!story.selectedKey) { return; }
+      if (!removeButton.dataset.armed) {
+        removeButton.dataset.armed = "1";
+        removeButton.textContent = "再按一次 click again";
+        return;
+      }
+      deleteStoryEvent(story.selectedKey);
+    });
+    removeButton.classList.add("danger");
+    head.appendChild(removeButton);
+    head.appendChild(button("▶ 跳至 jump", "Go to this event on the map", function () { jumpToEntry(story.byKey[story.selectedKey]); }));
+    head.appendChild(button("↶ 還原 undo", "Back to the event as the story file has it", function () {
+      if (story.selectedKey) { forgetStoryEdit(story.selectedKey); }
+    }));
+    head.appendChild(button("✕", "Close (`)", function () { toggleStoryEditor(false); }));
+    storyEditor.appendChild(head);
+    storyStatus = element("div", "status", story.lastStatus || "");
+    storyEditor.appendChild(storyStatus);
+    var list = element("div", "story-list");
+    listedEntries().forEach(function (entry) {
+      var row = document.createElement("button");
+      row.type = "button";
+      row.className = "story-row" + (entry.key === story.selectedKey ? " selected" : "") +
+        (entry.edited ? " edited" : "") + (entry.deleted ? " deleted" : "") +
+        (story.unsaved[entry.key] ? " unsaved" : "");
+      row.dataset.key = entry.key;
+      var checks = entryChecks(entry);
+      var bad = checks.some(function (check) { return check.problems.length > 0; });
+      if (bad) { row.classList.add("bad"); }
+      row.appendChild(element("span", "when", clockShort(entry.event.t)));
+      row.appendChild(element("span", "kind", STORY_KIND_LABELS[entry.event.category] || entry.event.category || ""));
+      row.appendChild(element("span", "line", lineText(entry)));
+      var happens = element("span", "happens");
+      checks.forEach(function (check) {
+        happens.appendChild(element("span", check.problems.length ? "bad" : "", check.text));
+      });
+      row.appendChild(happens);
+      row.title = checks.map(function (check) { return check.text + (check.problems.length ? ": " + check.problems.join("; ") : ""); })
+        .join("\n") + (entry.why ? "\n" + entry.why : "");
+      row.addEventListener("click", function () { selectStoryEntry(entry.key, true); });
+      list.appendChild(row);
+    });
+    if (!list.childNodes.length) { list.appendChild(element("div", "hint", "No events in this list.")); }
+    storyEditor.appendChild(list);
+    var entry = story.selectedKey && story.byKey[story.selectedKey];
+    if (entry && entry.event) { storyEditor.appendChild(buildStoryForm(entry)); }
+    storyEditor.classList.toggle("has-form", !!(entry && entry.event));
+    var selectedRow = list.querySelector(".selected");
+    if (selectedRow) { selectedRow.scrollIntoView({ block: "nearest" }); }
+  }
+  function element(tag, className, text) {
+    var node = document.createElement(tag);
+    if (className) { node.className = className; }
+    if (text !== undefined) { node.textContent = text; }
+    return node;
+  }
+  function button(text, title, handler) {
+    var node = document.createElement("button");
+    node.type = "button"; node.textContent = text; node.title = title;
+    node.addEventListener("click", handler);
+    return node;
+  }
+  function selectStoryEntry(key, travel) {
+    story.selectedKey = key;
+    var entry = story.byKey[key];
+    if (travel && entry) { jumpToEntry(entry); }
+    renderStoryEditor();
+    draw();
+  }
+  function jumpToEntry(entry) {
+    if (!entry || !entry.event) { return; }
+    setPlaying(false);
+    var points = [];
+    var ids = (entry.event.look && entry.event.look.ships || []).slice();
+    (entry.event.happens || []).forEach(function (happening) {
+      ["by", "at", "on", "ship", "over", "near"].forEach(function (field) { if (happening[field]) { ids.push(happening[field]); } });
+    });
+    var minute = entry.event.t;
+    ids.forEach(function (id) { var place = shipPosition(id, minute); if (place) { points.push(place); } });
+    if (points.length) {
+      var xs = points.map(function (point) { return point[0]; }), ys = points.map(function (point) { return point[1]; });
+      state.centreX = (Math.min.apply(null, xs) + Math.max.apply(null, xs)) / 2;
+      state.centreY = (Math.min.apply(null, ys) + Math.max.apply(null, ys)) / 2;
+      var spanKm = Math.max(3, Math.max.apply(null, xs) - Math.min.apply(null, xs), Math.max.apply(null, ys) - Math.min.apply(null, ys));
+      state.pixelsPerKm = Math.max(1.5, Math.min(60, Math.min(canvas.clientWidth, canvas.clientHeight) * 0.55 / spanKm));
+    }
+    if (ids.length && state.shipById[ids[0]]) { state.selectedId = ids[0]; }
+    setMinute(minute + 0.3);
+  }
+
+  // ---- the form, as the game lays it out
+  function numberInput(value, range, title) {
+    var input = document.createElement("input");
+    input.type = "number"; input.min = String(range[0]); input.max = String(range[1]); input.step = String(range[2]);
+    input.value = String(value); input.title = title || "";
+    return input;
+  }
+  function choiceSelect(values, labels, value, title) {
+    var select = document.createElement("select");
+    values.forEach(function (choice, index) {
+      var option = document.createElement("option");
+      option.value = choice; option.textContent = labels ? labels[index] : choice;
+      select.appendChild(option);
+    });
+    select.value = values.indexOf(value) >= 0 ? value : values[0];
+    select.title = title || "";
+    return select;
+  }
+  function shipSelect(value, emptyLabel, title) {
+    var select = document.createElement("select");
+    var empty = document.createElement("option");
+    empty.value = ""; empty.textContent = emptyLabel || "—";
+    select.appendChild(empty);
+    BATTLE.sides.map(function (entry) { return entry.id; }).forEach(function (side) {
+      var group = document.createElement("optgroup");
+      group.label = sideName(side);
+      state.ships.filter(function (ship) { return ship.side === side; })
+        .sort(function (first, second) { return first.en.localeCompare(second.en); })
+        .forEach(function (ship) {
+          var option = document.createElement("option");
+          option.value = ship.id; option.textContent = ship.en + (ship.zh ? " " + ship.zh : "");
+          group.appendChild(option);
+        });
+      select.appendChild(group);
+    });
+    select.value = value || "";
+    select.title = title || "";
+    return select;
+  }
+  function gridCell(grid, labelText, control, title) {
+    var label = element("label", "", labelText);
+    label.title = title || control.title || "";
+    grid.appendChild(label);
+    grid.appendChild(control);
+    return control;
+  }
+  function happeningDefault(kind, key, controlKind) {
+    if (controlKind === "flag") { return key === "hit"; }
+    if (controlKind === "severity") { return 0.5; }
+    if (controlKind === "seconds") { return kind === "starshell" ? 25 : 14; }
+    if (controlKind === "count") { return 1; }
+    if (controlKind === "level") { return kind === "burning" ? 1 : 0; }
+    if (controlKind === "minutes") { return kind === "burning" && key === "minutes" ? 10 : 0; }
+    if (controlKind === "share") { return -0.05; }
+    if (controlKind === "sink_when") { return "here"; }
+    if (controlKind === "watch") { return "shooter"; }
+    if (FIELD_CHOICES[controlKind]) { return FIELD_CHOICES[controlKind][0]; }
+    return "";
+  }
+  function happeningControl(kind, key, controlKind, value, title) {
+    if (controlKind === "ship") { return shipSelect(value, "—", title); }
+    if (FIELD_CHOICES[controlKind]) { return choiceSelect(FIELD_CHOICES[controlKind], null, String(value), title); }
+    if (controlKind === "flag") {
+      var check = document.createElement("input");
+      check.type = "checkbox"; check.checked = !!value; check.title = title;
+      return check;
+    }
+    return numberInput(value === null || value === undefined || value === "" ? 0 : value, NUMBER_RANGES[controlKind] || [0, 999, 0.01], title);
+  }
+  function round(value, step) { return Math.round(value / step) * step; }
+
+  function buildStoryForm(entry) {
+    var event = entry.event;
+    var look = event.look || { ships: [] };
+    var form = { entry: entry, cast: (look.ships || []).slice(), happenings: [] };
+    story.form = form;
+    var box = element("div", "story-form");
+
+    // ---- THE LINE
+    var lineGrid = element("div", "story-grid");
+    form.clock = gridCell(lineGrid, "時刻 clock", Object.assign(document.createElement("input"),
+      { type: "text", value: clockWithSeconds(event.t), title: "The event's moment, " + BATTLE.clock_zone + " (H:MM or H:MM:SS)" }));
+    form.duration = gridCell(lineGrid, "時長 min", numberInput(event.duration || 3, [0.5, 60, 0.5],
+      "How long the event holds the camera and the subtitle, in battle minutes"));
+    form.category = gridCell(lineGrid, "類別 category", choiceSelect(STORY_KINDS, STORY_KINDS.map(function (kind) {
+      return STORY_KIND_LABELS[kind] + " " + kind; }), event.category, "The heading over the subtitle; it does not move the camera"));
+    box.appendChild(lineGrid);
+
+    // ---- WHAT WE LOOK AT
+    box.appendChild(element("div", "story-section", "看 Look"));
+    var picker = element("div", "story-picker");
+    var sideMenu = choiceSelect(BATTLE.sides.map(function (entry) { return entry.id; }),
+      BATTLE.sides.map(function (entry) { return entry.en; }), BATTLE.sides[0].id, "Side");
+    var typeMenu = choiceSelect(["capital", "cruiser", "small"], ["主力艦 BB/BC", "巡洋艦 CA/CL", "驅逐/雷擊 DD/TB"], "capital", "Type");
+    var nameMenu = document.createElement("select");
+    function refreshNames() {
+      nameMenu.innerHTML = "";
+      var wanted = { capital: ["BB", "BC"], cruiser: ["CA", "CL"], small: ["DD", "TB", "AUX"] }[typeMenu.value];
+      state.ships.filter(function (ship) { return ship.side === sideMenu.value && wanted.indexOf(ship.type) >= 0; })
+        .sort(function (first, second) { return first.en.localeCompare(second.en); })
+        .forEach(function (ship) {
+          var option = document.createElement("option");
+          option.value = ship.id; option.textContent = ship.en + (ship.zh ? " " + ship.zh : "");
+          nameMenu.appendChild(option);
+        });
+    }
+    sideMenu.addEventListener("change", refreshNames);
+    typeMenu.addEventListener("change", refreshNames);
+    refreshNames();
+    picker.appendChild(sideMenu); picker.appendChild(typeMenu); picker.appendChild(nameMenu);
+    picker.appendChild(button("✚ 艦艇 add", "Add the picked ship to the ships we look at; none = the fleets", function () {
+      if (nameMenu.value && form.cast.indexOf(nameMenu.value) < 0) { form.cast.push(nameMenu.value); renderCast(); formChanged(); }
+    }));
+    box.appendChild(picker);
+    var castBox = element("div", "story-cast");
+    function renderCast() {
+      castBox.innerHTML = "";
+      if (!form.cast.length) { castBox.appendChild(element("span", "hint", "none = the fleets")); }
+      form.cast.forEach(function (id, index) {
+        var chip = element("span", "chip", shipName(id));
+        chip.appendChild(button("✕", "Remove", function () { form.cast.splice(index, 1); renderCast(); formChanged(); }));
+        castBox.appendChild(chip);
+      });
+    }
+    renderCast();
+    box.appendChild(castBox);
+    var lookGrid = element("div", "story-grid");
+    form.distance = gridCell(lookGrid, "距離 distance ×", numberInput(look.distance || 1, [0.2, 4, 0.05],
+      "How far the camera stands, as a multiple of the automatic framing"));
+    form.height = gridCell(lookGrid, "高度 height°", numberInput(look.height || 0, [-10, 85, 1],
+      "Degrees above the horizon; 0 = automatic; below zero = under water"));
+    form.bearing = gridCell(lookGrid, "方位 bearing°", numberInput(look.bearing === undefined ? -1 : look.bearing, [-1, 359, 1],
+      "0 = camera south of the ships looking north, 90 = east, 180 = north, 270 = west; -1 = automatic"));
+    form.motion = gridCell(lookGrid, "運鏡 motion", choiceSelect(LOOK_MOTIONS, LOOK_MOTION_LABELS, look.motion || "sway",
+      "Still, a gentle sway, circling, or hovering high over the ships"));
+    form.hover = gridCell(lookGrid, "盤旋高度 hover m", numberInput(look.hover_height || 500, [100, 2000, 50],
+      "With hover: how high the camera hangs"));
+    form.lens = gridCell(lookGrid, "鏡頭 lens°", numberInput(look.lens || 0, [0, 110, 1], "Lens angle; 0 = automatic"));
+    form.from = gridCell(lookGrid, "機位 camera by", shipSelect(look.from, "自動 auto", "The camera stands by this ship"));
+    form.toward = gridCell(lookGrid, "望向 looks toward", shipSelect(look.toward, "自動 auto",
+      "The camera stands on the far side of the cast from this ship and looks through them at her; overrides the bearing"));
+    form.frame = gridCell(lookGrid, "框 frame", choiceSelect(LOOK_FRAMES, LOOK_FRAME_LABELS, look.frame || "auto",
+      "What the framing holds: the ship, the whole cast, or the fleets"));
+    box.appendChild(lookGrid);
+    var seaplaneLabel = element("label", "check-label");
+    form.seaplane = Object.assign(document.createElement("input"), { type: "checkbox", checked: !!look.seaplane });
+    seaplaneLabel.appendChild(form.seaplane);
+    seaplaneLabel.appendChild(document.createTextNode(" 水上飛機 ride the seaplane"));
+    box.appendChild(seaplaneLabel);
+
+    // ---- WHAT HAPPENS
+    var happensHead = element("div", "story-picker");
+    happensHead.appendChild(element("span", "story-section", "發生 Happens"));
+    var addKind = choiceSelect([""].concat(HAPPENING_KINDS), ["+ 加一項 add …"].concat(HAPPENING_KINDS.map(function (kind) {
+      return HAPPENING_LABELS[kind]; })), "", "Add a happening");
+    addKind.addEventListener("change", function () {
+      if (addKind.value) {
+        addHappeningRow({ kind: addKind.value });
+        addKind.value = "";
+        formChanged();
+      }
+    });
+    happensHead.appendChild(addKind);
+    box.appendChild(happensHead);
+    var happensBox = element("div", "story-happens");
+    box.appendChild(happensBox);
+    function addHappeningRow(happening) {
+      var kind = HAPPENING_KINDS.indexOf(happening.kind) >= 0 ? happening.kind : "fire";
+      var rowBox = element("div", "happening");
+      var rowHead = element("div", "happening-head");
+      rowHead.appendChild(element("strong", "", HAPPENING_LABELS[kind]));
+      var checkLine = element("span", "check");
+      rowHead.appendChild(checkLine);
+      var row = { kind: kind, fields: {}, spare: deepCopy(happening), checkLine: checkLine };
+      rowHead.appendChild(button("✕", "Remove this happening", function () {
+        form.happenings.splice(form.happenings.indexOf(row), 1);
+        rowBox.remove();
+        formChanged();
+      }));
+      rowBox.appendChild(rowHead);
+      var grid = element("div", "story-grid");
+      HAPPENING_FIELDS[kind].forEach(function (field) {
+        var key = field[0], controlKind = field[1];
+        var value = happening[key] !== undefined ? happening[key] : happeningDefault(kind, key, controlKind);
+        if (controlKind === "sink_when") { value = happening.when === "track" ? "track" : "here"; }
+        delete row.spare[key];
+        row.fields[key] = gridCell(grid, field[2], happeningControl(kind, key, controlKind, value, field[3]), field[3]);
+      });
+      delete row.spare.kind;
+      rowBox.appendChild(grid);
+      happensBox.appendChild(rowBox);
+      form.happenings.push(row);
+    }
+    (event.happens || []).forEach(addHappeningRow);
+
+    // ---- flags, note, subtitles
+    var flagRow = element("div", "story-picker");
+    var silentLabel = element("label", "check-label");
+    form.silent = Object.assign(document.createElement("input"), { type: "checkbox", checked: !!event.silent });
+    silentLabel.appendChild(form.silent);
+    silentLabel.appendChild(document.createTextNode(" 無聲 silent"));
+    flagRow.appendChild(silentLabel);
+    form.note = Object.assign(document.createElement("input"), { type: "text", value: event.note || "",
+                                                                 placeholder: "備註 note" });
+    form.note.className = "grow";
+    flagRow.appendChild(form.note);
+    box.appendChild(flagRow);
+    var subtitles = element("div", "story-subtitles");
+    var translated = story.i18n[String(event.t)] || {};
+    form.zh = Object.assign(document.createElement("textarea"), { value: event.zh || "", placeholder: "中文字幕 zh" });
+    form.en = Object.assign(document.createElement("textarea"), { value: event.en || "",
+                                                                  placeholder: translated.en || "English subtitle" });
+    subtitles.appendChild(form.zh); subtitles.appendChild(form.en);
+    box.appendChild(subtitles);
+    if (entry.why) { box.appendChild(element("div", "why", (entry.author === "claude" ? "Claude: " : "") + entry.why)); }
+
+    box.addEventListener("input", formChanged);
+    box.addEventListener("change", formChanged);
+    form.refreshChecks = function () {
+      var current = eventFromForm();
+      form.happenings.forEach(function (row, index) {
+        var check = happeningCheck(current, current.happens[index]);
+        row.checkLine.textContent = check.text.replace(/^\S+\s?/, "") + (check.problems.length ? " · " + check.problems.join(" · ") : "");
+        row.checkLine.className = "check" + (check.problems.length ? " bad" : "");
+      });
+      form.hover.disabled = form.motion.value !== "hover";
+      form.bearing.disabled = !!form.toward.value;
+    };
+    form.refreshChecks();
+    return box;
+  }
+
+  function eventFromForm() {
+    var form = story.form, entry = form.entry, old = entry.event;
+    var event = {};
+    var clock = parseClock(form.clock.value);
+    event.t = clock === null ? old.t : clock;
+    event.duration = round(Number(form.duration.value) || old.duration || 3, 0.5);
+    event.category = form.category.value;
+    if (form.zh.value) { event.zh = form.zh.value; }
+    if (form.en.value || old.en !== undefined) { event.en = form.en.value; }
+    Object.keys(old).forEach(function (key) {
+      if (CONTROLLED_LINE_KEYS.indexOf(key) < 0) { event[key] = deepCopy(old[key]); }   // tts, voice ... ride along
+    });
+    if (form.silent.checked) { event.silent = true; }
+    if (form.note.value.trim()) { event.note = form.note.value.trim(); }
+    var look = { ships: form.cast.slice() };
+    var distance = Number(form.distance.value);
+    if (Math.abs(distance - 1) > 0.001) { look.distance = distance; }
+    var height = Number(form.height.value);
+    if (height < 0) { look.height = -1; } else if (height > 0) { look.height = height; }
+    var bearing = Number(form.bearing.value);
+    if (bearing >= 0 && !form.toward.value) { look.bearing = bearing; }
+    if (form.motion.value !== "sway") { look.motion = form.motion.value; }
+    if (form.motion.value === "hover") { look.hover_height = Number(form.hover.value); }
+    var lens = Number(form.lens.value);
+    if (lens > 0) { look.lens = lens; }
+    if (form.from.value) { look.from = form.from.value; }
+    if (form.toward.value) { look.toward = form.toward.value; }
+    if (form.frame.value !== "auto") { look.frame = form.frame.value; }
+    if (form.seaplane.checked) { look.seaplane = true; }
+    event.look = look;
+    var happens = form.happenings.map(function (row) {
+      var happening = { kind: row.kind };
+      Object.keys(row.spare).forEach(function (key) { happening[key] = deepCopy(row.spare[key]); });
+      HAPPENING_FIELDS[row.kind].forEach(function (field) {
+        var key = field[0], controlKind = field[1], control = row.fields[key];
+        var value = controlKind === "flag" ? control.checked : control.value;
+        if (controlKind === "flag") {
+          if (value) { happening[key] = true; } else if (key === "hit") { happening[key] = false; }
+        } else if (controlKind === "ship") {
+          if (value || key === "by" || key === "at") { happening[key] = value; }
+        } else if (["station", "side", "trim", "list"].indexOf(controlKind) >= 0) {
+          if (value !== "auto") { happening[key] = value; }
+        } else if (controlKind === "flood_side") {
+          happening[key] = value;
+        } else if (controlKind === "sink_when") {
+          if (value === "track") { happening.when = "track"; }
+        } else if (controlKind === "watch") {
+          if (value === "victim") { happening.watch = "victim"; }
+        } else if (controlKind === "minutes0") {
+          if (Number(value) > 0) { happening[key] = round(Number(value), 0.05); }
+        } else if (controlKind === "level" || controlKind === "count0") {
+          if (Number(value) > 0) { happening[key] = Math.round(Number(value)); }
+        } else if (controlKind === "count") {
+          happening[key] = Math.round(Number(value));
+        } else if (controlKind === "minutes") {
+          if (key === "when" || key === "delay" || Number(value) > 0) { happening[key] = Math.round(Number(value) * 100) / 100; }
+        } else {
+          happening[key] = Math.round(Number(value) * 100) / 100;
+        }
+      });
+      if (row.kind === "mute" || row.kind === "flagship") { happening.ships = form.cast.slice(); }
+      return happening;
+    });
+    if (happens.length) { event.happens = happens; }
+    return event;
+  }
+
+  function formChanged() {
+    var form = story.form;
+    if (!form) { return; }
+    var entry = form.entry;
+    entry.event = eventFromForm();
+    entry.edited = true;
+    if (entry.author === "claude") { entry.author = "you"; }
+    form.refreshChecks();
+    deriveDrawables();
+    renderStorySummary();
+    draw();
+    markUnsaved(entry.key, "set");
+  }
+  function setStoryStatus(text, warn) {
+    story.lastStatus = text;
+    if (storyStatus) { storyStatus.textContent = text; storyStatus.className = "status" + (warn ? " warn" : ""); }
+  }
+  function storyRecord(entry) {
+    return { key: entry.key, added: !!entry.added, deleted: !!entry.deleted, author: entry.author || "you",
+             why: entry.why || "", t: entry.event ? entry.event.t : null,
+             event_json: JSON.stringify(entry.event), saved_at: Date.now() };
+  }
+  // Changes wait as drafts (kept in this browser across reloads) until Save
+  // or Ctrl+S writes them to the page's database, where Claude reads them.
+  function markUnsaved(key, action) {
+    var entry = story.byKey[key];
+    if (action === "set" && entry) { story.edits[key] = storyRecord(entry); }
+    story.unsaved[key] = { action: action };
+    Array.prototype.forEach.call(storyEditor.querySelectorAll(".story-row"), function (row) {
+      if (row.dataset.key === key) { row.classList.add("unsaved", "edited"); }
+    });
+    keepDrafts();
+    refreshSaveButton();
+    setStoryStatus("Not saved yet: press 💾 Save (Ctrl+S).");
+  }
+  function keepDrafts() {
+    var drafts = {};
+    Object.keys(story.unsaved).forEach(function (key) {
+      drafts[key] = { action: story.unsaved[key].action, record: story.edits[key] || null };
+    });
+    try { localStorage.setItem(storagePrefix + "story-drafts", JSON.stringify(drafts)); } catch (error) { }
+  }
+  function restoreDrafts() {
+    var drafts = {};
+    try { drafts = JSON.parse(localStorage.getItem(storagePrefix + "story-drafts") || "{}"); } catch (error) { }
+    Object.keys(drafts).forEach(function (key) {
+      var draft = drafts[key];
+      if (draft.action === "set" && draft.record) { story.edits[key] = draft.record; }
+      else if (draft.action === "forget") { delete story.edits[key]; }
+      else { return; }
+      story.unsaved[key] = { action: draft.action };
+    });
+  }
+  function withUnsaved(sharedEdits) {
+    Object.keys(story.unsaved).forEach(function (key) {
+      if (story.unsaved[key].action === "forget") { delete sharedEdits[key]; }
+      else if (story.edits[key]) { sharedEdits[key] = story.edits[key]; }
+    });
+    return sharedEdits;
+  }
+  function unsavedCount() { return Object.keys(story.unsaved).length; }
+  function refreshSaveButton() {
+    var saveButton = story.saveButton;
+    if (!saveButton) { return; }
+    var count = unsavedCount();
+    saveButton.textContent = story.saving ? "保存中 saving…" :
+      (count ? "💾 保存 save (" + count + ")" : "✓ 已保存 saved");
+    saveButton.disabled = story.saving || !count;
+    saveButton.classList.toggle("dirty", count > 0);
+    renderStorySummary();
+  }
+  function saveStory() {
+    var keys = Object.keys(story.unsaved);
+    if (!keys.length || story.saving) { return; }
+    if (!state.store) {
+      try { localStorage.setItem(storagePrefix + "story-edits", JSON.stringify(story.edits)); } catch (error) { }
+      story.unsaved = {};
+      keepDrafts();
+      refreshSaveButton();
+      renderStoryEditor();
+      setStoryStatus(window.claude ? "Saved in this browser only: sign in to claude.ai to share your edits with Claude."
+                                   : "Saved in this browser only.", true);
+      return;
+    }
+    story.saving = true;
+    refreshSaveButton();
+    setStoryStatus("Saving " + keys.length + "…");
+    Promise.all(keys.map(function (key) {
+      var mark = story.unsaved[key];
+      var reference = state.store.collection(storyCollection).doc(documentKey(key));
+      var write = mark.action === "forget" ? reference.delete() : reference.set(story.edits[key]);
+      return write.then(function () {
+        // a change made while saving stays unsaved
+        if (story.unsaved[key] === mark) { delete story.unsaved[key]; }
+        return null;
+      }, function (error) { return error || { code: "error" }; });
+    })).then(function (results) {
+      var failures = results.filter(function (result) { return result; });
+      story.saving = false;
+      keepDrafts();
+      refreshSaveButton();
+      renderStoryEditor();
+      if (failures.length) {
+        setStoryStatus(failures.length + " not saved (" + (failures[0].code || "error") + "); press Save to try again.", true);
+      } else {
+        setStoryStatus("Saved " + keys.length + (keys.length === 1 ? " event" : " events") +
+          ". Claude folds these edits into story_events.json.");
+      }
+    });
+  }
+  function forgetStoryEdit(key) {
+    delete story.edits[key];
+    var entry = story.byKey[key];
+    if (entry && entry.added) { story.selectedKey = null; }
+    markUnsaved(key, "forget");
+    applyStoryEdits();
+    renderStoryEditor();
+    draw();
+    setStoryStatus("Back to the story file's event; press 💾 Save (Ctrl+S) to keep that.");
+  }
+  function addStoryEvent() {
+    var key = "new_" + Date.now().toString(36);
+    var entry = { key: key, original: null, added: true, edited: true, deleted: false, why: "", author: "you",
+                  event: { t: Math.round(state.minute * 10) / 10, duration: 3, category: "tactic", zh: "", en: "",
+                           look: { ships: state.selectedId ? [state.selectedId] : [] } } };
+    story.entries.push(entry);
+    story.byKey[key] = entry;
+    story.filter = "edited";
+    story.selectedKey = key;
+    markUnsaved(key, "set");
+    deriveDrawables();
+    renderStoryEditor();
+  }
+  function deleteStoryEvent(key) {
+    var entry = story.byKey[key];
+    if (!entry) { return; }
+    if (entry.added) { forgetStoryEdit(key); return; }
+    entry.deleted = true;
+    entry.edited = true;
+    markUnsaved(key, "set");
+    story.selectedKey = null;
+    deriveDrawables();
+    renderStoryEditor();
+    draw();
+  }
+  function stepStory(direction) {
+    var listed = listedEntries();
+    var index = listed.findIndex(function (entry) { return entry.key === story.selectedKey; });
+    var next = listed[Math.max(0, Math.min(listed.length - 1, index + direction))];
+    if (next) { selectStoryEntry(next.key, true); }
+  }
+  window.addEventListener("beforeunload", function (unloadEvent) {
+    if (unsavedCount()) { unloadEvent.preventDefault(); unloadEvent.returnValue = ""; }
+  });
+  document.getElementById("storyToggle").addEventListener("click", function () { toggleStoryEditor(); });
+  document.getElementById("storyOpen").addEventListener("click", function () { toggleStoryEditor(true); });
+  document.addEventListener("keydown", function (keyEvent) {
+    if ((keyEvent.ctrlKey || keyEvent.metaKey) && (keyEvent.key === "s" || keyEvent.key === "S")) {
+      keyEvent.preventDefault();
+      saveStory();
+    } else if (keyEvent.key === "`") {
+      keyEvent.preventDefault();
+      toggleStoryEditor();
+    } else if (storyOpen() && (keyEvent.key === "PageDown" || keyEvent.key === "PageUp")) {
+      keyEvent.preventDefault();
+      stepStory(keyEvent.key === "PageDown" ? 1 : -1);
+    }
+  });
+
+  // Action: firing lines (shooter to target, two minutes from the story's
+  // minute), hits and explosions (a burst on the ship), torpedoes (running
+  // from the launch point to where the target then is, about 29 knots),
+  // searchlight beams, and a flame on a burning ship. Story events sit at
+  // the story's minute; chart hits at the chart's minute on the named ship.
+  var TORPEDO_KM_PER_MINUTE = 0.9;
+  function shipPoint(id, minute) {
+    var ship = state.shipById[id];
+    var position = ship && positionAt(ship.track, minute);
+    return position ? toScreen(position[0], position[1]) : null;
+  }
+  function burst(point, radius, colour) {
+    context.strokeStyle = colour;
+    context.lineWidth = 2;
+    context.beginPath();
+    for (var spoke = 0; spoke < 8; spoke++) {
+      var angle = spoke * Math.PI / 4;
+      context.moveTo(point[0] + Math.cos(angle) * radius * 0.35, point[1] + Math.sin(angle) * radius * 0.35);
+      context.lineTo(point[0] + Math.cos(angle) * radius, point[1] + Math.sin(angle) * radius);
+    }
+    context.stroke();
+  }
+  function drawAction() {
+    if (!document.getElementById("showAction").checked) { return; }
+    var minute = state.minute;
+    state.events.forEach(function (event) {
+      var age = minute - event.t;
+      if (event.kind === "burning") {
+        if (minute < event.t || minute > event.until) { return; }
+        var burningAt = shipPoint(event.at, minute);
+        if (!burningAt) { return; }
+        context.fillStyle = cssColour("--gunfire");
+        context.beginPath();
+        context.moveTo(burningAt[0], burningAt[1] - 11);
+        context.lineTo(burningAt[0] + 4, burningAt[1] - 4);
+        context.lineTo(burningAt[0] - 4, burningAt[1] - 4);
+        context.closePath();
+        context.fill();
+        return;
+      }
+      if (event.kind === "fire") {
+        var lasts = event.until ? event.until - event.t : FIRE_SHOWN_MINUTES;
+        if (age < 0 || age > lasts) { return; }
+        var gunKm = shipPosition(event.by, minute), targetKm = shipPosition(event.at, minute);
+        if (!gunKm || !targetKm) { return; }
+        var rangeKm = Math.hypot(gunKm[0] - targetKm[0], gunKm[1] - targetKm[1]);
+        var outOfReach = rangeKm > GUN_REACH_KM;
+        var gunShip = state.shipById[event.by];
+        var from = toScreen(gunKm[0], gunKm[1]), to = toScreen(targetKm[0], targetKm[1]);
+        var selectedEvent = isSelectedDrawable(event);
+        var colour = outOfReach ? cssColour("--burst") : sideColour(gunShip.side);
+        context.strokeStyle = colour;
+        context.lineWidth = selectedEvent ? 2.6 : 1.5;
+        context.setLineDash(outOfReach ? [4, 5] : []);
+        context.beginPath(); context.moveTo(from[0], from[1]); context.lineTo(to[0], to[1]); context.stroke();
+        context.setLineDash([]);
+        // the arrowhead at the target
+        var lineAngle = Math.atan2(to[1] - from[1], to[0] - from[0]);
+        context.fillStyle = colour;
+        context.beginPath();
+        context.moveTo(to[0], to[1]);
+        context.lineTo(to[0] - Math.cos(lineAngle - 0.4) * 9, to[1] - Math.sin(lineAngle - 0.4) * 9);
+        context.lineTo(to[0] - Math.cos(lineAngle + 0.4) * 9, to[1] - Math.sin(lineAngle + 0.4) * 9);
+        context.closePath(); context.fill();
+        // salvoes in flight, and the muzzle flash
+        context.fillStyle = cssColour("--gunfire");
+        for (var salvo = 0; salvo < 3; salvo++) {
+          var flight = (minute * 1.6 + salvo / 3) % 1;
+          context.beginPath();
+          context.arc(from[0] + (to[0] - from[0]) * flight, from[1] + (to[1] - from[1]) * flight, 2.2, 0, Math.PI * 2);
+          context.fill();
+        }
+        context.beginPath(); context.arc(from[0], from[1], 3 + (minute * 4 % 1) * 3, 0, Math.PI * 2); context.fill();
+        // the range on the line
+        var middle = [(from[0] + to[0]) / 2, (from[1] + to[1]) / 2];
+        context.font = "600 " + (filmMode ? Math.round(11 * film.labelScale) : 11) + "px " + cssColour("--font-data");
+        context.textAlign = "center";
+        context.lineWidth = 3;
+        context.strokeStyle = cssColour("--sea");
+        var beyondRangeNote = filmMode && filmLanguage === "ja" ? "（射程外）" : " – beyond gun range";
+        var rangeText = rangeKm.toFixed(1) + " km" + (outOfReach ? beyondRangeNote : "");
+        context.strokeText(rangeText, middle[0], middle[1] - 5);
+        context.fillStyle = colour;
+        context.fillText(rangeText, middle[0], middle[1] - 5);
+        context.textAlign = "left";
+        return;
+      }
+      if (event.kind === "fire_opened" && age >= 0 && age <= 1.5) {
+        var opener = shipPoint(event.by, minute);
+        if (!opener) { return; }
+        context.strokeStyle = cssColour("--gunfire");
+        context.lineWidth = 2;
+        context.beginPath(); context.arc(opener[0], opener[1], 6 + age * 8, 0, Math.PI * 2); context.stroke();
+        return;
+      }
+      if ((event.kind === "hit" && age >= 0 && age <= 1.5) || (event.kind === "detonation" && age >= 0 && age <= 2.5)) {
+        var struck = shipPoint(event.at, minute);
+        if (!struck) { return; }
+        burst(struck, event.kind === "detonation" ? 22 : 11, cssColour("--burst"));
+        return;
+      }
+      if (event.kind === "searchlight" && age >= 0 && age <= Math.max(event.seconds / 60, 0.5)) {
+        var lamp = shipPoint(event.by, minute), lit = shipPoint(event.at, minute);
+        if (!lamp || !lit) { return; }
+        context.strokeStyle = cssColour("--beam");
+        context.lineWidth = 5;
+        context.beginPath(); context.moveTo(lamp[0], lamp[1]); context.lineTo(lit[0], lit[1]); context.stroke();
+        return;
+      }
+      if (event.kind === "torpedo" && age >= 0) {
+        drawTorpedo(event, age);
+      }
+    });
+  }
+
+  // A torpedo shows only what the record says: the boat that fired, named
+  // at the point she fired from, with the clock; the run to where the
+  // named target is when it arrives, stopping at the torpedo's reach. No
+  // target is guessed: a chart's "fires torpedoes" with no target is the
+  // launch mark alone. When the boat is not on the map at that minute, or
+  // too far to reach, nothing runs: a red note at the target says so.
+  var TORPEDO_SHOWN_AFTER_RUN_MINUTES = 3;
+  function outlinedText(textValue, x, y, colour) {
+    context.font = "600 11px " + cssColour("--font-data");
+    context.lineWidth = 3;
+    context.strokeStyle = cssColour("--sea");
+    context.strokeText(textValue, x, y);
+    context.fillStyle = colour;
+    context.fillText(textValue, x, y);
+  }
+  function launchMark(point, colour) {
+    context.fillStyle = colour;
+    context.beginPath();
+    context.moveTo(point[0], point[1] - 7);
+    context.lineTo(point[0] + 6, point[1] + 5);
+    context.lineTo(point[0] - 6, point[1] + 5);
+    context.closePath();
+    context.fill();
+  }
+  function drawTorpedo(event, age) {
+    var selectedEvent = isSelectedDrawable(event);
+    // the record may name only the unit that attacked (a destroyer division,
+    // a flotilla): the boat drawn is that unit's, and the label says so
+    var launcherName = event.by ? shipName(event.by) + (event.unit ? " (" + event.unit + ")" : "") : "";
+    var launch = event.by ? shipPosition(event.by, event.t) : null;
+    var target = event.at ? state.shipById[event.at] : null;
+    var targetAtLaunch = target ? positionAt(target.track, event.t) : null;
+    var clock = clockShort(event.t);
+    var bad = cssColour("--burst"), colour = cssColour("--torpedo");
+    // the film shows the running torpedo only: the notes and the record's gaps are the editor's
+    if (filmMode && (!launch || !targetAtLaunch)) { return; }
+    if (!launch) {
+      // an unseen boat, or a named one the tracks do not have here
+      if (age > TORPEDO_SHOWN_AFTER_RUN_MINUTES * 2 && !selectedEvent) { return; }
+      if (!targetAtLaunch) { return; }
+      var struckPoint = toScreen(targetAtLaunch[0], targetAtLaunch[1]);
+      var note = event.by ? "torpedo from " + shipName(event.by) + " " + clock + ": " + shipName(event.by) +
+        " is not on the map then" : "torpedo " + clock + " from an unseen boat";
+      outlinedText(note, struckPoint[0] + 9, struckPoint[1] + 16, event.by ? bad : colour);
+      if (event.hit && age <= 1.5) { burst(struckPoint, 14, bad); }
+      return;
+    }
+    var start = toScreen(launch[0], launch[1]);
+    if (!targetAtLaunch) {
+      // the chart records the launch only
+      if (age > TORPEDO_SHOWN_AFTER_RUN_MINUTES * 2 && !selectedEvent) { return; }
+      launchMark(start, colour);
+      outlinedText(launcherName + " fires torpedoes " + clock + " (target not recorded)", start[0] + 9, start[1] + 16, colour);
+      return;
+    }
+    var gapKm = Math.hypot(targetAtLaunch[0] - launch[0], targetAtLaunch[1] - launch[1]);
+    if (gapKm > TORPEDO_REACH_KM) {
+      if (filmMode) { return; }
+      if (age > TORPEDO_SHOWN_AFTER_RUN_MINUTES * 2 && !selectedEvent) { return; }
+      var far = toScreen(targetAtLaunch[0], targetAtLaunch[1]);
+      context.strokeStyle = bad;
+      context.lineWidth = 1;
+      context.setLineDash([3, 6]);
+      context.beginPath(); context.moveTo(start[0], start[1]); context.lineTo(far[0], far[1]); context.stroke();
+      context.setLineDash([]);
+      launchMark(start, bad);
+      outlinedText("torpedo " + launcherName + " → " + shipName(event.at) + " " + clock + ": " + gapKm.toFixed(1) +
+        " km apart, reach " + TORPEDO_REACH_KM + " km", far[0] + 9, far[1] + 16, bad);
+      return;
+    }
+    var run = gapKm / TORPEDO_KM_PER_MINUTE;
+    var aim = positionAt(target.track, event.t + run) || targetAtLaunch;
+    var runKm = Math.min(Math.hypot(aim[0] - launch[0], aim[1] - launch[1]), TORPEDO_REACH_KM);
+    var runMinutes = Math.max(runKm / TORPEDO_KM_PER_MINUTE, 0.1);
+    if (age > runMinutes + TORPEDO_SHOWN_AFTER_RUN_MINUTES && !selectedEvent) { return; }
+    var share = Math.min(1, age / runMinutes);
+    var aimKm = Math.hypot(aim[0] - launch[0], aim[1] - launch[1]);
+    var direction = aimKm > 0 ? [(aim[0] - launch[0]) / aimKm, (aim[1] - launch[1]) / aimKm] : [0, 1];
+    var head = toScreen(launch[0] + direction[0] * runKm * share, launch[1] + direction[1] * runKm * share);
+    // the launch point stays where the boat fired from, while she sails on
+    launchMark(start, colour);
+    context.strokeStyle = colour;
+    context.lineWidth = selectedEvent ? 2.6 : 1.8;
+    context.setLineDash([2, 4]);
+    context.beginPath(); context.moveTo(start[0], start[1]); context.lineTo(head[0], head[1]); context.stroke();
+    context.setLineDash([]);
+    var runAngle = Math.atan2(head[1] - start[1], head[0] - start[0]);
+    context.fillStyle = colour;
+    context.beginPath();
+    context.moveTo(head[0] + Math.cos(runAngle) * 5, head[1] + Math.sin(runAngle) * 5);
+    context.lineTo(head[0] + Math.cos(runAngle + 2.4) * 6, head[1] + Math.sin(runAngle + 2.4) * 6);
+    context.lineTo(head[0] + Math.cos(runAngle - 2.4) * 6, head[1] + Math.sin(runAngle - 2.4) * 6);
+    context.closePath(); context.fill();
+    if (!filmMode) {
+      outlinedText("torpedo " + launcherName + " → " + shipName(event.at) + " " + clock + ", " + gapKm.toFixed(1) + " km" +
+        (share >= 1 ? (event.hit ? ": hit" : ": miss") : ""), start[0] + 9, start[1] + 16, colour);
+    }
+    if (event.hit && share >= 1 && age <= runMinutes + 1.5) { burst(head, 14, bad); }
+  }
+
+  function drawMarks() {
+    if (!document.getElementById("showMarks").checked) { return; }
+    var minute = state.minute;
+    var selected = state.selectedId;
+    for (var index = 0; index < state.marks.length; index++) {
+      var mark = state.marks[index];
+      var own = selected && mark[1] === selected;
+      if (!own && Math.abs(mark[3] - minute) > 3) { continue; }
+      var ship = state.shipById[mark[1]];
+      // the mark's own side where the exporter gives one (a ship or group
+      // the game does not have), else the ship's, else by the chart
+      var side = mark[7] || (ship ? ship.side : (mark[0].indexOf("groos") === 0 ? BATTLE.sides[1].id : BATTLE.sides[0].id));
+      var point = toScreen(mark[4], mark[5]);
+      context.globalAlpha = own ? 1 : (mark[6] === "low" ? 0.35 : 0.7);
+      context.fillStyle = sideColour(side);
+      context.beginPath();
+      context.arc(point[0], point[1], own ? 3.5 : 2.5, 0, Math.PI * 2);
+      context.fill();
+      if (own) {
+        context.strokeStyle = cssColour("--brass");
+        context.lineWidth = 1.5;
+        context.beginPath(); context.arc(point[0], point[1], 6, 0, Math.PI * 2); context.stroke();
+        if (Math.abs(mark[3] - minute) < 30 && state.pixelsPerKm > 8) {
+          context.fillStyle = cssColour("--muted");
+          context.font = "10px " + cssColour("--font-data");
+          context.fillText(clockShort(mark[3]) + " " + mark[0].replace("_", " "), point[0] + 8, point[1] - 6);
+        }
+      }
+    }
+    context.globalAlpha = 1;
+  }
+
+  function drawShips() {
+    var pendingLabels = [];
+    var minute = state.minute;
+    var trailMinutes = filmMode ? film.trailMinutes : parseFloat(document.getElementById("trail").value);
+    var nameMode = filmMode ? filmLanguage : document.getElementById("names").value;
+    state.ships.forEach(function (ship) {
+      var position = positionAt(ship.track, minute);
+      if (!position && ship.sinks_at !== null && ship.sinks_at !== undefined && minute > ship.sinks_at) {
+        var last = ship.track[ship.track.length - 1];
+        position = [last[1], last[2]];
+      }
+      if (!position) { return; }
+      var sunk = ship.sinks_at !== null && ship.sinks_at !== undefined && minute > ship.sinks_at + 2;
+      var colour = sideColour(ship.side);
+      var selected = ship.id === state.selectedId;
+      // trail
+      // A film map draws the wakes of the ships its line is about (by type,
+      // or named): 134 trails at once read as a tangle.
+      var filmTrail = !filmMode || ((!film.trailTypes || film.trailTypes.indexOf(ship.type) >= 0) &&
+                                    (!film.trailShips || film.trailShips.indexOf(ship.id) >= 0));
+      if ((trailMinutes > 0 && filmTrail) || selected) {
+        var from = selected ? ship.track[0][0] : Math.max(ship.track[0][0], minute - trailMinutes);
+        var until = selected ? ship.track[ship.track.length - 1][0] : minute;
+        context.strokeStyle = selected ? cssColour("--brass") : colour;
+        context.globalAlpha = selected ? 0.8 : 0.35;
+        context.lineWidth = selected ? 1.5 : 1;
+        context.beginPath();
+        var started = false;
+        for (var index = 0; index < ship.track.length; index++) {
+          var sample = ship.track[index];
+          if (sample[0] < from || sample[0] > until) { continue; }
+          var point = toScreen(sample[1], sample[2]);
+          if (!started) { context.moveTo(point[0], point[1]); started = true; } else { context.lineTo(point[0], point[1]); }
+        }
+        context.stroke();
+        context.globalAlpha = 1;
+      }
+      var screen = toScreen(position[0], position[1]);
+      if (sunk) {
+        // The wreck keeps her mark and her name where she went down.
+        context.strokeStyle = colour; context.lineWidth = 1.5;
+        context.beginPath();
+        context.moveTo(screen[0] - 5, screen[1] - 5); context.lineTo(screen[0] + 5, screen[1] + 5);
+        context.moveTo(screen[0] + 5, screen[1] - 5); context.lineTo(screen[0] - 5, screen[1] + 5);
+        context.stroke();
+        var wreckTag = NAME_TAGS[ship.type] || NAME_TAGS.DD;
+        if (nameMode !== "off" && (state.pixelsPerKm > wreckTag.fromScale || selected)) {
+          pendingLabels.push({
+            id: ship.id, text: "† " + shipLabel(ship, nameMode, wreckTag), tag: wreckTag, selected: selected,
+            leader: true, colour: selected ? cssColour("--brass") : colour,
+            x: screen[0], y: screen[1], clearance: 7, rank: selected ? 0 : wreckTag.rank
+          });
+        }
+        return;
+      }
+      var heading = headingAt(ship.track, minute);
+      // Symbol size by the cube root of displacement: a 28,000 t capital
+      // ship about three times a 1,000 t destroyer. Zoomed in it grows to
+      // about true length (200 m for the largest); zoomed out it keeps a
+      // readable floor.
+      var tonnageRoot = Math.cbrt(ship.tons || 1000);
+      var lengthPixels = tonnageRoot * Math.max(0.45, 0.0066 * state.pixelsPerKm);
+      var beamPixels = Math.max(lengthPixels * 0.17, 1.6);
+      context.save();
+      context.translate(screen[0], screen[1]);
+      context.rotate(heading);
+      context.fillStyle = colour;
+      context.beginPath();
+      context.moveTo(0, -lengthPixels / 2);
+      context.lineTo(beamPixels, lengthPixels * 0.15);
+      context.lineTo(beamPixels * 0.8, lengthPixels / 2);
+      context.lineTo(-beamPixels * 0.8, lengthPixels / 2);
+      context.lineTo(-beamPixels, lengthPixels * 0.15);
+      context.closePath();
+      context.fill();
+      if (selected) {
+        context.strokeStyle = cssColour("--brass"); context.lineWidth = 2; context.stroke();
+      }
+      context.restore();
+      var tag = NAME_TAGS[ship.type] || NAME_TAGS.DD;
+      if (nameMode !== "off" && (state.pixelsPerKm > tag.fromScale || selected)) {
+        pendingLabels.push({
+          id: ship.id, text: shipLabel(ship, nameMode, tag), tag: tag, selected: selected,
+          leader: ship.leader === true, colour: selected ? cssColour("--brass") : colour,
+          x: screen[0], y: screen[1], clearance: lengthPixels * 0.5 + 3,
+          rank: selected ? 0 : tag.rank
+        });
+      }
+    });
+    placeLabels(pendingLabels);
+    // pins of the selected ship
+    if (state.selectedId) {
+      shipPins(state.selectedId).forEach(function (pin) {
+        var point = toScreen(pin.x, pin.y);
+        context.fillStyle = cssColour("--brass");
+        context.globalAlpha = Math.abs(pin.t - minute) < 0.6 ? 1 : 0.6;
+        context.beginPath();
+        context.moveTo(point[0], point[1] - 6); context.lineTo(point[0] + 6, point[1]);
+        context.lineTo(point[0], point[1] + 6); context.lineTo(point[0] - 6, point[1]);
+        context.closePath(); context.fill();
+        context.globalAlpha = 1;
+      });
+    }
+  }
+
+  function chosenChart() {
+    var chosen = underlaySelect.value;
+    return state.underlays.filter(function (entry) { return entry.id === chosen; })[0] || null;
+  }
+  function plateOnly() {
+    var chart = chosenChart();
+    return chart !== null && chart.plate_only === true;
+  }
+
+  // ---- coast: land, the shoal water under 10 m and the 20 m line --------
+  function ringsPath(polygons) {
+    var path = new Path2D();
+    polygons.forEach(function (rings) {
+      rings.forEach(function (ring) {
+        ring.forEach(function (point, index) {
+          if (index === 0) { path.moveTo(point[0], point[1]); } else { path.lineTo(point[0], point[1]); }
+        });
+        path.closePath();
+      });
+    });
+    return path;
+  }
+  function linesPath(lines) {
+    var path = new Path2D();
+    lines.forEach(function (line) {
+      line.forEach(function (point, index) {
+        if (index === 0) { path.moveTo(point[0], point[1]); } else { path.lineTo(point[0], point[1]); }
+      });
+    });
+    return path;
+  }
+  function drawCoast() {
+    if (!state.coast || !document.getElementById("showCoast").checked) { return; }
+    var origin = toScreen(0, 0);
+    context.save();
+    context.setTransform(window.devicePixelRatio || 1, 0, 0, window.devicePixelRatio || 1, 0, 0);
+    context.translate(origin[0], origin[1]);
+    context.scale(state.pixelsPerKm, -state.pixelsPerKm);
+    context.fillStyle = cssColour("--shoal");
+    context.fill(state.coast.shoalPath, "evenodd");
+    context.strokeStyle = cssColour("--depth-line");
+    context.lineWidth = 0.8 / state.pixelsPerKm;
+    context.stroke(state.coast.depthPath);
+    context.fillStyle = cssColour("--land");
+    context.fill(state.coast.landPath, "evenodd");
+    context.restore();
+    var chinese = document.getElementById("names").value === "zh";
+    context.fillStyle = cssColour("--muted");
+    context.font = filmMode ? "22px " + labelFontFamily() : "italic 12px " + cssColour("--font-ui");
+    context.textAlign = "center";
+    state.coast.labels.forEach(function (label) {
+      var spot = toScreen(label.x, label.y);
+      var placeName = filmMode ? (label[filmLanguage] || label.text) : (chinese ? label.zh : label.text);
+      context.fillText(placeName, spot[0], spot[1]);
+    });
+    context.textAlign = "left";
+  }
+
+  function draw() {
+    context.fillStyle = cssColour("--sea");
+    context.fillRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+    drawUnderlay();
+    if (!plateOnly()) { drawCoast(); }
+    if (plateOnly()) {
+      context.fillStyle = cssColour("--muted");
+      context.font = "12px " + cssColour("--font-ui");
+      context.fillText("This plate has no latitude/longitude grid: shown on its own, without the ships.", 16, 20);
+      return;
+    }
+    drawGrid();
+    drawTraced();
+    drawClashes();
+    drawAction();
+    drawMarks();
+    drawShips();
+    if (filmMode) { drawFilmOverlay(); }
+  }
+
+  // ---- panel -------------------------------------------------------------
+  function nearestOwnMark(shipId, minute) {
+    var best = null;
+    state.marks.forEach(function (mark) {
+      if (mark[1] !== shipId || Math.abs(mark[3] - minute) > 3) { return; }
+      if (!best || Math.abs(mark[3] - minute) < Math.abs(best[3] - minute)) { best = mark; }
+    });
+    return best;
+  }
+
+  function renderShipInfo() {
+    var ship = state.shipById[state.selectedId];
+    if (!ship) {
+      shipInfo.className = "hint";
+      shipInfo.textContent = "Click a ship on the map to see her track, her marks on the official charts and how far she sits from them.";
+      return;
+    }
+    var position = positionAt(ship.track, state.minute);
+    var speed = speedKnotsAt(ship.track, state.minute);
+    var mark = nearestOwnMark(ship.id, state.minute);
+    var miss = "no chart mark within 3 min";
+    if (mark && position) {
+      miss = Math.hypot(mark[4] - position[0], mark[5] - position[1]).toFixed(1) + " km (" + mark[0].replace("_", " ") + ")";
+    }
+    var markCount = state.marks.filter(function (entry) { return entry[1] === ship.id; }).length;
+    shipInfo.className = "";
+    shipInfo.innerHTML = "";
+    var name = document.createElement("div");
+    name.className = "ship-name";
+    name.textContent = ship.en + (ship.zh ? "  " + ship.zh : "");
+    var facts = document.createElement("dl");
+    facts.className = "facts";
+    [["Side", sideName(ship.side)], ["Class", ship.class.replace(/_/g, " ")],
+     ["Type, tons", ship.type + ", " + (ship.tons || 0).toLocaleString("en-GB") + " t"],
+     ["Position", position ? position[0].toFixed(1) + " E, " + position[1].toFixed(1) + " N km" : "not at sea now"],
+     ["Speed", speed !== null ? speed.toFixed(1) + " kn" : "-"],
+     ["Chart marks", String(markCount)], ["Off chart", miss],
+     ["Sinks", ship.sinks_at !== null && ship.sinks_at !== undefined ? clockText(ship.sinks_at) : "-"]
+    ].forEach(function (pair) {
+      var term = document.createElement("dt"); term.textContent = pair[0];
+      var value = document.createElement("dd"); value.textContent = pair[1];
+      facts.appendChild(term); facts.appendChild(value);
+    });
+    shipInfo.appendChild(name);
+    shipInfo.appendChild(facts);
+  }
+
+  function renderPins() {
+    var all = Object.keys(state.pins).map(function (key) { return state.pins[key]; });
+    all.sort(function (first, second) { return first.ship === second.ship ? first.t - second.t : (first.ship < second.ship ? -1 : 1); });
+    pinList.innerHTML = "";
+    if (!all.length) {
+      pinList.className = "hint";
+      pinList.innerHTML = "No pins yet. Turn on <b>Edit pins</b>, then drag a ship to where she should be at this minute. The track builder bends her track through every pin.";
+      return;
+    }
+    pinList.className = "";
+    all.forEach(function (pin) {
+      var row = document.createElement("div");
+      row.className = "pin-row";
+      var when = document.createElement("button");
+      when.type = "button";
+      when.className = "when";
+      var ship = state.shipById[pin.ship];
+      when.textContent = (ship ? ship.en : pin.ship) + " " + clockShort(pin.t);
+      when.title = "Jump to this pin";
+      when.addEventListener("click", function () { state.selectedId = pin.ship; setMinute(pin.t); });
+      var note = document.createElement("input");
+      note.type = "text";
+      note.id = "note-" + pinKey(pin.ship, pin.t).replace(/[@.]/g, "-");
+      note.placeholder = "note (optional)";
+      note.value = pin.note || "";
+      note.addEventListener("change", function () { pin.note = note.value; savePin(pin); });
+      var remove = document.createElement("button");
+      remove.type = "button";
+      remove.textContent = "Remove";
+      remove.addEventListener("click", function () { removePin(pin); draw(); });
+      row.appendChild(when); row.appendChild(note); row.appendChild(remove);
+      pinList.appendChild(row);
+    });
+  }
+
+  // ---- time --------------------------------------------------------------
+  function setMinute(minute) {
+    state.minute = Math.max(0, Math.min(parseFloat(timeInput.max), minute));
+    timeInput.value = state.minute;
+    clockLabel.textContent = clockText(state.minute);
+    renderShipInfo();
+    draw();
+  }
+  var lastFrame = null;
+  function tick(now) {
+    if (state.playing) {
+      if (lastFrame !== null) {
+        var advanced = state.minute + (now - lastFrame) / 1000 * state.minutesPerSecond;
+        if (advanced >= parseFloat(timeInput.max)) { advanced = parseFloat(timeInput.max); setPlaying(false); }
+        setMinute(advanced);
+      }
+      lastFrame = now;
+      requestAnimationFrame(tick);
+    } else {
+      lastFrame = null;
+    }
+  }
+  function setPlaying(playing) {
+    state.playing = playing;
+    playButton.textContent = playing ? "Pause" : "Play";
+    playButton.classList.toggle("on", playing);
+    if (playing) { requestAnimationFrame(tick); }
+  }
+
+  // ---- input -------------------------------------------------------------
+  function shipNear(screenX, screenY) {
+    var best = null, bestDistance = 14;
+    state.ships.forEach(function (ship) {
+      var position = positionAt(ship.track, state.minute);
+      if (!position) { return; }
+      var point = toScreen(position[0], position[1]);
+      var distance = Math.hypot(point[0] - screenX, point[1] - screenY);
+      if (distance < bestDistance) { best = ship; bestDistance = distance; }
+    });
+    return best;
+  }
+  var drag = null;
+  canvas.addEventListener("pointerdown", function (event) {
+    var bounds = canvas.getBoundingClientRect();
+    var screenX = event.clientX - bounds.left, screenY = event.clientY - bounds.top;
+    var ship = shipNear(screenX, screenY);
+    if (ship) {
+      state.selectedId = ship.id;
+      renderShipInfo();
+      if (state.editing) {
+        drag = { kind: "ship", ship: ship };
+        setPlaying(false);
+      } else {
+        drag = { kind: "pan", startX: screenX, startY: screenY, centreX: state.centreX, centreY: state.centreY, moved: false };
+      }
+    } else {
+      drag = { kind: "pan", startX: screenX, startY: screenY, centreX: state.centreX, centreY: state.centreY, moved: false, empty: true };
+    }
+    canvas.setPointerCapture(event.pointerId);
+    canvas.classList.add("dragging");
+    draw();
+  });
+  canvas.addEventListener("pointermove", function (event) {
+    if (!drag) { return; }
+    var bounds = canvas.getBoundingClientRect();
+    var screenX = event.clientX - bounds.left, screenY = event.clientY - bounds.top;
+    if (drag.kind === "pan") {
+      state.centreX = drag.centreX - (screenX - drag.startX) / state.pixelsPerKm;
+      state.centreY = drag.centreY + (screenY - drag.startY) / state.pixelsPerKm;
+      if (Math.abs(screenX - drag.startX) + Math.abs(screenY - drag.startY) > 3) { drag.moved = true; }
+      draw();
+    } else {
+      var km = toKm(screenX, screenY);
+      var minute = Math.round(state.minute * 2) / 2;
+      var pin = state.pins[pinKey(drag.ship.id, minute)] || { ship: drag.ship.id, t: minute, note: "" };
+      pin.x = km[0]; pin.y = km[1];
+      state.pins[pinKey(pin.ship, pin.t)] = pin;
+      drag.pin = pin;
+      draw();
+    }
+  });
+  function endDrag() {
+    if (drag && drag.kind === "ship" && drag.pin) { savePin(drag.pin); }
+    if (drag && drag.kind === "pan" && drag.empty && !drag.moved) { state.selectedId = null; renderShipInfo(); }
+    drag = null;
+    canvas.classList.remove("dragging");
+    draw();
+  }
+  canvas.addEventListener("pointerup", endDrag);
+  canvas.addEventListener("pointercancel", endDrag);
+  canvas.addEventListener("wheel", function (event) {
+    event.preventDefault();
+    var bounds = canvas.getBoundingClientRect();
+    var screenX = event.clientX - bounds.left, screenY = event.clientY - bounds.top;
+    var before = toKm(screenX, screenY);
+    state.pixelsPerKm = Math.max(0.2, Math.min(400, state.pixelsPerKm * Math.exp(-event.deltaY * 0.0015)));
+    var after = toKm(screenX, screenY);
+    state.centreX += before[0] - after[0];
+    state.centreY += before[1] - after[1];
+    draw();
+  }, { passive: false });
+
+  timeInput.addEventListener("input", function () { setMinute(parseFloat(timeInput.value)); });
+  playButton.addEventListener("click", function () { setPlaying(!state.playing); });
+  document.getElementById("speed").addEventListener("change", function (event) {
+    state.minutesPerSecond = parseFloat(event.target.value);
+  });
+  editButton.addEventListener("click", function () {
+    state.editing = !state.editing;
+    editButton.classList.toggle("on", state.editing);
+    editButton.textContent = state.editing ? "Editing: drag a ship" : "Edit pins";
+  });
+  ["showMarks", "showTraced", "showClashes", "showAction", "showCoast", "trail", "names", "opacity"].forEach(function (id) {
+    document.getElementById(id).addEventListener("input", draw);
+    document.getElementById(id).addEventListener("change", function () {
+      writePreference(id, document.getElementById(id).type === "checkbox" ? String(document.getElementById(id).checked) : document.getElementById(id).value);
+      draw();
+    });
+  });
+  var mapView = null;
+  underlaySelect.addEventListener("change", function () {
+    var chosen = underlaySelect.value;
+    writePreference("underlay", chosen);
+    var chart = chosenChart();
+    if (chart && chart.plate_only) {
+      if (!mapView) { mapView = { x: state.centreX, y: state.centreY, scale: state.pixelsPerKm }; }
+      // fit the plate: its pseudo frame is 0.01 km per image pixel
+      var widthKm = chart.image_size[0] * 0.01, heightKm = chart.image_size[1] * 0.01;
+      state.centreX = widthKm / 2;
+      state.centreY = -heightKm / 2;
+      state.pixelsPerKm = Math.min(canvas.clientWidth / widthKm, canvas.clientHeight / heightKm) * 0.95;
+    } else if (mapView) {
+      state.centreX = mapView.x; state.centreY = mapView.y; state.pixelsPerKm = mapView.scale;
+      mapView = null;
+    }
+    if (chosen && !state.images[chosen]) {
+      var chart = state.underlays.filter(function (entry) { return entry.id === chosen; })[0];
+      var image = new Image();
+      image.onload = draw;
+      image.src = dataPath(chart.file);
+      state.images[chosen] = image;
+    }
+    draw();
+  });
+  document.addEventListener("keydown", function (event) {
+    if (event.target.tagName === "INPUT" && event.target.type === "text") { return; }
+    if (event.key === " ") { event.preventDefault(); setPlaying(!state.playing); }
+    if (event.key === "ArrowRight") { setMinute(state.minute + (event.shiftKey ? 5 : 0.5)); }
+    if (event.key === "ArrowLeft") { setMinute(state.minute - (event.shiftKey ? 5 : 0.5)); }
+  });
+  window.addEventListener("resize", resize);
+  // the story editor opening or closing changes the map's width, not the window's
+  if (window.ResizeObserver) {
+    new ResizeObserver(function () { resize(); }).observe(document.getElementById("stage"));
+  }
+  var notes = document.getElementById("notes");
+  var notesFold = document.getElementById("notesFold");
+  function foldNotes(folded) {
+    notes.classList.toggle("folded", folded);
+    notesFold.textContent = folded ? "Notes" : "Hide notes";
+    try { localStorage.setItem(storagePrefix + "notes-folded", folded ? "1" : ""); } catch (error) { }
+  }
+  notesFold.addEventListener("click", function () { foldNotes(!notes.classList.contains("folded")); });
+  try { if (localStorage.getItem(storagePrefix + "notes-folded")) { foldNotes(true); } } catch (error) { }
+
+  // ---- load ----------------------------------------------------------------
+  ["showMarks", "showTraced", "showClashes", "showAction", "showCoast", "trail", "names", "opacity"].forEach(function (id) {
+    if (filmMode) { return; }
+    var element = document.getElementById(id);
+    var stored = readPreference(id, null);
+    if (stored === null) { return; }
+    if (element.type === "checkbox") { element.checked = stored === "true"; } else { element.value = stored; }
+  });
+  // Opened straight from disk the browser refuses to load the data files:
+  // say how to run it instead of failing quietly.
+  if (location.protocol === "file:") {
+    loadStatus.textContent = "Opened as a file, the page cannot load its data. Open it through a local server: " +
+      "Live Server in VS Code (Open with Live Server), or python -m http.server in this page's folder.";
+    loadStatus.className = "hint status warn";
+    var fileNotice = document.createElement("div");
+    fileNotice.className = "file-notice";
+    fileNotice.textContent = loadStatus.textContent;
+    document.getElementById("stage").appendChild(fileNotice);
+  }
+  function dataPath(name) { return battleFolder + name; }
+  fetch(dataPath("battle.json")).then(function (response) { return response.json(); }).then(function (battle) {
+    BATTLE = battle;
+    document.title = battle.title + " Track Editor";
+    GUN_REACH_KM = battle.gun_reach_km;
+    TORPEDO_REACH_KM = battle.torpedo_reach_km;
+    TORPEDO_KM_PER_MINUTE = battle.torpedo_km_per_minute;
+    SEARCHLIGHT_REACH_KM = battle.searchlight_reach_km;
+    SCUTTLED_BY_OWN_SIDE = battle.scuttled_by_own_side || {};
+    document.getElementById("firstSideName").textContent = battle.sides[0].en;
+    document.getElementById("secondSideName").textContent = battle.sides[1].en;
+    document.getElementById("torpedoKnots").textContent = "about " + Math.round(battle.torpedo_km_per_minute * 60 / 1.852);
+    document.getElementById("torpedoReach").textContent = String(battle.torpedo_reach_km);
+    if (battle.reading_hint) { document.getElementById("readingHint").textContent = battle.reading_hint; }
+    if (battle.view) {
+      state.centreX = battle.view.x; state.centreY = battle.view.y;
+      state.pixelsPerKm = battle.view.pixels_per_km ||
+        Math.min(canvas.clientWidth || 800, canvas.clientHeight || 600) / battle.view.km_across;
+    }
+    return loadBattleFiles();
+  }).catch(function () {
+    if (location.protocol !== "file:") {
+      loadStatus.textContent = "The battle's files did not load. Reload the page.";
+    }
+  });
+  function loadBattleFiles() { return Promise.all([
+    fetch(dataPath("tracks.json")).then(function (response) { return response.json(); }),
+    fetch(dataPath("marks.json")).then(function (response) { return response.json(); }),
+    fetch(dataPath("charts.json")).then(function (response) { return response.json(); }),
+    fetch(dataPath("traced.json")).then(function (response) { return response.json(); }).catch(function () { return { lines: [] }; }),
+    fetch(dataPath("clashes.json")).then(function (response) { return response.json(); }).catch(function () { return { episodes: [] }; }),
+    fetch(dataPath("events.json")).then(function (response) { return response.json(); }).catch(function () { return { events: [] }; }),
+    fetch(dataPath("coast.json")).then(function (response) { return response.json(); }).catch(function () { return null; }),
+    fetch(dataPath("story.json")).then(function (response) { return response.json(); }).catch(function () { return { events: [] }; }),
+    fetch(dataPath("story_i18n.json")).then(function (response) { return response.json(); }).catch(function () { return {}; })
+  ]).then(function (loaded) {
+    var tracks = loaded[0];
+    state.ships = tracks.ships;
+    state.ships.forEach(function (ship) { state.shipById[ship.id] = ship; });
+    state.marks = loaded[1].rows;
+    state.underlays = loaded[2].underlays;
+    state.traced = loaded[3].lines;
+    state.clashes = loaded[4].episodes;
+    // the charts' hits, torpedoes and fire, and the tracks' burning; the
+    // story's own happenings come from the story file below
+    state.chartEvents = loaded[5].events.filter(function (event) { return event.source !== "story"; });
+    loadStory(loaded[7], loaded[8]);
+    try {
+      var keptStoryEdits = JSON.parse(localStorage.getItem(storagePrefix + "story-edits") || "{}");
+      Object.keys(keptStoryEdits).forEach(function (key) {
+        if (!story.edits[key]) { story.edits[key] = keptStoryEdits[key]; }
+      });
+    } catch (error) { }
+    restoreDrafts();
+    story.filter = readPreference("storyFilter", "flagged");
+    applyStoryEdits();
+    renderStoryEditor();
+    if (loaded[6]) {
+      state.coast = { landPath: ringsPath(loaded[6].land), shoalPath: ringsPath(loaded[6].shoal),
+                      depthPath: linesPath(loaded[6].depth_line), labels: loaded[6].labels };
+    }
+    renderClashList();
+    timeInput.max = String(tracks.t_max);
+    var groups = {};
+    state.underlays.forEach(function (chart) {
+      var groupName = chart.group || "Charts";
+      if (!groups[groupName]) {
+        groups[groupName] = document.createElement("optgroup");
+        groups[groupName].label = groupName;
+        underlaySelect.appendChild(groups[groupName]);
+      }
+      var option = document.createElement("option");
+      option.value = chart.id; option.textContent = chart.title + (chart.plate_only ? " (no grid: viewer)" : "");
+      groups[groupName].appendChild(option);
+    });
+    var storedUnderlay = filmMode ? "" : readPreference("underlay", BATTLE.default_underlay || "");
+    // a battle without digitised charts shows no chart controls
+    var hasCharts = state.underlays.length > 0, hasMarks = state.marks.length > 0;
+    document.getElementById("underlay").hidden = !hasCharts;
+    document.getElementById("underlayLabel").hidden = !hasCharts;
+    document.getElementById("opacity").hidden = !hasCharts;
+    document.querySelector('label[for="opacity"]').hidden = !hasCharts;
+    document.getElementById("showMarksLabel").hidden = !hasMarks;
+    document.getElementById("showTracedLabel").hidden = state.traced.length === 0;
+    if (storedUnderlay && state.underlays.some(function (chart) { return chart.id === storedUnderlay; })) {
+      underlaySelect.value = storedUnderlay;
+      underlaySelect.dispatchEvent(new Event("change"));
+    }
+    loadStatus.textContent = state.ships.length + " ships, " + state.marks.length + " chart marks, " +
+      state.underlays.length + " chart scans.";
+    resize();
+    setMinute(0);
+    if (filmMode) {
+      // the film's map shows the ships and the action, not the checking layers
+      document.getElementById("showMarks").checked = false;
+      document.getElementById("showTraced").checked = false;
+      document.getElementById("showClashes").checked = false;
+      document.getElementById("showAction").checked = true;
+      document.getElementById("showCoast").checked = true;
+      filmLoaded(true);
+    }
+  }); }
+
+  // ---- film mode -------------------------------------------------------------
+  // The capture script waits on window.filmReady, calls window.filmSetup once
+  // for a clip, then window.filmFrame for every frame and takes a screenshot.
+  var filmLoaded;
+  window.filmReady = new Promise(function (resolve) { filmLoaded = resolve; });
+  window.filmSetup = function (settings) {
+    Object.keys(settings).forEach(function (key) { film[key] = settings[key]; });
+    var fontReady = document.fonts ? document.fonts.load('40px "FilmFont"') : Promise.resolve();
+    return fontReady.then(function () { return window.filmLoadUnderlay(settings.underlay || ""); });
+  };
+  // A chart scan under the map (the official history's track charts): set
+  // it and wait until its picture is loaded.
+  window.filmLoadUnderlay = function (chartId) {
+    underlaySelect.value = chartId;
+    if (!chartId) { return Promise.resolve(true); }
+    if (!state.images[chartId]) { underlaySelect.dispatchEvent(new Event("change")); }
+    var image = state.images[chartId];
+    if (!image) { return Promise.resolve(false); }
+    if (image.complete) { return Promise.resolve(true); }
+    return new Promise(function (resolve) {
+      image.addEventListener("load", function () { resolve(true); });
+      image.addEventListener("error", function () { resolve(false); });
+    });
+  };
+  // The view that holds these ships at this minute, the frame's middle on
+  // them, with a margin (share of the frame) and at least this many km across.
+  window.filmFit = function (shipIds, minute, marginShare, minimumKmAcross) {
+    var xs = [], ys = [];
+    shipIds.forEach(function (id) {
+      var ship = state.shipById[id];
+      if (!ship) { return; }
+      var position = positionAt(ship.track, minute);
+      if (!position && ship.track.length && minute > ship.track[ship.track.length - 1][0]) {
+        var last = ship.track[ship.track.length - 1];
+        position = [last[1], last[2]];
+      }
+      if (position) { xs.push(position[0]); ys.push(position[1]); }
+    });
+    if (!xs.length) { return null; }
+    var minimumX = Math.min.apply(null, xs), maximumX = Math.max.apply(null, xs);
+    var minimumY = Math.min.apply(null, ys), maximumY = Math.max.apply(null, ys);
+    var usableShare = Math.max(0.2, 1 - 2 * (marginShare || 0.15));
+    var widthKm = Math.max(maximumX - minimumX, minimumKmAcross || 6);
+    var heightKm = Math.max(maximumY - minimumY, (minimumKmAcross || 6) * canvas.clientHeight / canvas.clientWidth);
+    var pixelsPerKm = Math.min(canvas.clientWidth * usableShare / widthKm, canvas.clientHeight * usableShare / heightKm);
+    return { x: (minimumX + maximumX) / 2, y: (minimumY + maximumY) / 2, pixelsPerKm: pixelsPerKm };
+  };
+  window.filmFrame = function (spec) {
+    state.minute = spec.minute;
+    state.centreX = spec.x; state.centreY = spec.y; state.pixelsPerKm = spec.pixelsPerKm;
+    state.selectedId = spec.selected || null;
+    if (spec.underlayOpacity !== undefined) { document.getElementById("opacity").value = String(spec.underlayOpacity); }
+    if (spec.caption !== undefined) { film.caption = spec.caption; }
+    draw();
+    return true;
+  };
+  function filmText(words, x, y, pixels, align, colour, outline) {
+    context.font = pixels + "px " + labelFontFamily();
+    context.textAlign = align;
+    context.lineJoin = "round";
+    context.lineWidth = outline;
+    context.strokeStyle = "rgba(204, 217, 222, 0.92)";
+    context.strokeText(words, x, y);
+    context.fillStyle = colour;
+    context.fillText(words, x, y);
+    context.textAlign = "left";
+  }
+  // The film's clock (as the game's: top right, dark figures on the paper),
+  // the clip's caption and the key (top left), the source note (bottom right).
+  function drawFilmOverlay() {
+    var width = canvas.clientWidth;
+    var total = Math.floor(BATTLE.clock_zero_minutes + state.minute);
+    var date = film.dates[total >= 1440 ? 1 : 0] || "";
+    var clock = date + "  " + clockShort(state.minute);
+    filmText(clock, width - 70, 74, 40, "right", "#1a1f26", 10);
+    var top = 78;
+    if (film.caption) {
+      filmText(film.caption, 70, top, 34, "left", "#1a1f26", 9);
+      top += 44;
+    }
+    if (film.showKey) {
+      BATTLE.sides.forEach(function (side, index) {
+        var name = film.sideNames[side.id] || side[filmLanguage] || side.en;
+        context.fillStyle = sideColour(side.id);
+        context.fillRect(72, top + 6 + index * 32, 26, 9);
+        filmText(name, 108, top + 16 + index * 32, 22, "left", "#1a1f26", 7);
+      });
+    }
+    if (film.source) {
+      filmText(film.source, width - 70, canvas.clientHeight - 28, 18, "right", "#3a4650", 6);
+    }
+  }
+
+  // pins: shared through the page's database where the viewer has it
+  try {
+    var stored = JSON.parse(localStorage.getItem(storagePrefix + "pins") || "{}");
+    Object.keys(stored).forEach(function (key) { state.pins[key] = stored[key]; });
+  } catch (error) { }
+  renderPins();
+  if (window.claude && window.claude.use) {
+    window.claude.use("db").then(function (store) {
+      if (!store) {
+        saveStatus.textContent = "Pins are kept in this browser only here.";
+        saveStatus.className = "status warn";
+        return;
+      }
+      state.store = store;
+      store.collection(storyCollection).onSnapshot(function (snapshot) {
+        var fresh = {};
+        snapshot.docs.forEach(function (record) {
+          var body = record.data();
+          if (body && typeof body.key === "string") { fresh[body.key] = body; }
+        });
+        withUnsaved(fresh);
+        // An echo of this page's own save changes nothing on screen: the
+        // form is only rebuilt when the shared edits differ from it.
+        var differs = Object.keys(fresh).length !== Object.keys(story.edits).length ||
+          Object.keys(fresh).some(function (key) {
+            var entry = story.byKey[key];
+            return !entry || !!fresh[key].deleted !== !!entry.deleted ||
+              normalisedJson(fresh[key].event_json) !== JSON.stringify(entry.event) || (fresh[key].why || "") !== (entry.why || "");
+          });
+        story.edits = fresh;
+        if (differs && story.entries.length) {
+          applyStoryEdits();
+          renderStoryEditor();
+          draw();
+        }
+      }, function () {
+        setStoryStatus("The shared story edits could not be read just now; reload to try again.", true);
+      });
+      store.collection(pinCollection).onSnapshot(function (snapshot) {
+        var fresh = {};
+        snapshot.docs.forEach(function (entry) {
+          var body = entry.data();
+          if (body && typeof body.ship === "string") {
+            fresh[pinKey(body.ship, body.t)] = { ship: body.ship, t: body.t, x: body.x, y: body.y, note: body.note || "" };
+          }
+        });
+        state.pins = fresh;
+        renderPins();
+        draw();
+      }, function () {
+        saveStatus.textContent = "The shared pins could not be read just now; reload to try again.";
+        saveStatus.className = "status warn";
+      });
+    });
+  }
+})();
+</script>

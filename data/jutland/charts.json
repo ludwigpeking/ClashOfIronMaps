@@ -1,0 +1,367 @@
+{
+ "underlays": [
+  {
+   "id": "loc_plate_01",
+   "title": "Plate 1 · PLAN OF BATTLE OFF JUTLAND / MAY 31st 1916 (signed J. R. Jellicoe, Adm",
+   "file": "charts/loc_plate_01.jpg",
+   "image_size": [
+    7000,
+    5142
+   ],
+   "group": "Admiralty despatch plates 1920 (Library of Congress, sharp)",
+   "pixel_to_km": [
+    0.0188,
+    3.3e-05,
+    -69.064045,
+    -2.4e-05,
+    -0.018709,
+    84.431288
+   ]
+  },
+  {
+   "id": "loc_plate_02",
+   "title": "Plate 2 · TRACK OF OPERATIONS during night of May 31st to June 1st 1916 (signed ",
+   "file": "charts/loc_plate_02.jpg",
+   "image_size": [
+    4415,
+    5966
+   ],
+   "group": "Admiralty despatch plates 1920 (Library of Congress, sharp)",
+   "pixel_to_km": [
+    0.080474,
+    0.00015,
+    -115.044122,
+    -0.000767,
+    -0.083307,
+    133.491844
+   ]
+  },
+  {
+   "id": "loc_plate_03",
+   "title": "Plate 3 · CHART SHOWING TRACKS OF VESSELS OF H. M. FLEET / DURING THE NIGHT ACTI",
+   "file": "charts/loc_plate_03.jpg",
+   "image_size": [
+    5171,
+    7000
+   ],
+   "group": "Admiralty despatch plates 1920 (Library of Congress, sharp)",
+   "pixel_to_km": [
+    0.040973,
+    -0.000115,
+    -34.843509,
+    -0.000114,
+    -0.041031,
+    98.822769
+   ]
+  },
+  {
+   "id": "loc_plate_04",
+   "title": "Plate 4 · PLAN OF BATTLE OFF JUTLAND / MAY 31st 1916 (signed Jellicoe, Admiral, ",
+   "file": "charts/loc_plate_04.jpg",
+   "image_size": [
+    7000,
+    5178
+   ],
+   "group": "Admiralty despatch plates 1920 (Library of Congress, sharp)",
+   "pixel_to_km": [
+    0.0191,
+    6.2e-05,
+    -69.799203,
+    1.4e-05,
+    -0.019067,
+    85.656496
+   ]
+  },
+  {
+   "id": "loc_plate_05",
+   "title": "Plate 5 · Diagram shewing Order of the Battlefleet, Battle off Jutland, 31st May",
+   "file": "charts/loc_plate_05.jpg",
+   "image_size": [
+    4441,
+    5974
+   ],
+   "group": "Admiralty despatch plates 1920 (Library of Congress, sharp)",
+   "pixel_to_km": [
+    0.012408,
+    -1e-06,
+    -1.635532,
+    -5.8e-05,
+    -0.012337,
+    82.010351
+   ]
+  },
+  {
+   "id": "loc_plate_06",
+   "title": "Plate 6 · Tracing from Chart No. 2182b (The North Sea Central Sheet) showing tra",
+   "file": "charts/loc_plate_06.jpg",
+   "image_size": [
+    7000,
+    4590
+   ],
+   "group": "Admiralty despatch plates 1920 (Library of Congress, sharp)",
+   "pixel_to_km": [
+    0.124944,
+    -4e-05,
+    -605.079866,
+    -0.000521,
+    -0.121351,
+    343.02686
+   ]
+  },
+  {
+   "id": "loc_plate_07",
+   "title": "Plate 7 · Plan shewing Track of \"Marlborough\" and of Enemy Vessels Engaged from ",
+   "file": "charts/loc_plate_07.jpg",
+   "image_size": [
+    5231,
+    6727
+   ],
+   "group": "Admiralty despatch plates 1920 (Library of Congress, sharp)",
+   "pixel_to_km": [
+    0.01,
+    0.0,
+    0.0,
+    0.0,
+    -0.01,
+    0.0
+   ],
+   "plate_only": true
+  },
+  {
+   "id": "loc_plate_08",
+   "title": "Plate 8 · The Battle off Jutland, May 31st 1916",
+   "file": "charts/loc_plate_08.jpg",
+   "image_size": [
+    7000,
+    5604
+   ],
+   "group": "Admiralty despatch plates 1920 (Library of Congress, sharp)",
+   "pixel_to_km": [
+    0.01799,
+    2.5e-05,
+    -67.713805,
+    -2.4e-05,
+    -0.017868,
+    87.152999
+   ]
+  },
+  {
+   "id": "loc_plate_09",
+   "title": "Plate 9 · Enclosure to Report of Rear Admiral Commanding 2nd Battle Cruiser Squa",
+   "file": "charts/loc_plate_09.jpg",
+   "image_size": [
+    5206,
+    6715
+   ],
+   "group": "Admiralty despatch plates 1920 (Library of Congress, sharp)",
+   "pixel_to_km": [
+    0.058189,
+    0.00022,
+    -72.971916,
+    -0.000409,
+    -0.056028,
+    196.678192
+   ]
+  },
+  {
+   "id": "loc_plate_10",
+   "title": "Plate 10 · Track of H.M.S. Barham between III.12 P.M. & VI.52 P.M. May 31st 1916.",
+   "file": "charts/loc_plate_10.jpg",
+   "image_size": [
+    6794,
+    5325
+   ],
+   "group": "Admiralty despatch plates 1920 (Library of Congress, sharp)",
+   "pixel_to_km": [
+    0.01,
+    0.0,
+    0.0,
+    0.0,
+    -0.01,
+    0.0
+   ],
+   "plate_only": true
+  },
+  {
+   "id": "loc_plate_11",
+   "title": "Plate 11 · Diagrammatic Sketch, as seen from Control Top of DUKE OF EDINBURGH she",
+   "file": "charts/loc_plate_11.jpg",
+   "image_size": [
+    5587,
+    7000
+   ],
+   "group": "Admiralty despatch plates 1920 (Library of Congress, sharp)",
+   "pixel_to_km": [
+    0.01,
+    0.0,
+    0.0,
+    0.0,
+    -0.01,
+    0.0
+   ],
+   "plate_only": true
+  },
+  {
+   "id": "loc_plate_12",
+   "title": "Plate 12 · Fourth Light Cruiser Squadron. Movements between 4 p.m. May 31st & 2 a",
+   "file": "charts/loc_plate_12.jpg",
+   "image_size": [
+    2743,
+    7000
+   ],
+   "group": "Admiralty despatch plates 1920 (Library of Congress, sharp)",
+   "pixel_to_km": [
+    0.048047,
+    0.0,
+    -67.431477,
+    -0.000142,
+    -0.048722,
+    159.976673
+   ]
+  },
+  {
+   "id": "harper_02",
+   "title": "Harper II · main battle 14:00-21:15",
+   "file": "charts/chart_harper_02.jpg",
+   "image_size": [
+    2000,
+    1820
+   ],
+   "pixel_to_km": [
+    0.064539,
+    0.000368,
+    -67.297755,
+    0.000506,
+    -0.064227,
+    104.206109
+   ],
+   "group": "Harper and Groos (web scans, 2000 px)"
+  },
+  {
+   "id": "harper_03",
+   "title": "Harper III · battlecruiser action I 14:00-15:40",
+   "file": "charts/chart_harper_03.jpg",
+   "image_size": [
+    2000,
+    1746
+   ],
+   "pixel_to_km": [
+    0.067568,
+    0.001234,
+    -71.645488,
+    0.001253,
+    -0.06759,
+    100.223608
+   ],
+   "group": "Harper and Groos (web scans, 2000 px)"
+  },
+  {
+   "id": "harper_05",
+   "title": "Harper V · battlecruiser action II 15:40-17:00",
+   "file": "charts/chart_harper_05.jpg",
+   "image_size": [
+    2000,
+    1824
+   ],
+   "pixel_to_km": [
+    0.06475,
+    -2e-06,
+    -67.3504,
+    0.000139,
+    -0.064825,
+    100.854336
+   ],
+   "group": "Harper and Groos (web scans, 2000 px)"
+  },
+  {
+   "id": "harper_08",
+   "title": "Harper VIII · 17:00-18:00",
+   "file": "charts/chart_harper_08.jpg",
+   "image_size": [
+    2000,
+    1849
+   ],
+   "pixel_to_km": [
+    0.063944,
+    0.001139,
+    -67.268007,
+    0.000984,
+    -0.063842,
+    107.145087
+   ],
+   "group": "Harper and Groos (web scans, 2000 px)"
+  },
+  {
+   "id": "harper_10",
+   "title": "Harper X · fleet action 18:00-20:00",
+   "file": "charts/chart_harper_10.jpg",
+   "image_size": [
+    2000,
+    2575
+   ],
+   "pixel_to_km": [
+    0.032996,
+    -0.000347,
+    -4.412738,
+    -0.000377,
+    -0.032458,
+    88.297447
+   ],
+   "group": "Harper and Groos (web scans, 2000 px)"
+  },
+  {
+   "id": "harper_14",
+   "title": "Harper XIV · 20:00-21:00",
+   "file": "charts/chart_harper_14.jpg",
+   "image_size": [
+    2000,
+    1849
+   ],
+   "pixel_to_km": [
+    0.063597,
+    -3.1e-05,
+    -66.309377,
+    4e-06,
+    -0.063334,
+    106.272333
+   ],
+   "group": "Harper and Groos (web scans, 2000 px)"
+  },
+  {
+   "id": "harper_15",
+   "title": "Harper XV · destroyer actions 21:00-03:30",
+   "file": "charts/chart_harper_15.jpg",
+   "image_size": [
+    2000,
+    2557
+   ],
+   "pixel_to_km": [
+    0.088534,
+    -0.000624,
+    -45.036341,
+    -0.000736,
+    -0.090286,
+    43.851561
+   ],
+   "group": "Harper and Groos (web scans, 2000 px)"
+  },
+  {
+   "id": "groos_35",
+   "title": "Groos 35 · night march 23:00-03:00 GMT",
+   "file": "charts/chart_groos_35.jpg",
+   "image_size": [
+    2000,
+    1471
+   ],
+   "pixel_to_km": [
+    0.115953,
+    0.000498,
+    -28.962157,
+    0.000679,
+    -0.116273,
+    -17.747169
+   ],
+   "group": "Harper and Groos (web scans, 2000 px)"
+  }
+ ]
+}

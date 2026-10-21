@@ -1,0 +1,35 @@
+{
+ "id": "yalu",
+ "title": "Yalu",
+ "title_zh": "黃海海戰",
+ "clock_zero_minutes": 750,
+ "clock_zone": "JST",
+ "days": [
+  "17 Sep",
+  "18 Sep"
+ ],
+ "sides": [
+  {
+   "id": "japan",
+   "en": "Japanese",
+   "zh": "日本"
+  },
+  {
+   "id": "china",
+   "en": "Chinese",
+   "zh": "北洋"
+  }
+ ],
+ "view": {
+  "x": 0.0,
+  "y": 0.0,
+  "km_across": 40.0
+ },
+ "gun_reach_km": 8.0,
+ "torpedo_reach_km": 0.8,
+ "torpedo_km_per_minute": 0.741,
+ "searchlight_reach_km": 3.0,
+ "scuttled_by_own_side": {},
+ "default_underlay": "",
+ "reading_hint": "No official track charts are digitised for this battle yet: there are no chart marks or chart scans. The coast is Natural Earth's 1:10m land. Hulls are to scale when zoomed in. Drag the map to pan, wheel or pinch to zoom."
+}

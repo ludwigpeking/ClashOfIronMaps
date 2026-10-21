@@ -1,0 +1,2859 @@
+{
+	"_readme": [
+		"劇本第三式（2026-10-12）。一個事件只有三件事：台詞 line、看什麼 look、發生什麼 happens。電影剪輯（圖板 board、諸元卡 spec card、巡覽 tour、節奏 pacing）不在此檔，放在同目錄 film.json，只有拍片工具讀。遊戲內劇本編輯器（` 鍵）就是本檔的編輯介面。",
+		"Third form of the story (2026-10-12). An event is three things: the LINE, what we LOOK at, what HAPPENS. Film editing (boards, spec cards, tours, pacing) is NOT here: it lives in film.json beside this file and only the film tools read it. The in-game story editor (` key) edits this file.",
+		"line: t（戰場分鐘）、duration（分鐘）、category（字幕標題，不動鏡頭）、zh/en/tts、voice（錄音檔名）、voice_seconds（量測秒數，改台詞即清除）、silent（無聲事件：不看不說，只發生）、note。",
+		"look: ships（看哪些艦；空=全艦隊）、frame（auto/individual/local/overall）、distance（自動取景的倍數）、height（水平線上仰角度數；負數=水下）、bearing（鏡頭所在方位度數）、motion（sway/still/orbit/hover）、hover_height（公尺）、lens（鏡頭角度）、from/toward（機位艦、望向艦）、seaplane（乘水上飛機）。",
+		"happens: [{kind, ...}] kinds = fire(by,at,when) / hit(by,at,when,where,side,explosion,fire_level,fire_minutes; camera by the victim) / duel(same; camera follows the shell) / detonation(ship,when,breaks,station) / burning(ship,where,minutes,level) / flooding(ship,where,severity) / torpedo(by,at,hit,when,companions,combed,detonates,breaks,watch) / mute(minutes; 0 = rest of the replay) / sinking(ship,when here|track,delay,minutes,trim,list,capsizes,breaks) / searchlight(by,on,seconds,when) / starshell(over,count,seconds,when) / seaplane(near,when) / weather(visibility_km) / flagship(ships).",
+		"when = 事件時刻之後的戰場分鐘。霧氣與旗艦用無聲事件。工具：tools/story_format.py（check / migrate），引擎同規則在 demo/story_format.gd。",
+		"2026-10-18: retimed to the real clock (tracks from the JACAR charts) by tools/tsushima/retime_story_real_clock.py --game; 'retimed_from' is the old minute, and a moved line keeps its recording through 'voice'."
+	],
+	"events": [
+		{
+			"t": 0.0,
+			"duration": 4.0,
+			"category": "overall",
+			"zh": "一九〇五年，日俄戰爭進入第二年。五月二十七日下午，俄國第二、第三太平洋艦隊，從西南向東北，駛入對馬海峽東水道。這支艦隊的主力一九〇四年十月十五日從波羅的海的利堡出發，第三艦隊今年二月從同一港口追來，本欲解救被圍困在旅順港的俄國太平洋艦隊。然而去年年底他們走到半路時，俄國遠東的主力艦隊，已在旅順港內被日軍攻城砲擊沉。",
+			"en": "Afternoon of 27 May 1905, the eastern channel of the Tsushima Strait. Russia's Second and Third Pacific Squadrons must pass here to reach Vladivostok; Japan's Combined Fleet is here to stop them.",
+			"look": {
+				"ships": [
+					"knyaz_suvorov",
+					"imperator_alexander_iii",
+					"borodino",
+					"oryol"
+				],
+				"frame": "local",
+				"distance": 1.3,
+				"height": 12.0
+			}
+		},
+		{
+			"t": 0.5,
+			"duration": 1.0,
+			"category": "overall",
+			"zh": "",
+			"en": "",
+			"silent": true,
+			"note": "Flagships: Togo in Mikasa, Rozhestvensky in Knyaz Suvorov",
+			"look": {
+				"ships": [
+					"mikasa",
+					"knyaz_suvorov",
+					"imperator_nikolai_i",
+					"oslyabya",
+					"izumo",
+					"kasagi"
+				]
+			},
+			"happens": [
+				{
+					"kind": "flagship",
+					"ships": [
+						"mikasa",
+						"knyaz_suvorov",
+						"imperator_nikolai_i",
+						"oslyabya",
+						"izumo",
+						"kasagi"
+					]
+				}
+			]
+		},
+		{
+			"t": 4.0,
+			"duration": 3.0,
+			"category": "tactic",
+			"zh": "旅順陷落了。任務只好改成：開進海參崴，在那裡繼續牽制日本。他們五月十四日在安南的萬豐灣完成補給，朝最後一站海參崴出發。海參崴的出海口被日本列島包圍，進入的通道有三條：對馬海峽、津輕海峽、宗谷海峽；羅傑斯特文斯基決定，直接闖過路綫最近的對馬海峽。",
+			"en": "First, the background. The Russo-Japanese War is over a year old, fought over Korea and Manchuria. Russia's main Far East fleet was sunk inside Port Arthur late last year by Japanese siege guns.",
+			"look": {
+				"ships": [
+					"knyaz_suvorov",
+					"oslyabya"
+				],
+				"distance": 0.5
+			}
+		},
+		{
+			"t": 7.0,
+			"duration": 3.0,
+			"category": "tactic",
+			"zh": "俄艦隊一路而來，日本的情報網絡一直在追蹤它的行蹤；但艦隊離開安南以後，日方有好幾天不能確定它會走哪條海峽。五月二十六日，日方得知俄國運輸船開進了上海吳淞口，艦隊不需要大量煤炭，說明不打算繞遠路，東鄉據此判斷俄艦會走對馬。二十七日凌晨，巡邏的輔助巡洋艦信濃丸看見俄方醫院船奧廖爾號的航行燈，順藤摸瓜找到了整個艦隊。清晨，東鄉平八郎率領聯合艦隊從朝鮮的鎮海灣出發，迎向俄艦。",
+			"en": "The fleet sailed to relieve Port Arthur, which fell while it was still on the way. Its task became to reach Vladivostok and keep Japan tied down from there.",
+			"look": {
+				"ships": [
+					"aurora",
+					"ural"
+				]
+			}
+		},
+		{
+			"t": 10.0,
+			"duration": 4.0,
+			"category": "tactic",
+			"zh": "下午一點四十分左右，雙方主力互相看見。海上有霧，能見度十公里上下，浪不小。",
+			"en": "Around 1:40 pm the two main fleets sight each other. There is mist, visibility about ten kilometres, and a heavy sea. In fact the Japanese have known the Russian position since dawn.",
+			"look": {
+				"ships": [
+					"mikasa",
+					"knyaz_suvorov"
+				],
+				"frame": "individual",
+				"from": "mikasa",
+				"toward": "knyaz_suvorov"
+			},
+			"happens": [
+				{
+					"kind": "weather",
+					"visibility_km": 10.0
+				}
+			]
+		},
+		{
+			"t": 14.0,
+			"duration": 4.0,
+			"category": "tactic",
+			"zh": "清晨近五點，信濃丸認清了俄艦隊主力，用無線電發出報告。俄艦烏拉爾號提議干擾電報，羅傑斯特文斯基沒有同意，原因至今說法不一。",
+			"en": "Just before five this morning the Japanese auxiliary cruiser Shinano Maru reported the Russian position by wireless. The Russian Ural offered to jam it; Rozhestvensky refused. Why is still debated.",
+			"look": {
+				"ships": [
+					"ural"
+				],
+				"distance": 1.4
+			}
+		},
+		{
+			"t": 18.0,
+			"duration": 4.0,
+			"category": "tactic",
+			"zh": "這支艦隊從波羅的海開出，主力繞過非洲，航行七個多月、一萬八千海里。一路沒有俄國基地，全靠租來的德國運煤船在海上加煤。",
+			"en": "The fleet left the Baltic and its main body went round Africa: over seven months and 18,000 nautical miles. With no Russian bases on the way, it coaled at sea from chartered German colliers.",
+			"look": {
+				"ships": [
+					"knyaz_suvorov",
+					"imperator_alexander_iii",
+					"borodino",
+					"oryol"
+				]
+			}
+		},
+		{
+			"t": 22.0,
+			"duration": 3.0,
+			"category": "tactic",
+			"zh": "多帶煤，就只能把甲板和走道都堆滿煤袋。新式戰艦本來就比設計超重，這一來吃水更深，水線裝甲帶大部分壓到了水面以下，中彈進水風險大大增加。",
+			"en": "More coal meant sacks piled on decks and in passageways. The new battleships were already over their design weight; now they sat deeper, with most of the waterline belt pushed below the surface.",
+			"look": {
+				"ships": [
+					"knyaz_suvorov"
+				],
+				"distance": 0.8,
+				"height": 4.0
+			}
+		},
+		{
+			"t": 25.0,
+			"duration": 4.0,
+			"category": "famous_action",
+			"zh": "一點五十五分，旗艦三笠號掛出Z字旗，含義是「皇國興廢，在此一戰，各員一層奮勵努力」。這是仿效英國納爾遜在特拉法加的做法。",
+			"en": "At 1:55 the flagship Mikasa hoists the Z flag, meaning: \"The fate of the Empire rests on this battle; let every man do his utmost.\" It copies Nelson's signal at Trafalgar.",
+			"look": {
+				"ships": [
+					"mikasa"
+				]
+			}
+		},
+		{
+			"t": 29.0,
+			"duration": 3.0,
+			"category": "tactic",
+			"zh": "俄艦隊帶著的老艦和運輸船，拖慢了全隊速度，又無法丟下，船底也長滿海生物，整體速度只有九節左右。而聯合艦隊能保持十五節；具有絕對機動性優勢。在數量方面，俄方主力艦數量占據優勢，但是日方主場作戰，驅逐艦和魚雷艇數量領先",
+			"en": "Start with speed. The Japanese main body can hold fifteen knots; the Russians about nine, held back by old ships and transports, their hulls fouled with marine growth. The faster side chooses where to fight.",
+			"look": {
+				"ships": [],
+				"height": 40.0
+			}
+		},
+		{
+			"t": 32.0,
+			"duration": 3.0,
+			"category": "tactic",
+			"zh": "東鄉的目標是壓住俄艦縱隊的頭部：自己橫在前方，前後主炮都能開火，俄艦只有艦首主砲能夠還擊。這就是經典的T字戰法。",
+			"en": "Togo aims to press on the head of the Russian column: lie across its path so all his broadside guns bear, while the Russians can reply only with guns near the bow. This is the so-called crossing of the T.",
+			"look": {
+				"ships": [],
+				"distance": 1.1,
+				"height": 40.0
+			}
+		},
+		{
+			"t": 35.0,
+			"duration": 3.0,
+			"category": "tactic",
+			"zh": "兩點零五分，雙方相距八千米。東鄉下令全隊依次向左掉頭。日方戰列艦四艘、裝甲巡洋艦八艘。共十二艘艦要逐一經過同一個轉向點，前後大約十五分鐘。",
+			"en": "At 2:05, at eight thousand metres, Togo orders his line to turn to port in succession. Twelve ships must pass one by one through the same turning point, taking about fifteen minutes.",
+			"look": {
+				"ships": [
+					"mikasa",
+					"shikishima",
+					"fuji",
+					"asahi"
+				],
+				"distance": 1.2,
+				"height": 35.0
+			}
+		},
+		{
+			"t": 38.0,
+			"duration": 3.0,
+			"category": "first_fire",
+			"zh": "兩點零八分，蘇沃洛夫公爵號首先開火，俄艦前隊跟進。距離七千米左右，砲口對準的正是日艦掉頭的那個轉彎點。",
+			"en": "At 2:08 Knyaz Suvorov opens fire first and the Russian van follows. The range is about seven thousand metres, and the guns are laid on the very point where the Japanese are turning.",
+			"look": {
+				"ships": [
+					"knyaz_suvorov",
+					"mikasa"
+				],
+				"frame": "individual",
+				"from": "knyaz_suvorov",
+				"toward": "mikasa"
+			},
+			"happens": [
+				{
+					"kind": "fire",
+					"by": "knyaz_suvorov",
+					"at": "mikasa",
+					"when": 0.3
+				}
+			]
+		},
+		{
+			"t": 41.0,
+			"duration": 3.0,
+			"category": "struck",
+			"zh": "轉彎中的日艦難以精確射擊，速度也會下降。三笠號排在最前面，三笠號是東鄉平八郎的旗艦，排水量15000噸。開戰半小時內她中彈十幾發，東鄉和聯合艦隊其他首腦全程站在露天的艦橋之上。著名的“敵前轉向”，其實風險極大。",
+			"en": "Japanese ships in the turn cannot fire back, and Mikasa, in the lead, takes a dozen or more hits within half an hour. That is the price of Togo's move: his flagship's safety for position.",
+			"look": {
+				"ships": [
+					"mikasa"
+				]
+			},
+			"happens": [
+				{
+					"kind": "duel",
+					"by": "knyaz_suvorov",
+					"at": "mikasa",
+					"when": 0.25
+				}
+			]
+		},
+		{
+			"t": 44.0,
+			"duration": 3.0,
+			"category": "struck",
+			"zh": "兩點十分，三笠號在六千四百米距離上開火。日艦火力分工明確：先頭戰艦集中打蘇沃洛夫號，隨後各艦集中打奧斯利亞比亞號，兩個旗艦先挨打。",
+			"en": "At 2:10 Mikasa opens fire at 6,400 metres. Japanese fire is clearly divided: the leading battleships on Suvorov, the ships behind on Oslyabya. Both flagships are hit first.",
+			"look": {
+				"ships": [
+					"mikasa",
+					"knyaz_suvorov"
+				],
+				"frame": "individual",
+				"distance": 1.3
+			},
+			"happens": [
+				{
+					"kind": "duel",
+					"by": "mikasa",
+					"at": "knyaz_suvorov",
+					"when": 0.4
+				}
+			]
+		},
+		{
+			"t": 47.0,
+			"duration": 3.0,
+			"category": "tactic",
+			"zh": "十幾分鐘後，日艦全部轉完。冒這個險換來的是：日艦在俄艦前方斜側，在雙方逐漸接近的關鍵時刻，火力恰好集中於俄方旗艦。",
+			"en": "Some fifteen minutes later every Japanese ship has turned. The risk has bought this: the Japanese are ahead on the Russian bow, faster, and can edge across the head of the Russian column.",
+			"look": {
+				"ships": [],
+				"distance": 1.1,
+				"height": 42.0
+			}
+		},
+		{
+			"t": 50.0,
+			"duration": 3.0,
+			"category": "tactic",
+			"zh": "俄方陣形這時正亂。第一分隊的四艘新艦插到前面，奧斯利亞比亞號只好減速停車，偏偏停在日艦火力集中的地方。",
+			"en": "The Russian formation is in disorder. The four new ships of the First Division pull ahead into line, Oslyabya has to slow and stop, and she stops right where Japanese fire is heaviest.",
+			"look": {
+				"ships": [
+					"oslyabya"
+				],
+				"distance": 1.6,
+				"height": 15.0
+			}
+		},
+		{
+			"t": 53.0,
+			"duration": 3.0,
+			"category": "struck",
+			"zh": "上村的裝甲巡洋艦分隊集火打奧斯利亞比亞號。這艘船屬於佩列斯維特級，裝甲帶沒有延伸到艦首，開戰十五分鐘，艦首水線附近就被打穿。",
+			"en": "Kamimura's armoured cruisers are firing on Oslyabya too. A Peresvet-class ship, her belt does not reach the bow; fifteen minutes in, she is holed at the waterline forward.",
+			"look": {
+				"ships": [
+					"oslyabya",
+					"izumo"
+				],
+				"frame": "individual"
+			},
+			"happens": [
+				{
+					"kind": "duel",
+					"by": "izumo",
+					"at": "oslyabya",
+					"when": 0.3,
+					"where": "bow"
+				},
+				{
+					"kind": "flooding",
+					"ship": "oslyabya",
+					"where": "bow",
+					"severity": 0.35
+				}
+			]
+		},
+		{
+			"t": 56.0,
+			"duration": 2.0,
+			"category": "catch_fire",
+			"zh": "奧斯利亞比亞號前部起火，艦首進水越來越多，船身明顯傾斜。超載的煤和艙面的木製設施，讓火勢更難控制。",
+			"en": "Oslyabya is burning forward, taking more and more water at the bow, and visibly listing. The overload of coal and the wooden fittings on deck make the fires harder to control.",
+			"look": {
+				"ships": [
+					"oslyabya"
+				]
+			},
+			"happens": [
+				{
+					"kind": "duel",
+					"by": "yakumo",
+					"at": "oslyabya",
+					"when": 0.3,
+					"where": "bow"
+				},
+				{
+					"kind": "flooding",
+					"ship": "oslyabya",
+					"where": "bow-port",
+					"severity": 0.55
+				}
+			]
+		},
+		{
+			"t": 58.0,
+			"duration": 2.0,
+			"category": "tactic",
+			"zh": "日本砲彈裝的是下瀨火藥，也就是苦味酸。容易引燃油漆和木料；缺點是太敏感，穿甲能力差，打不穿厚裝甲。",
+			"en": "Japanese shells are filled with Shimose powder, that is, picric acid. It bursts violently into many fragments and sets paint and wood alight; but it is very sensitive and poor at piercing thick armour.",
+			"look": {
+				"ships": [
+					"oslyabya"
+				],
+				"distance": 0.8
+			}
+		},
+		{
+			"t": 60.0,
+			"duration": 3.0,
+			"category": "struck",
+			"zh": "朝日號等日艦的砲彈接連落在蘇沃洛夫號上。桅杆、信號索和上層建築先被打爛，旗艦發不出旗號，全艦隊的指揮開始失靈。",
+			"en": "Shells from Asahi and other ships keep landing on Suvorov. Masts, halyards and upperworks go first; the flagship can no longer hoist signals, and command of the whole fleet starts to fail.",
+			"look": {
+				"ships": [
+					"knyaz_suvorov",
+					"mikasa"
+				],
+				"frame": "individual"
+			},
+			"happens": [
+				{
+					"kind": "duel",
+					"by": "asahi",
+					"at": "knyaz_suvorov",
+					"when": 0.3
+				}
+			]
+		},
+		{
+			"t": 63.0,
+			"duration": 3.0,
+			"category": "tactic",
+			"zh": "日艦命中率高，關鍵在射擊指揮。三笠號由砲術長集中測距，統一下達距離，各砲按同一數據射擊，再看落點修正，不是各打各的。應該説，日本跟上了剛剛出現的現代火控技術。",
+			"en": "The Japanese hit often because of fire control. In Mikasa the gunnery officer takes the range centrally and gives every gun one figure, then corrects by the fall of shot. No gun fires on its own.",
+			"look": {
+				"ships": [
+					"mikasa"
+				],
+				"distance": 0.9
+			}
+		},
+		{
+			"t": 66.0,
+			"duration": 3.0,
+			"category": "struck",
+			"zh": "兩點半過後，蘇沃洛夫號司令塔外炸開一發砲彈，彈片從觀察縫鑽進去，塔內多人死傷，羅傑斯特文斯基頭部重傷。",
+			"en": "Just after 2:30 a shell bursts outside Suvorov's conning tower. Fragments come through the vision slits, killing and wounding many inside; Rozhestvensky is badly wounded in the head.",
+			"look": {
+				"ships": [
+					"knyaz_suvorov"
+				],
+				"distance": 0.8
+			},
+			"happens": [
+				{
+					"kind": "duel",
+					"by": "fuji",
+					"at": "knyaz_suvorov",
+					"when": 0.2
+				}
+			]
+		},
+		{
+			"t": 69.0,
+			"duration": 2.0,
+			"category": "tactic",
+			"zh": "日本後來宣傳這一仗打出了丁字戰法。但其實陣型是動態的，雙方都在動，完美的丁字是不可能保持的。多數時間是斜向並行交戰。聯合艦隊壓在前面，保證了集火於俄方旗艦",
+			"en": "Japan later claimed the battle was won by crossing the T. But scholars such as Todaka Kazushige, checking the track charts, find the fleets mostly fought on converging courses; a full T never formed.",
+			"look": {
+				"ships": [],
+				"distance": 1.1,
+				"height": 42.0
+			}
+		},
+		{
+			"t": 71.0,
+			"duration": 3.0,
+			"category": "tactic",
+			"zh": "俄方砲手打得並不差，只不過當時的火炮技術發展到了一個階段，在中遠距離上命中率尚可，但是俄方穿甲爲主的彈藥效果不如日方燃燒爲主的彈藥。而穿甲彈起效的距離要在5公里之内",
+			"en": "The Russian gunners shoot well enough; the trouble is their shells: small bursting charges and unreliable fuzes. By Campbell's count, of 24 twelve-inch shells that hit Japanese ships, eight failed to explode.",
+			"look": {
+				"ships": [
+					"mikasa"
+				]
+			}
+		},
+		{
+			"t": 74.0,
+			"duration": 3.0,
+			"category": "struck",
+			"zh": "奧斯利亞比亞號艦首下沉，傾斜超過十度，下層甲板的都開始進水。這艘船撐不了多久了。",
+			"en": "Oslyabya is down by the bow, listing over ten degrees, and her lower gun ports are shipping water. The lower the flooding, the harder it is to pump out; she cannot last long.",
+			"look": {
+				"ships": [
+					"oslyabya"
+				],
+				"height": 5.0
+			},
+			"happens": [
+				{
+					"kind": "flooding",
+					"ship": "oslyabya",
+					"where": "bow-port",
+					"severity": 0.75
+				}
+			]
+		},
+		{
+			"t": 77.0,
+			"duration": 3.0,
+			"category": "tactic",
+			"zh": "俄艦隊形沒有散。蘇沃洛夫號的同級艦亞歷山大三世號和博羅季諾號緊跟在後，隨時準備接替帶隊。四艘博羅季諾級是俄方主力，排水量13500噸。",
+			"en": "The Russian line holds together. Suvorov's sisters Alexander III and Borodino follow close behind, ready to take the lead. The four Borodino-class ships are the core of the Russian fleet.",
+			"look": {
+				"ships": [
+					"imperator_alexander_iii",
+					"borodino"
+				],
+				"lens": 42.0
+			}
+		},
+		{
+			"t": 80.0,
+			"duration": 3.0,
+			"category": "struck",
+			"zh": "兩點五十分左右，奧斯利亞比亞號退出戰列。它是第二分隊旗艦，但分隊司令費爾克扎姆少將開戰前幾天已經病逝，消息沒有公布。",
+			"en": "Around 2:50 Oslyabya leaves the line. She is the Second Division flagship, but its commander, Rear Admiral Fölkersahm, died of illness days before the battle, and his death was never announced.",
+			"look": {
+				"ships": [
+					"oslyabya"
+				]
+			}
+		},
+		{
+			"t": 83.0,
+			"duration": 3.0,
+			"category": "struck",
+			"zh": "兩點五十二分，蘇沃洛夫號舵機失靈，原地打轉，脫出戰列。脫隊的旗艦沒有僚艦掩護，日艦經過時都可以輪流朝它射擊。",
+			"en": "At 2:52 Suvorov's steering fails; she circles and falls out of line. A flagship out of line has no consorts to cover her, and every passing Japanese ship can take its turn firing at her.",
+			"look": {
+				"ships": [
+					"knyaz_suvorov"
+				]
+			},
+			"happens": [
+				{
+					"kind": "duel",
+					"by": "shikishima",
+					"at": "knyaz_suvorov",
+					"when": 0.3
+				}
+			]
+		},
+		{
+			"t": 86.0,
+			"duration": 4.0,
+			"category": "tactic",
+			"zh": "俄方戰前規定：旗艦失去指揮能力，由後面一艘戰艦接替帶隊。亞歷山大三世號頂到最前面，仍然朝北偏東，也就是海參崴的方向。",
+			"en": "Russian pre-battle orders: if the flagship cannot command, the next battleship takes the lead. Alexander III moves to the front, still steering north-northeast, toward Vladivostok.",
+			"look": {
+				"ships": [
+					"imperator_alexander_iii"
+				]
+			}
+		},
+		{
+			"t": 90.0,
+			"duration": 5.0,
+			"category": "catch_fire",
+			"zh": "蘇沃洛夫號全艦大火。日本砲彈點燃了油漆、木料和甲板上堆放的煤。日方戰前拆掉了艦上大量可燃物，俄方遠航途中很難做到。",
+			"en": "Suvorov is ablaze from end to end. Japanese shells have lit paint, timber and coal stacked on deck. The Japanese stripped out much that could burn before the battle; on a long voyage the Russians could hardly do the same.",
+			"look": {
+				"ships": [
+					"knyaz_suvorov"
+				]
+			}
+		},
+		{
+			"t": 95.0,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "三點過後，亞歷山大三世號突然改向正北，打算從日艦隊尾後方穿過去。東鄉全隊同時轉向，重新擋在前面。這一手靠的是平時合練。",
+			"en": "Just after three, Alexander III suddenly turns due north, trying to pass astern of the Japanese line. Togo turns his whole division together and blocks her again. That move rests on constant drill.",
+			"look": {
+				"ships": [],
+				"height": 40.0
+			},
+			"happens": [
+				{
+					"kind": "duel",
+					"by": "mikasa",
+					"at": "imperator_alexander_iii",
+					"when": 0.35
+				}
+			]
+		},
+		{
+			"t": 100.0,
+			"duration": 4.0,
+			"category": "sinking",
+			"zh": "三點十分，奧斯利亞比亞號翻覆沉沒，離日艦開火只有一個小時。這是鋼鐵戰艦第一次單靠砲火被擊沉，艦長貝爾和四百多人隨艦沉沒。",
+			"en": "At 3:10 Oslyabya capsizes and sinks, just an hour after the Japanese opened fire: the first steel battleship ever sunk by gunfire alone. Captain Ber and over four hundred men go down with her.",
+			"look": {
+				"ships": [
+					"oslyabya"
+				],
+				"distance": 1.2,
+				"height": -1.0
+			},
+			"happens": [
+				{
+					"kind": "sinking",
+					"ship": "oslyabya",
+					"when": "track",
+					"capsizes": true
+				}
+			]
+		},
+		{
+			"t": 104.07,
+			"duration": 3.0,
+			"category": "famous_action",
+			"zh": "驅逐艦布伊內號等幾艘小艦頂著砲火開進落水區救人。奧斯利亞比亞號最後救起三百多人，布伊內號一艘就撈起兩百來人。",
+			"en": "The destroyer Buiny and a few other small ships steam under fire into the water full of survivors. More than three hundred of Oslyabya's men are saved, about two hundred by Buiny alone.",
+			"look": {
+				"ships": [
+					"buinyi"
+				]
+			},
+			"retimed_from": 104.0,
+			"voice": "t104"
+		},
+		{
+			"t": 107.12,
+			"duration": 3.0,
+			"category": "catch_fire",
+			"zh": "帶隊的亞歷山大三世號也燒起來了。縱隊裡誰排在最前面，日艦就集中打誰，這是日方一整天不變的打法。",
+			"en": "Alexander III, now leading, is on fire as well. Whichever ship heads the column gets the concentrated Japanese fire; that is the Japanese method all day.",
+			"look": {
+				"ships": [
+					"imperator_alexander_iii"
+				]
+			},
+			"retimed_from": 107.0,
+			"voice": "t107"
+		},
+		{
+			"t": 110.17,
+			"duration": 3.0,
+			"category": "tactic",
+			"zh": "和十一年前甲午黃海海戰比，交戰距離從兩三千米拉到了六千米以上。距離一遠，勝負就不只看砲多砲大，更要看測距、校射和訓練。一般認爲，日方在射擊精度方面有巨大優勢。",
+			"en": "Compared with the Yalu eleven years ago, the fighting range has grown from two or three thousand metres to over six thousand. At that distance, numbers and calibre matter less than range-finding, spotting and training.",
+			"look": {
+				"ships": []
+			},
+			"retimed_from": 110.0,
+			"voice": "t110"
+		},
+		{
+			"t": 113.22,
+			"duration": 3.0,
+			"category": "tactic",
+			"zh": "開戰一個多小時，俄方一艘戰艦沉沒，旗艦失控，司令重傷。日方沒有沉船，三笠號、淺間號等艦受傷。",
+			"en": "An hour or so in: one Russian battleship sunk, the flagship out of control, the commander badly wounded. Japan has lost no ship, though Mikasa, Asama and others have been damaged.",
+			"look": {
+				"ships": [],
+				"lens": 42.0
+			},
+			"retimed_from": 113.0,
+			"voice": "t113"
+		},
+		{
+			"t": 116.28,
+			"duration": 2.0,
+			"category": "tactic",
+			"zh": "主力交戰區的南邊，是另一場戰鬥。日本巡洋艦分隊撲向俄方運輸船隊。浪速號是日本早年從英國買的巡洋艦，甲午戰爭時擊沉過高陞號。",
+			"en": "South of the main action another fight is under way. Japanese cruiser divisions fall on the Russian transports. Naniwa, an early cruiser Japan bought from Britain, sank the Kowshing in the 1894 war.",
+			"look": {
+				"ships": [
+					"naniwa"
+				]
+			},
+			"retimed_from": 116.0,
+			"voice": "t116"
+		},
+		{
+			"t": 118.31,
+			"duration": 3.0,
+			"category": "tactic",
+			"zh": "烏拉爾號等輔助船接連中彈。俄方為什麼帶著運輸船闖海峽？實際上俄方已經遣散了一部分運輸船，但是擔心到海參崴之後補給不足，煤、彈藥和修理還要靠這些船，就帶上這些累贅來闖關了。",
+			"en": "Ural and other auxiliaries are hit in turn. Why bring transports into the strait? With no bases on the way, coal, ammunition and repairs all depend on them. They are a burden, but leaving them is worse.",
+			"look": {
+				"ships": [
+					"ural",
+					"naniwa"
+				],
+				"lens": 42.0
+			},
+			"happens": [
+				{
+					"kind": "duel",
+					"by": "naniwa",
+					"at": "ural",
+					"when": 0.3,
+					"all_guns": true
+				}
+			],
+			"retimed_from": 118.0,
+			"voice": "t118"
+		},
+		{
+			"t": 121.36,
+			"duration": 4.0,
+			"category": "tactic",
+			"zh": "恩奎斯特少將的巡洋艦分隊負責保護運輸船。奧列格號和阿芙樂爾號兩艘孤艦，被幾個日本巡洋艦分隊輪流圍攻，只能邊打邊繞圈。",
+			"en": "Rear Admiral Enkvist's cruisers are there to guard the transports. Oleg and Aurora are too few; several Japanese cruiser divisions take turns attacking them, and they can only fight while circling.",
+			"look": {
+				"ships": [
+					"oleg",
+					"aurora"
+				],
+				"lens": 42.0
+			},
+			"retimed_from": 121.0,
+			"voice": "t121"
+		},
+		{
+			"t": 129.5,
+			"duration": 4.0,
+			"category": "famous_action",
+			"zh": "日本驅逐艦對蘇沃洛夫號發動魚雷攻擊。雖然失控，艦上剩下的小砲還是把它們打退了。",
+			"en": "Japanese destroyers make their first torpedo attack on Suvorov. The flagship is out of control, but her remaining small guns still drive them off. One or two torpedo runs are not enough to sink a big battleship.",
+			"look": {
+				"ships": [
+					"knyaz_suvorov"
+				]
+			},
+			"happens": [
+				{
+					"kind": "torpedo",
+					"by": "chihaya",
+					"at": "knyaz_suvorov",
+					"hit": false,
+					"when": 0.5
+				}
+			],
+			"retimed_from": 129.0,
+			"voice": "t129"
+		},
+		{
+			"t": 133.32,
+			"duration": 3.0,
+			"category": "tactic",
+			"zh": "羅傑斯特文斯基一向自知捉襟見肘。沙皇要他奪取日本海的制海權，他自己只求突破到海參崴。出發前他就私下說過，這一仗幾乎沒有勝算。",
+			"en": "Rozhestvensky's hands are tied. The Tsar wants him to win command of the Sea of Japan; he only hopes to break through to Vladivostok. Before sailing he said privately the battle was all but unwinnable.",
+			"look": {
+				"ships": [
+					"knyaz_suvorov"
+				],
+				"distance": 1.5
+			},
+			"retimed_from": 133.0,
+			"voice": "t133"
+		},
+		{
+			"t": 136.18,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "快到四點，雨、硝煙和海霧攪在一塊，能見度極低，雙方失去接觸。之後近兩個小時，交火時斷時續。日方的偵察和無線電優勢，這時也用不上。",
+			"en": "Toward four o'clock rain, gun smoke and sea mist mix together and the fleets lose contact. For nearly two hours the firing is on and off. Japan's edge in scouting and wireless is of little use now.",
+			"look": {
+				"ships": [],
+				"lens": 42.0
+			},
+			"happens": [
+				{
+					"kind": "weather",
+					"visibility_km": 4.0
+				}
+			],
+			"retimed_from": 136.0,
+			"voice": "t136"
+		},
+		{
+			"t": 140.96,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "失控的蘇沃洛夫號在霧中原地打轉，火一直沒滅。參謀們把受傷的羅傑斯特文斯基從司令塔抬出，轉移到一座還能待人的砲塔裡。",
+			"en": "The crippled Suvorov circles in the mist, still burning. Staff officers carry the wounded Rozhestvensky out of the conning tower to a turret where men can still survive.",
+			"look": {
+				"ships": [
+					"knyaz_suvorov"
+				]
+			}
+		},
+		{
+			"t": 145.73,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "俄方主力在霧中先向南、再向北兜了一圈。不管怎麼繞，終點只有一個：海參崴。日方很清楚這一點，不必死追，守住俄方北上的去路就行。",
+			"en": "In the mist the Russian main body loops south and then north. However it turns, there is only one destination: Vladivostok. The Japanese know it; they need not chase, only hold the route north.",
+			"look": {
+				"ships": [],
+				"height": 42.0
+			},
+			"retimed_from": 146.0,
+			"voice": "t146"
+		},
+		{
+			"t": 150.5,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "春日號和日進號排在日本戰列線末尾，是義大利為阿根廷建造的裝甲巡洋艦。一九〇三年底經英國居中牽線賣給日本，開戰時剛剛到手。",
+			"en": "Kasuga and Nisshin, at the rear of the Japanese line, are armoured cruisers built in Italy for Argentina. Britain helped broker their sale to Japan at the end of 1903; they arrived just as the war began.",
+			"look": {
+				"ships": [
+					"kasuga",
+					"nisshin"
+				],
+				"lens": 42.0
+			},
+			"retimed_from": 151.0,
+			"voice": "t151"
+		},
+		{
+			"t": 155.28,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "日進號這一天吃了自家砲彈的虧：主砲發生膛炸，砲管炸毀。三笠號傍晚也有一門十二吋砲膛炸。這是日方砲彈使用的伊集院引信太敏感的副作用。這種高風險的搏命彈藥，本來是弱者的選擇。但今天占盡優勢的聯合艦隊還在和這種彈藥相伴",
+			"en": "Nisshin suffers from her own shells today: a main gun bursts, wrecking the barrel. In the evening a twelve-inch gun in Mikasa bursts too. It is the downside of Japan's over-sensitive shells.",
+			"look": {
+				"ships": [
+					"nisshin"
+				]
+			},
+			"retimed_from": 156.0,
+			"voice": "t156"
+		},
+		{
+			"t": 160.05,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "上村彥之丞的第二戰隊一度和東鄉分開，在霧裡單獨搜索，幾次遇到俄艦，交火不久又失去目標。",
+			"en": "Kamimura Hikonojo's Second Division separates from Togo for a while and searches the mist alone, several times meeting Russian ships, firing briefly, then losing them. Both sides are hunting each other.",
+			"look": {
+				"ships": [
+					"izumo",
+					"azuma",
+					"tokiwa",
+					"yakumo",
+					"iwate",
+					"asama"
+				]
+			},
+			"retimed_from": 161.0,
+			"voice": "t161"
+		},
+		{
+			"t": 164.82,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "俄艦在霧中重新排隊。亞歷山大三世號傷勢加重，退到後面，博羅季諾號接替帶隊。",
+			"en": "In the mist the Russians re-form. Alexander III, worse damaged, drops back and Borodino takes the lead. Most of the crews have had nothing to eat since noon.",
+			"look": {
+				"ships": [
+					"borodino"
+				],
+				"distance": 1.6
+			},
+			"retimed_from": 166.0,
+			"voice": "t166"
+		},
+		{
+			"t": 169.6,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "博羅季諾級參考法國設計，舷側在水線以上明顯內收。好處是船舷火砲射界寬，缺點是穩性差，一旦大量進水又超載，很容易翻覆。",
+			"en": "The Borodino class followed a French design, with sides curving inward above the waterline. The guns get wide arcs, but stability is poor: flooded and overloaded, such a ship capsizes easily.",
+			"look": {
+				"ships": [
+					"borodino"
+				],
+				"distance": 0.8,
+				"height": 4.0
+			},
+			"retimed_from": 171.0,
+			"voice": "t171"
+		},
+		{
+			"t": 174.37,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "南邊的巡洋艦混戰中，阿芙樂爾號艦長葉戈里耶夫上校在艦橋陣亡。不過，最後阿芙樂爾號熬過了這一仗，今天還停在聖彼得堡，成了博物館艦。",
+			"en": "In the cruiser fight to the south, Aurora's captain Yegoryev is killed on the bridge. Aurora survives the battle and still lies in St Petersburg today, as a museum ship.",
+			"look": {
+				"ships": [
+					"aurora"
+				]
+			},
+			"retimed_from": 176.0,
+			"voice": "t176"
+		},
+		{
+			"t": 179.14,
+			"duration": 5.0,
+			"category": "struck",
+			"zh": "修理船堪察加號失去動力，漂到了失控的旗艦旁邊。這艘船本來負責給艦隊修機器，現在自己也動不了，艦上官兵還在救火。",
+			"en": "The repair ship Kamchatka has lost power and drifts near the crippled flagship. Built to repair the fleet's machinery, she cannot move herself, and her crew are still fighting fires.",
+			"look": {
+				"ships": [
+					"kamchatka"
+				],
+				"distance": 1.2
+			},
+			"retimed_from": 181.0,
+			"voice": "t181"
+		},
+		{
+			"t": 183.92,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "東鄉判斷俄艦遲早要北上，就把主力帶回北方航線上堵著。判斷是對的，但同樣承擔了找不回來的風險。",
+			"en": "Togo judges the Russians must head north sooner or later, and takes his main body back to block the northern route. He is right, but for nearly two hours he also runs the risk of never finding them again.",
+			"look": {
+				"ships": [
+					"mikasa",
+					"shikishima",
+					"fuji",
+					"asahi"
+				]
+			},
+			"retimed_from": 186.0,
+			"voice": "t186"
+		},
+		{
+			"t": 188.69,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "日方參謀秋山真之的原計劃分好幾層：先用驅逐艦在俄艦前方撒連繫水雷，再用主力砲戰，夜裡用魚雷艇。但當天浪太大，撒雷這一步只能取消。",
+			"en": "Akiyama Saneyuki's plan had several layers: destroyers laying linked mines ahead of the Russians, then the gun battle, then torpedo boats at night. The sea is too rough today, so the mine-laying is dropped.",
+			"look": {
+				"ships": [
+					"mikasa"
+				],
+				"distance": 1.4
+			},
+			"retimed_from": 191.0,
+			"voice": "t191"
+		},
+		{
+			"t": 193.46,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "三笠號是英國維克斯公司在巴羅造的，日本四艘戰艦都出自英國船廠。英日同盟以後，英國在情報、加煤和外交上都給了日本方便。",
+			"en": "Mikasa was built by Vickers at Barrow; all four Japanese battleships came from British yards. Since the Anglo-Japanese alliance Britain has eased Japan's way in intelligence, coal and diplomacy.",
+			"look": {
+				"ships": [
+					"mikasa"
+				],
+				"distance": 0.8
+			},
+			"retimed_from": 196.0,
+			"voice": "t196"
+		},
+		{
+			"t": 198.23,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "俄方新戰艦後面是一批老艦，包括西索伊大帝號和納瓦林號，再加上三艘岸防艦。它們航速慢、火砲舊，全艦隊的速度就被拖在九節左右。",
+			"en": "Behind the new battleships come older ships, Sisoy Veliky and Navarin among them, plus three coast-defence ships. Slow and with old guns, they hold the whole fleet to about nine knots.",
+			"look": {
+				"ships": [
+					"sisoy_veliky",
+					"navarin"
+				],
+				"lens": 42.0
+			},
+			"retimed_from": 201.0,
+			"voice": "t201"
+		},
+		{
+			"t": 203.01,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "涅博加托夫少將的第三太平洋艦隊，以尼古拉一世號為首，五月初才在越南海岸會合。這批老艦是聖彼得堡堅持派來的，羅傑斯特文斯基原本並不想要。",
+			"en": "Rear Admiral Nebogatov's Third Pacific Squadron, led by Nikolai I, joined only in early May off Indochina. St Petersburg insisted on sending these old ships; Rozhestvensky had not wanted them.",
+			"look": {
+				"ships": [
+					"imperator_nikolai_i"
+				]
+			},
+			"retimed_from": 206.0,
+			"voice": "t206"
+		},
+		{
+			"t": 207.78,
+			"duration": 4.0,
+			"category": "tactic",
+			"zh": "日方也有損傷。裝甲巡洋艦淺間號開戰不久，艦尾舵機附近中彈進水，一度退出戰列，修好以後才重新歸隊。",
+			"en": "Japan takes damage too. Early in the action the armoured cruiser Asama is hit near her steering gear aft, floods, and falls out of line for a time, rejoining after repairs.",
+			"look": {
+				"ships": [
+					"asama"
+				]
+			},
+			"retimed_from": 211.0,
+			"voice": "t211"
+		},
+		{
+			"t": 211.6,
+			"duration": 4.0,
+			"category": "struck",
+			"zh": "五點左右，日本第四驅逐隊再次用魚雷攻擊蘇沃洛夫號。打沒打中，日方的航跡圖沒有記。艦尾最後一門小砲還在還擊。",
+			"en": "Around five, Japan's 4th Destroyer Division attacks Suvorov again with torpedoes. The Japanese track chart does not say whether any hit. Her last small gun aft is still firing back.",
+			"look": {
+				"ships": [
+					"knyaz_suvorov"
+				]
+			},
+			"happens": [
+				{
+					"kind": "torpedo",
+					"by": "asagiri",
+					"at": "knyaz_suvorov",
+					"hit": false,
+					"when": 0.4,
+					"companions": 1.0
+				}
+			],
+			"retimed_from": 215.0
+		},
+		{
+			"t": 216.22,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "訓練差距也很明顯。日方在鎮海灣長期操練，用裝進大砲裡的小口徑練習砲省彈藥練瞄準。俄方四艘主力艦是新船，人員磨合不足；遠航途中實彈射擊很少，不少水兵是臨時補充的新兵。",
+			"en": "The training gap is plain too. The Japanese drilled for months in Chinhae Bay, with sub-calibre guns fitted inside the big guns to save ammunition. On the voyage the Russians fired little live ammunition, and many sailors were fresh recruits.",
+			"look": {
+				"ships": [
+					"mikasa",
+					"shikishima",
+					"fuji",
+					"asahi"
+				]
+			},
+			"retimed_from": 219.0,
+			"voice": "t219"
+		},
+		{
+			"t": 222.01,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "日本的小型魚雷艇早上因為風浪太大，躲進對馬島的三浦灣避風。傍晚它們陸續出港，準備夜戰。浪高這件事，對日方也不全是好消息。",
+			"en": "This morning the sea was too rough for Japan's small torpedo boats, and they sheltered in Miura Bay on Tsushima. Toward evening they put out again for the night. The high seas were not all good news for Japan.",
+			"look": {
+				"ships": []
+			},
+			"retimed_from": 224.0,
+			"voice": "t224"
+		},
+		{
+			"t": 227.79,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "比一比兵力。俄方主戰列中：戰列艦八艘，外加三艘岸防艦，三艘裝甲巡洋艦；日方戰列艦只有四艘，但裝甲巡洋艦有八艘。驅逐艦和魚雷艇，日方有六十多艘，俄方只有九艘驅逐艦。",
+			"en": "Compare the forces. Russia has eight battleships plus three coast-defence ships; Japan only four battleships, but eight armoured cruisers and far more medium quick-firers. In destroyers and torpedo boats Japan has over sixty.",
+			"look": {
+				"ships": [],
+				"height": 45.0
+			},
+			"retimed_from": 229.0,
+			"voice": "t229"
+		},
+		{
+			"t": 233.57,
+			"duration": 4.0,
+			"category": "tactic",
+			"zh": "五點半前後，霧散了一些，日方主力重新找到俄艦。離日落還有兩個小時左右，日方要盡量擴大戰果，俄方要撐到天黑。",
+			"en": "Around 5:30 the mist thins and the Japanese main body finds the Russians again. About two hours remain before sunset: Japan wants to add to its gains, Russia wants to hold out until dark.",
+			"look": {
+				"ships": [],
+				"lens": 42.0
+			},
+			"happens": [
+				{
+					"kind": "weather",
+					"visibility_km": 9.0
+				}
+			],
+			"retimed_from": 234.0,
+			"voice": "t234"
+		},
+		{
+			"t": 238.19,
+			"duration": 4.0,
+			"category": "famous_action",
+			"zh": "驅逐艦布伊內號靠上燃燒中的旗艦，接走重傷的羅傑斯特文斯基和部分參謀。大部分艦員留在船上，繼續操作剩下的砲。",
+			"en": "The destroyer Buiny comes alongside the burning flagship and takes off the badly wounded Rozhestvensky and part of his staff. Most of the crew stay aboard, working the guns that are left.",
+			"look": {
+				"ships": [
+					"knyaz_suvorov"
+				],
+				"distance": 1.8
+			},
+			"retimed_from": 238.0,
+			"voice": "t238"
+		},
+		{
+			"t": 242.82,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "羅傑斯特文斯基下令把指揮權交給涅博加托夫。命令由驅逐艦傳遞，傍晚才傳到尼古拉一世號，內容只有一句：去海參崴。",
+			"en": "Rozhestvensky orders command handed to Nebogatov. The order is passed by destroyer and reaches Nikolai I only toward evening. It says one thing: go to Vladivostok.",
+			"look": {
+				"ships": [
+					"imperator_nikolai_i"
+				]
+			},
+			"retimed_from": 242.0,
+			"voice": "t242"
+		},
+		{
+			"t": 243.4,
+			"duration": 1.0,
+			"category": "overall",
+			"zh": "",
+			"en": "",
+			"silent": true,
+			"note": "Flagships: command passes to Nebogatov in Nikolai I",
+			"look": {
+				"ships": [
+					"imperator_nikolai_i"
+				]
+			},
+			"happens": [
+				{
+					"kind": "flagship",
+					"ships": [
+						"imperator_nikolai_i"
+					]
+				}
+			],
+			"retimed_from": 242.5
+		},
+		{
+			"t": 248.6,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "傍晚的光線對日方有利。日艦在俄艦西側，太陽在日艦身後。俄方要對著夕陽瞄準，很刺眼；日方看俄艦，被陽光照得清清楚楚。",
+			"en": "The evening light favours Japan. The Japanese are west of the Russians, with the sun behind them. Russian gunners must aim into the glare; the Japanese see the Russian ships lit up clearly.",
+			"look": {
+				"ships": [],
+				"distance": 0.6,
+				"height": 12.0,
+				"bearing": 90.0,
+				"lens": 50.0
+			},
+			"retimed_from": 247.0,
+			"voice": "t247"
+		},
+		{
+			"t": 249.5,
+			"duration": 4.0,
+			"category": "sinking",
+			"zh": "烏拉爾號船員棄船，船隨後沉沒。旁邊的修理船堪察加號中彈起火。去年十月在北海，導致攻擊英國漁船的那次假警報，就是堪察加號發出的。",
+			"en": "Ural's crew abandon ship, and she sinks. Nearby the repair ship Kamchatka is hit and set on fire. Last October's false alarm in the North Sea came from Kamchatka.",
+			"look": {
+				"ships": [
+					"ural"
+				],
+				"height": -1.0
+			},
+			"retimed_from": 125.0,
+			"voice": "t125"
+		},
+		{
+			"t": 254.38,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "塗裝也有影響。俄艦是黑色船身、黃色煙囪，遠處很醒目；日艦統一塗成灰色，在海霧裡不容易分辨。",
+			"en": "Paint matters too. The Russian ships have black hulls and yellow funnels, conspicuous at a distance; the Japanese ships are grey all over and hard to pick out in the sea mist.",
+			"look": {
+				"ships": [
+					"oryol"
+				]
+			},
+			"retimed_from": 252.0,
+			"voice": "t252"
+		},
+		{
+			"t": 260.16,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "日方這一天使用高爆彈摧毀對方上層建築、火砲、測距儀和信號設施。不少俄艦裝甲沒破，卻失去了觀察和指揮能力。",
+			"en": "Today the Japanese fire mostly high-explosive shells. They aim not to pierce armour but to wreck upperworks, guns, rangefinders and signal gear. Many Russian ships keep their armour intact yet lose the ability to see and command.",
+			"look": {
+				"ships": [
+					"mikasa"
+				]
+			},
+			"retimed_from": 257.0,
+			"voice": "t257"
+		},
+		{
+			"t": 265.94,
+			"duration": 4.0,
+			"category": "first_fire",
+			"zh": "六點過後，傍晚的決定性砲戰打響。東鄉主力集中打帶隊的博羅季諾號，距離六千米左右。博羅季諾號的主砲還能回擊三笠號。",
+			"en": "After six the deciding gun battle of the evening begins. Togo's main body concentrates on the leading ship, Borodino, at about six thousand metres. Borodino's main guns can still reply on Mikasa.",
+			"look": {
+				"ships": [
+					"mikasa",
+					"borodino"
+				],
+				"lens": 42.0
+			},
+			"happens": [
+				{
+					"kind": "duel",
+					"by": "mikasa",
+					"at": "borodino",
+					"when": 0.3
+				},
+				{
+					"kind": "fire",
+					"by": "borodino",
+					"at": "mikasa",
+					"when": 0.7
+				}
+			],
+			"retimed_from": 262.0,
+			"voice": "t262"
+		},
+		{
+			"t": 270.57,
+			"duration": 4.0,
+			"category": "tactic",
+			"zh": "俄艦為什麼不掉頭跑？航速比日艦慢五六節，朝哪邊都甩不掉。唯一的指望是撐到天黑，趁夜色擺脫日本主力，再設法北上。",
+			"en": "Why don't the Russians turn and run? They are five or six knots slower and cannot shake off the Japanese in any direction. Their only hope is to last until dark, slip away from the Japanese main body, then make for the north.",
+			"look": {
+				"ships": [
+					"borodino"
+				]
+			},
+			"retimed_from": 266.0,
+			"voice": "t266"
+		},
+		{
+			"t": 275.19,
+			"duration": 5.0,
+			"category": "catch_fire",
+			"zh": "博羅季諾號前後都起了火，仍然保持航向帶隊。帶隊艦不亂轉，後面的船才不會亂，這是縱隊作戰的基本要求。",
+			"en": "Borodino is burning fore and aft but keeps her course at the head of the line. If the leader holds steady, the ships behind stay in order; that is basic to fighting in column.",
+			"look": {
+				"ships": [
+					"borodino"
+				]
+			},
+			"retimed_from": 270.0,
+			"voice": "t270"
+		},
+		{
+			"t": 280.97,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "鷹號也是博羅季諾級。它這一天中了多少發，說法差很遠：英國學者坎貝爾算七十六發，艦上工程師科斯堅科記錄一百四十發以上。",
+			"en": "Oryol is another Borodino-class ship. How often she was hit today is disputed: the British scholar Campbell counts 76; Kostenko, an engineer aboard, recorded over 140.",
+			"look": {
+				"ships": [
+					"oryol"
+				]
+			},
+			"retimed_from": 275.0,
+			"voice": "t275"
+		},
+		{
+			"t": 286.75,
+			"duration": 5.0,
+			"category": "struck",
+			"zh": "朝日號的砲彈打在鷹號上。鷹號砲塔卡死，上層燒得面目全非，但水線裝甲帶始終沒被打穿，所以一直浮著。",
+			"en": "Asahi's shells strike Oryol. Her turrets jam and her upperworks burn beyond recognition, but her waterline belt is never pierced, so she stays afloat.",
+			"look": {
+				"ships": [
+					"oryol",
+					"borodino"
+				],
+				"lens": 42.0
+			},
+			"happens": [
+				{
+					"kind": "duel",
+					"by": "asahi",
+					"at": "oryol",
+					"when": 0.3
+				}
+			],
+			"retimed_from": 280.0,
+			"voice": "t280"
+		},
+		{
+			"t": 292.53,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "東鄉為何不再拉近距離？六千米上，日方命中率已經夠用，而俄方砲彈最不適合這個距離；再靠近，反而要增加魚雷和重砲的威脅。日方由於速度優勢，始終能確保最自己有利的距離。",
+			"en": "Why doesn't Togo close the range further? At six thousand metres Japanese hitting is good enough and Russian shells are weak; closer in he would face torpedoes and heavy guns. With the advantage in hand, there is no need to gamble.",
+			"look": {
+				"ships": [
+					"mikasa"
+				],
+				"from": "mikasa",
+				"toward": "borodino"
+			},
+			"retimed_from": 285.0,
+			"voice": "t285"
+		},
+		{
+			"t": 304.1,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "引信出自伊集院五郎之手，非常靈敏，砲彈碰到水面、索具就爆，近失彈也能殺傷甲板人員。代價是容易早炸、膛炸，這一天日艦損失了好幾門砲。",
+			"en": "The fuze, designed by Ijuin Goro, is extremely sensitive: shells burst on striking water or rigging, so even near misses kill men on deck. The cost is premature and in-barrel bursts; Japanese ships lose several guns today.",
+			"look": {
+				"ships": [
+					"imperator_alexander_iii"
+				],
+				"distance": 1.2
+			},
+			"retimed_from": 295.0,
+			"voice": "t295"
+		},
+		{
+			"t": 309.88,
+			"duration": 5.0,
+			"category": "catch_fire",
+			"zh": "俄方隊尾的老艦西索伊大帝號前部起火，航速越來越慢。在這種追擊戰裡，掉隊就會成為日本輔助艦隊優先攻擊的目標。",
+			"en": "At the rear the old Sisoy Veliky is on fire forward and slowing. In a running fight like this a straggler has no consorts to cover her and becomes a first target for the Japanese.",
+			"look": {
+				"ships": [
+					"sisoy_veliky"
+				]
+			},
+			"retimed_from": 300.0,
+			"voice": "t300"
+		},
+		{
+			"t": 315.66,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "東鄉在英國接受過七年海軍訓練。對馬這一天，他的優勢不在奇招，而在各艦長期合練，轉向、集火、跟隨都不需要多餘的信號。",
+			"en": "Togo trained in Britain for seven years. His edge today is not a clever trick but long drill together: turning, concentrating fire and following need no extra signals.",
+			"look": {
+				"ships": [
+					"mikasa"
+				]
+			},
+			"retimed_from": 305.0,
+			"voice": "t305"
+		},
+		{
+			"t": 319.0,
+			"duration": 5.0,
+			"category": "struck",
+			"zh": "亞歷山大三世號被上村的巡洋艦集中攻擊，艦首壓低，船體傾斜，一點點退到隊尾。它還在開砲，沒有降旗。",
+			"en": "Alexander III is under concentrated fire from Kamimura's cruisers. Down by the bow and listing, she drops back bit by bit to the rear. She is still firing and has not struck her flag.",
+			"look": {
+				"ships": [
+					"imperator_alexander_iii",
+					"izumo"
+				],
+				"frame": "individual"
+			},
+			"happens": [
+				{
+					"kind": "duel",
+					"by": "izumo",
+					"at": "imperator_alexander_iii",
+					"when": 0.35
+				},
+				{
+					"kind": "flooding",
+					"ship": "imperator_alexander_iii",
+					"where": "bow",
+					"severity": 0.45
+				}
+			],
+			"retimed_from": 290.0,
+			"voice": "t290"
+		},
+		{
+			"t": 321.44,
+			"duration": 5.0,
+			"category": "struck",
+			"zh": "磐手號的砲彈也打在亞歷山大三世號上。這艘船從兩點多起帶隊，已經連續挨打四個小時，進水越來越多，快撐不住了。",
+			"en": "Shells from Iwate also strike Alexander III. She has led under fire since after two o'clock, four hours of punishment, and the flooding keeps rising. She is close to the end.",
+			"look": {
+				"ships": [
+					"imperator_alexander_iii",
+					"iwate"
+				],
+				"frame": "individual"
+			},
+			"happens": [
+				{
+					"kind": "duel",
+					"by": "iwate",
+					"at": "imperator_alexander_iii",
+					"when": 0.3
+				},
+				{
+					"kind": "flooding",
+					"ship": "imperator_alexander_iii",
+					"where": "bow",
+					"severity": 0.8
+				}
+			],
+			"retimed_from": 310.0,
+			"voice": "t310"
+		},
+		{
+			"t": 327.22,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "俄方還能作戰的主力，只剩博羅季諾號、鷹號和涅博加托夫的幾艘老艦。四艘新戰艦是俄艦隊的核心，這時已經一艘失控、一艘快沉。",
+			"en": "Russia's remaining fighting strength is Borodino, Oryol and Nebogatov's few old ships. The four new battleships were the heart of the fleet; by now one is out of control and one is about to sink.",
+			"look": {
+				"ships": [
+					"borodino",
+					"oryol"
+				],
+				"lens": 42.0
+			},
+			"retimed_from": 315.0,
+			"voice": "t315"
+		},
+		{
+			"t": 333.0,
+			"duration": 5.0,
+			"category": "sinking",
+			"zh": "六點五十分左右，亞歷山大三世號傾覆沉沒，艦上九百人左右，無一獲救。巡洋艦綠寶石號曾經靠過去救人，被日艦砲火逼開。",
+			"en": "About 6:50 Alexander III capsizes and sinks. Of roughly nine hundred aboard, none is saved. Izumrud tried to close and pick up survivors but was driven off by Japanese fire.",
+			"look": {
+				"ships": [
+					"imperator_alexander_iii"
+				],
+				"distance": 1.2,
+				"height": -1.0
+			},
+			"happens": [
+				{
+					"kind": "sinking",
+					"ship": "imperator_alexander_iii",
+					"when": "track",
+					"capsizes": true
+				}
+			],
+			"retimed_from": 320.0,
+			"voice": "t320"
+		},
+		{
+			"t": 335.18,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "亞歷山大三世號是翻沉的。博羅季諾級重心偏高，又超載，側面大量進水以後，一傾斜就回不來，艙內的人很難逃出。",
+			"en": "Alexander III turned over. The Borodino class was top-heavy and overloaded; once heavy flooding on one side made her heel, she could not come back, and men below could hardly get out.",
+			"look": {
+				"ships": [
+					"imperator_alexander_iii"
+				]
+			},
+			"retimed_from": 325.0,
+			"voice": "t325"
+		},
+		{
+			"t": 337.37,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "日落時間是七點半左右。俄方要撐過最後這半個小時，日方要在天黑前多擊沉一艘是一艘。博羅季諾號還在帶隊，航向不變。",
+			"en": "Sunset is around 7:30. The Russians must survive this last half hour; the Japanese want to sink every ship they can before dark. Borodino still leads, on the same course.",
+			"look": {
+				"ships": [
+					"borodino",
+					"oryol"
+				],
+				"lens": 42.0
+			},
+			"retimed_from": 330.0,
+			"voice": "t330"
+		},
+		{
+			"t": 339.55,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "三笠號這一天中彈三四十發，艦上一百多人傷亡，其中十二吋彈十發左右，都沒有造成致命損傷。俄方砲彈威力不足，是原因之一。",
+			"en": "Mikasa is hit thirty or forty times today, with over a hundred killed and wounded; about ten hits are twelve-inch, and none does fatal damage. Weak Russian shells are part of the reason.",
+			"look": {
+				"ships": [
+					"mikasa"
+				],
+				"distance": 0.8
+			},
+			"retimed_from": 335.0,
+			"voice": "t335"
+		},
+		{
+			"t": 341.74,
+			"duration": 4.0,
+			"category": "struck",
+			"zh": "富士號一發十二吋砲彈命中博羅季諾號，後部起火。這時距離已經壓到五千多米，東鄉要在最後的光線裡解決帶隊艦。",
+			"en": "A twelve-inch shell from Fuji hits Borodino and starts a fire aft. The range is down to a little over five thousand metres; Togo wants to finish the leading ship in the last of the light.",
+			"look": {
+				"ships": [
+					"borodino",
+					"fuji"
+				],
+				"frame": "individual"
+			},
+			"happens": [
+				{
+					"kind": "duel",
+					"by": "fuji",
+					"at": "borodino",
+					"when": 0.4
+				}
+			],
+			"retimed_from": 340.0,
+			"voice": "t340"
+		},
+		{
+			"t": 343.48,
+			"duration": 4.0,
+			"category": "tactic",
+			"zh": "富士號和姊妹艦八島號是日本第一批戰艦，排水量12700噸，英國建造，一八九七年服役。八島號去年在旅順外海觸雷沉沒。",
+			"en": "Fuji and her sister Yashima were Japan's first battleships, British-built and in service from 1897. Yashima was mined and sunk off Port Arthur last year.",
+			"look": {
+				"ships": [
+					"fuji"
+				]
+			},
+			"retimed_from": 344.0,
+			"voice": "t344"
+		},
+		{
+			"t": 345.23,
+			"duration": 4.0,
+			"category": "tactic",
+			"zh": "日方的安排很明確：天黑以後主力撤出，戰場交給驅逐艦和魚雷艇。大艦夜裡容易誤判，也怕魚雷，日方不讓主力冒這個險。",
+			"en": "The Japanese plan is clear: after dark the main body withdraws and the field goes to destroyers and torpedo boats. Big ships at night risk mistakes and torpedoes, and Japan will not expose its main body to that.",
+			"look": {
+				"ships": [],
+				"lens": 42.0
+			},
+			"retimed_from": 348.0,
+			"voice": "t348"
+		},
+		{
+			"t": 346.98,
+			"duration": 4.0,
+			"category": "tactic",
+			"zh": "此刻羅傑斯特文斯基在驅逐艦布伊內號上，頭部重傷，時昏時醒，艦隊的情況他幾乎一無所知。布伊內號的機器也有毛病，跟著大隊走得很吃力。",
+			"en": "At this moment Rozhestvensky lies in Buiny, badly wounded in the head, drifting in and out of consciousness, knowing almost nothing of his fleet. Buiny's engines are failing too, and she struggles to keep up.",
+			"look": {
+				"ships": [
+					"buinyi"
+				],
+				"lens": 42.0
+			},
+			"retimed_from": 352.0,
+			"voice": "t352"
+		},
+		{
+			"t": 348.73,
+			"duration": 2.0,
+			"category": "struck",
+			"zh": "七點二十八分前後，富士號命中博羅季諾。",
+			"en": "",
+			"look": {
+				"ships": [
+					"fuji",
+					"borodino"
+				]
+			},
+			"happens": [
+				{
+					"kind": "duel",
+					"by": "fuji",
+					"at": "borodino",
+					"when": 0.4,
+					"explosion": 3.0
+				}
+			],
+			"retimed_from": 356.0,
+			"voice": "t356"
+		},
+		{
+			"t": 349.6,
+			"duration": 1.0,
+			"category": "sinking",
+			"zh": "博羅季諾號發生大爆炸，隨即翻沉。八百多名艦員裡，只有一名水兵活了下來。",
+			"en": "Around 7:28 a single hit from Fuji sets off a huge explosion in Borodino, and she turns over at once. Of more than eight hundred men, one sailor survives.",
+			"look": {
+				"ships": [
+					"borodino"
+				],
+				"distance": 1.2,
+				"height": -1.0
+			},
+			"happens": [
+				{
+					"kind": "sinking",
+					"ship": "borodino",
+					"when": "track",
+					"capsizes": true
+				}
+			],
+			"retimed_from": 358.0,
+			"voice": "t358"
+		},
+		{
+			"t": 349.65,
+			"duration": 3.0,
+			"category": "sinking",
+			"zh": "幾乎同時，日本魚雷艇圍住蘇沃洛夫號，連中幾枚魚雷，這艘旗艦終於翻沉。留在船上的人無一生還，它單艦撐了將近五個小時。",
+			"en": "Almost at the same time Japanese torpedo boats close round Suvorov. Several torpedoes hit and the flagship finally capsizes. No one left aboard survives; she held out alone for nearly five hours.",
+			"look": {
+				"ships": [
+					"knyaz_suvorov"
+				],
+				"height": -1.0
+			},
+			"happens": [
+				{
+					"kind": "torpedo",
+					"by": "tb_72",
+					"at": "knyaz_suvorov",
+					"hit": true,
+					"when": 0.35,
+					"companions": 2.0
+				},
+				{
+					"kind": "sinking",
+					"ship": "knyaz_suvorov",
+					"when": "track",
+					"capsizes": true
+				}
+			],
+			"retimed_from": 359.0,
+			"voice": "t359"
+		},
+		{
+			"t": 362.0,
+			"duration": 5.0,
+			"category": "overall",
+			"zh": "天黑，白天的交戰到此為止。俄方八艘戰艦已經沉了四艘，其中三艘是博羅季諾級。日方主力撤向北方，夜戰由魚雷艇接手。",
+			"en": "Darkness ends the day's fighting. Four of Russia's eight battleships are sunk, three of them Borodino class. The Japanese main body withdraws north and the torpedo craft take over.",
+			"look": {
+				"ships": [
+					"mikasa",
+					"shikishima",
+					"fuji",
+					"asahi"
+				],
+				"frame": "local"
+			}
+		},
+		{
+			"t": 367.1,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "夜戰交給小艇：驅逐艦二十一艘，魚雷艇四十多艘，從東、南、西幾個方向輪番進攻。它們白天大多沒有參戰，就是留到晚上用。",
+			"en": "The night belongs to the small craft: twenty-one destroyers and over forty torpedo boats attacking in relays from the east, south and west. Most sat out the day, kept for tonight.",
+			"look": {
+				"ships": [
+					"ikazuchi",
+					"inazuma",
+					"oboro",
+					"akebono",
+					"sazanami"
+				]
+			},
+			"retimed_from": 367.0,
+			"voice": "t367"
+		},
+		{
+			"t": 372.2,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "驅逐艦和魚雷艇的分化在當時才剛剛開始。魚雷艇一般一百多噸，適合近海；驅逐艦三百多噸，本來是用來獵殺魚雷艇的，自己也帶魚雷，更勝任遠洋航行，她們逐漸在艦隊中取代魚雷艇的作用，并且成爲一種多功能艦艇。",
+			"en": "What separates a destroyer from a torpedo boat? Torpedo boats are small, around a hundred tons, for coastal waters; destroyers are over three hundred tons, make about thirty knots, were built to hunt torpedo boats, and carry torpedoes themselves.",
+			"look": {
+				"ships": [
+					"ikazuchi",
+					"inazuma"
+				],
+				"lens": 42.0
+			},
+			"retimed_from": 372.0,
+			"voice": "t372"
+		},
+		{
+			"t": 377.29,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "天黑以後，俄艦一度轉向西南，避開魚雷艇的來向，隨後又轉回東北。這時實際帶隊的，已經是涅博加托夫的尼古拉一世號。",
+			"en": "After dark the Russians turn southwest for a while to avoid the torpedo craft, then back to the northeast. The ship actually leading now is Nebogatov's Nikolai I.",
+			"look": {
+				"ships": [
+					"imperator_nikolai_i",
+					"oryol",
+					"admiral_senyavin",
+					"general_admiral_apraksin"
+				]
+			},
+			"retimed_from": 377.0,
+			"voice": "t377"
+		},
+		{
+			"t": 382.39,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "三百噸的驅逐艦在大浪裡顛簸，甲板上全是水。攻擊時要衝到幾百米內才發射。",
+			"en": "Night is hard on the small craft. A three-hundred-ton destroyer pitches in the swell, her deck awash, her crew on standby since morning. To attack they must run in to a few hundred metres before firing.",
+			"look": {
+				"ships": [
+					"ikazuchi"
+				]
+			},
+			"retimed_from": 382.0,
+			"voice": "t382"
+		},
+		{
+			"t": 387.49,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "當時的魚雷靠壓縮空氣驅動，航速二十多節，有效射程一般不到一千米。距離一遠，目標一轉向就很難命中，所以魚雷艇必須冒著砲火貼近。",
+			"en": "A torpedo runs on compressed air at a little over twenty knots, with an effective range usually under a kilometre. At longer range a single turn by the target makes a hit unlikely, so the boats must close under fire.",
+			"look": {
+				"ships": [
+					"ikazuchi"
+				],
+				"distance": 0.7
+			},
+			"retimed_from": 387.0,
+			"voice": "t387"
+		},
+		{
+			"t": 397.69,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "日方魚雷艇一般兩到四艘編成一組，瞄準俄艦的前方斜著切入。迎頭接近速度快，暴露在砲火下的時間短，比從後面追安全。",
+			"en": "Japanese torpedo boats usually work in groups of two to four, cutting in at an angle ahead of the Russian ships. Coming in head-on closes the range fast and cuts the time under fire; it is safer than chasing from astern.",
+			"look": {
+				"ships": [
+					"ikazuchi",
+					"inazuma",
+					"oboro",
+					"akebono",
+					"sazanami"
+				]
+			},
+			"retimed_from": 397.0,
+			"voice": "t397"
+		},
+		{
+			"t": 402.78,
+			"duration": 5.0,
+			"category": "fleeing",
+			"zh": "八點前後，恩奎斯特帶著奧列格號、阿芙樂爾號和珍珠號三艘巡洋艦南撤。他說曾經幾次轉北，都被魚雷艇擋回，最後開到了馬尼拉。",
+			"en": "Around eight, Enkvist takes Oleg, Aurora and Zhemchug south. He said he tried several times to turn north but was driven back by torpedo boats; in the end the three cruisers reach Manila.",
+			"look": {
+				"ships": [
+					"oleg",
+					"aurora",
+					"zhemchug"
+				],
+				"lens": 42.0
+			},
+			"retimed_from": 402.0,
+			"voice": "t402"
+		},
+		{
+			"t": 407.88,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "國際法規定，參戰國的軍艦在中立港停留超過時限，就必須解除武裝，扣到戰爭結束。三艦就這樣被美國扣在馬尼拉。",
+			"en": "Why are ships held in a neutral port? Under international law a belligerent warship that stays past the time limit must disarm and be held until the war ends. So the United States interns the three cruisers at Manila.",
+			"look": {
+				"ships": [
+					"oleg",
+					"aurora",
+					"zhemchug"
+				]
+			},
+			"retimed_from": 407.0,
+			"voice": "t407"
+		},
+		{
+			"t": 412.98,
+			"duration": 4.0,
+			"category": "tactic",
+			"zh": "開探照燈、亂開砲的船最容易招來攻擊；熄燈航行的船，被找到的機會小得多。",
+			"en": "Tonight's pattern is clear: ships that use searchlights and fire wildly draw the most attacks; ships that run dark are far less likely to be found.",
+			"look": {
+				"ships": [
+					"sisoy_veliky"
+				],
+				"distance": 1.5
+			},
+			"retimed_from": 412.0,
+			"voice": "t412"
+		},
+		{
+			"t": 417.06,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "涅博加托夫的做法正是這樣：全隊熄燈，不開探照燈，不輕易開砲，排成緊密縱隊向東北航行。這支老艦分隊夜裡幾乎沒有損失。",
+			"en": "That is what Nebogatov does: every light out, no searchlights, no firing unless necessary, a tight column heading northeast. His squadron of old ships comes through the night almost untouched.",
+			"look": {
+				"ships": [
+					"imperator_nikolai_i",
+					"general_admiral_apraksin",
+					"admiral_senyavin",
+					"admiral_ushakov",
+					"oryol"
+				]
+			},
+			"happens": [
+				{
+					"kind": "mute",
+					"ships": [
+						"imperator_nikolai_i",
+						"general_admiral_apraksin",
+						"admiral_senyavin",
+						"admiral_ushakov",
+						"oryol"
+					]
+				}
+			],
+			"retimed_from": 416.0,
+			"voice": "t416"
+		},
+		{
+			"t": 417.09,
+			"duration": 5.0,
+			"category": "first_fire",
+			"zh": "第一波攻擊開始。西索伊大帝號打開探照燈搜索，朝一艘日本驅逐艦開砲。探照燈能照見敵艇，也等於把自己的位置告訴了所有魚雷艇。",
+			"en": "The first wave comes in. Sisoy Veliky switches on her searchlights and fires at a Japanese destroyer. A searchlight can find an enemy boat, but it also shows every torpedo boat where the ship is.",
+			"look": {
+				"ships": [
+					"sisoy_veliky",
+					"akebono"
+				],
+				"frame": "individual",
+				"from": "sisoy_veliky",
+				"toward": "akebono"
+			},
+			"happens": [
+				{
+					"kind": "searchlight",
+					"by": "sisoy_veliky",
+					"on": "kagero",
+					"seconds": 14.0,
+					"when": 0.1
+				},
+				{
+					"kind": "fire",
+					"by": "sisoy_veliky",
+					"at": "kagero",
+					"when": 0.4,
+					"all_guns": true
+				}
+			],
+			"retimed_from": 392.0
+		},
+		{
+			"t": 422.16,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "日方的損失包括：第三十四號、三十五號魚雷艇被俄艦砲火擊沉，第六十九號和自家驅逐艦相撞沉沒。這些就是聯合艦隊在這次史詩級大戰中僅有的沉沒艦隻",
+			"en": "The attackers pay a price too. Torpedo boats No. 34 and No. 35 are sunk by Russian gunfire, No. 69 sinks after colliding with a Japanese destroyer, and several other boats are damaged in collisions.",
+			"look": {
+				"ships": [
+					"ikazuchi",
+					"inazuma",
+					"oboro",
+					"akebono",
+					"sazanami"
+				]
+			},
+			"retimed_from": 421.0,
+			"voice": "t421"
+		},
+		{
+			"t": 431.33,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "受傷的俄艦為什麼紛紛駛向對馬島？靠近海岸水淺，萬一沉沒，艦員容易上岸，運氣好還能擱淺保住船。這些船無論如何已經開不到海參崴了。",
+			"en": "Why do the damaged Russian ships all head for Tsushima? Near the coast the water is shallow: if a ship sinks her crew can get ashore, and with luck she can be beached and saved. The badly damaged can no longer reach Vladivostok.",
+			"look": {
+				"ships": [
+					"sisoy_veliky"
+				]
+			},
+			"retimed_from": 430.0,
+			"voice": "t430"
+		},
+		{
+			"t": 436.43,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "小型魚雷艇每次出擊只帶兩三枚魚雷，在海上裝填不了，打完就得退出補給。所以夜戰只能分批輪番進攻，很難一次解決問題。",
+			"en": "A small torpedo boat carries only two or three torpedoes and cannot reload at sea; once they are fired it must withdraw to rearm. So night attacks come in relays and rarely settle things at one stroke.",
+			"look": {
+				"ships": [
+					"akebono"
+				]
+			},
+			"retimed_from": 435.0,
+			"voice": "t435"
+		},
+		{
+			"t": 445.61,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "俄方官兵從清晨起就在戰位上，十幾個小時沒有休息，很多人一整天沒吃東西。疲勞到這種地步，判斷力明顯下降，敵我識別經常出錯。",
+			"en": "The Russian crews have been at their stations since dawn, over twelve hours without rest, many with nothing to eat all day. Fatigue like this dulls judgement, and friend and foe are often confused.",
+			"look": {
+				"ships": [
+					"oryol"
+				]
+			},
+			"retimed_from": 444.0,
+			"voice": "t444"
+		},
+		{
+			"t": 450.71,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "弗拉基米爾·莫諾馬赫號是一八八〇年代的老巡洋艦，白天負責掩護運輸船，在南邊和日本巡洋艦交過火，夜裡跟著大隊北上。",
+			"en": "Vladimir Monomakh is an old cruiser from the 1880s. By day she covered the transports and exchanged fire with Japanese cruisers to the south; now she follows the main body north.",
+			"look": {
+				"ships": [
+					"vladimir_monomakh"
+				]
+			},
+			"retimed_from": 449.0,
+			"voice": "t449"
+		},
+		{
+			"t": 459.88,
+			"duration": 4.0,
+			"category": "tactic",
+			"zh": "日方夜戰的目的，不只是擊沉，更是把俄艦隊衝散。散開的船互相支援不了，天亮以後，日方主力就能逐個攔截。",
+			"en": "Japan's aim in the night is not only to sink ships but to break up the Russian fleet. Scattered ships cannot support each other, and at daylight the Japanese main body can intercept them one by one.",
+			"look": {
+				"ships": [
+					"ikazuchi",
+					"inazuma",
+					"oboro",
+					"akebono",
+					"sazanami"
+				]
+			},
+			"retimed_from": 458.0,
+			"voice": "t458"
+		},
+		{
+			"t": 463.96,
+			"duration": 4.0,
+			"category": "tactic",
+			"zh": "老戰艦納瓦林號是一八九一年造的，排水量13700噸，四根煙囪呈方形布置。被戲稱為工廠。白天它已經中彈多發，航速越來越慢，漸漸落在後面。",
+			"en": "The old battleship Navarin was built in 1891, her four funnels arranged in a square. Hit several times by day, she is getting slower and falling behind.",
+			"look": {
+				"ships": [
+					"navarin"
+				]
+			},
+			"retimed_from": 462.0,
+			"voice": "t462"
+		},
+		{
+			"t": 469.6,
+			"duration": 4.0,
+			"category": "struck",
+			"zh": "戰列艦西索伊大帝號開著探照燈，艦尾挨了日本魚雷艇一枚魚雷，舵機損壞，只能脫離隊伍，轉向對馬島。",
+			"en": "Sisoy Veliky, searchlights on, takes a torpedo from a Japanese torpedo boat in the stern. Her steering wrecked, she has to leave the line and turn for Tsushima.",
+			"look": {
+				"ships": [
+					"sisoy_veliky"
+				],
+				"distance": 1.2
+			},
+			"happens": [
+				{
+					"kind": "torpedo",
+					"by": "aotaka",
+					"at": "sisoy_veliky",
+					"hit": true,
+					"when": 0.4,
+					"companions": 1.0
+				},
+				{
+					"kind": "flooding",
+					"ship": "sisoy_veliky",
+					"where": "stern",
+					"severity": 0.5
+				}
+			],
+			"retimed_from": 426.0
+		},
+		{
+			"t": 469.7,
+			"duration": 5.0,
+			"category": "struck",
+			"zh": "日本魚雷艇的魚雷打中納瓦林號。艦員停船搶修，用木板和水泥袋堵漏，可船身已經嚴重傾斜，航速只剩幾節，徹底掉了隊。",
+			"en": "A torpedo from a Japanese torpedo boat hits Navarin. Her crew stop to plug the holes with timber and bags of cement, but she is already listing badly, down to a few knots, and has dropped out of the line.",
+			"look": {
+				"ships": [
+					"navarin"
+				]
+			},
+			"happens": [
+				{
+					"kind": "torpedo",
+					"by": "hato",
+					"at": "navarin",
+					"hit": true,
+					"when": 0.4,
+					"companions": 1.0
+				},
+				{
+					"kind": "flooding",
+					"ship": "navarin",
+					"where": "port",
+					"severity": 0.6
+				}
+			],
+			"retimed_from": 466.0
+		},
+		{
+			"t": 473.14,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "日方還有一種秘密武器，叫連繫水雷。兩枚水雷之間用長纜繩相連，投放在敵艦航路上，艦首一掛住纜繩，水雷就被拖到船身兩側爆炸。",
+			"en": "Japan has another secret weapon: linked mines. Two mines joined by a long cable are dropped across an enemy's path; when a bow catches the cable, the mines are dragged against both sides of the hull and explode.",
+			"look": {
+				"ships": [
+					"ikazuchi",
+					"inazuma",
+					"oboro",
+					"akebono",
+					"sazanami"
+				]
+			},
+			"retimed_from": 471.0,
+			"voice": "t471"
+		},
+		{
+			"t": 477.45,
+			"duration": 4.0,
+			"category": "struck",
+			"zh": "納希莫夫海軍上將號是一艘老式裝甲巡洋艦，打開探照燈幾分鐘後，艦首就挨了魚雷，靠抽水勉強撐住，同樣駛向對馬島。",
+			"en": "Admiral Nakhimov, an old armoured cruiser, switches on her searchlights and minutes later takes a torpedo in the bow. Kept afloat by her pumps, she too heads for Tsushima.",
+			"look": {
+				"ships": [
+					"admiral_nakhimov"
+				],
+				"distance": 1.2
+			},
+			"happens": [
+				{
+					"kind": "searchlight",
+					"by": "admiral_nakhimov",
+					"on": "tb_34",
+					"seconds": 12.0,
+					"when": 0.1
+				},
+				{
+					"kind": "torpedo",
+					"by": "tb_34",
+					"at": "admiral_nakhimov",
+					"hit": true,
+					"when": 0.55,
+					"companions": 1.0
+				},
+				{
+					"kind": "flooding",
+					"ship": "admiral_nakhimov",
+					"where": "bow",
+					"severity": 0.5
+				}
+			],
+			"retimed_from": 440.0,
+			"voice": "t440"
+		},
+		{
+			"t": 477.55,
+			"duration": 4.0,
+			"category": "struck",
+			"zh": "日本魚雷艇逼近時，莫諾馬赫號誤以為是自己人，沒有及時開火，結果中了魚雷，同樣駛向對馬島。",
+			"en": "As a Japanese torpedo boat closes, Monomakh takes it for one of her own and holds fire. She is hit by a torpedo and she too turns for Tsushima.",
+			"look": {
+				"ships": [
+					"vladimir_monomakh"
+				]
+			},
+			"happens": [
+				{
+					"kind": "torpedo",
+					"by": "tb_31",
+					"at": "vladimir_monomakh",
+					"hit": true,
+					"when": 0.45
+				},
+				{
+					"kind": "flooding",
+					"ship": "vladimir_monomakh",
+					"where": "bow",
+					"severity": 0.5
+				}
+			],
+			"retimed_from": 454.0
+		},
+		{
+			"t": 478.24,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "魚雷攻擊輪番進行，一直持續到半夜。俄艦朝浪花、朝黑影開砲，砲口的火光反過來又暴露了自己的位置。",
+			"en": "The torpedo attacks come in relays until midnight. The Russians fire at breaking waves and dark shapes, and their muzzle flashes give their positions away again.",
+			"look": {
+				"ships": [
+					"oryol"
+				],
+				"distance": 1.6
+			},
+			"retimed_from": 476.0,
+			"voice": "t476"
+		},
+		{
+			"t": 483.33,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "西南來的湧浪對雙方都不利。魚雷艇顛簸得厲害，很難瞄準，魚雷在大浪裡容易跑偏。俄艦搖晃，探照燈也照不穩。",
+			"en": "The southwesterly swell hurts both sides. The torpedo boats pitch so badly they can hardly aim, and torpedoes run wild in the heavy sea. The Russian ships roll, and their searchlights cannot hold steady.",
+			"look": {
+				"ships": [
+					"akebono"
+				],
+				"distance": 0.8,
+				"height": 3.0
+			},
+			"retimed_from": 481.0,
+			"voice": "t481"
+		},
+		{
+			"t": 488.43,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "一夜下來，西索伊大帝號、納希莫夫號、莫諾馬赫號和納瓦林號四艘俄艦遭到重創。魚雷命中率不高，但對老艦來說，一發就可能致命。",
+			"en": "By the end of the night four Russian ships are badly damaged: Sisoy Veliky, Nakhimov, Monomakh and Navarin. The hit rate is low, but for an old ship one hit can be fatal.",
+			"look": {
+				"ships": [
+					"sisoy_veliky"
+				],
+				"distance": 1.4
+			},
+			"retimed_from": 486.0,
+			"voice": "t486"
+		},
+		{
+			"t": 493.53,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "巡洋艦綠寶石號設計航速二十四節，是分隊裡最快的船。但它按命令跟著涅博加托夫的老艦，保持同樣的慢速。",
+			"en": "The cruiser Izumrud was designed for twenty-four knots, the fastest ship in the squadron. But under orders she keeps station with Nebogatov's old ships at their slow speed.",
+			"look": {
+				"ships": [
+					"izumrud"
+				]
+			},
+			"retimed_from": 491.0,
+			"voice": "t491"
+		},
+		{
+			"t": 498.63,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "熄燈航行的命令不好執行：遠處自己人在燃燒、在求救，這邊既不能停船，也不能亮燈。涅博加托夫的分隊整夜照做，天亮時隊形基本完整。",
+			"en": "Running dark is a hard order to keep: your own ships burning and calling for help in the distance, and you may neither stop nor show a light. Nebogatov's squadron keeps to it all night and is still in formation at dawn.",
+			"look": {
+				"ships": [
+					"imperator_nikolai_i",
+					"izumrud"
+				]
+			},
+			"retimed_from": 496.0,
+			"voice": "t496"
+		},
+		{
+			"t": 503.73,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "東鄉的主力天黑後沒有再開砲，一路北上到鬱陵島附近集結。他的判斷是：俄艦不管怎麼散，天亮後想去海參崴，都得經過這片海面。",
+			"en": "Togo's main body has not fired since dark; it is heading north to gather near Ulleungdo. His reasoning: however the Russians scatter, any ship making for Vladivostok at daybreak must pass through these waters.",
+			"voice": "t536",
+			"look": {
+				"ships": [
+					"mikasa",
+					"shikishima",
+					"fuji",
+					"asahi"
+				]
+			},
+			"retimed_from": 501.0
+		},
+		{
+			"t": 508.82,
+			"duration": 5.0,
+			"category": "struck",
+			"zh": "西邊，受傷的西索伊大帝號和納希莫夫號朝對馬島慢慢開。一艘艦尾進水，一艘艦首進水，抽水機停不下來，水位還在上漲。",
+			"en": "To the west the damaged Sisoy Veliky and Nakhimov crawl toward Tsushima, one flooding aft, one forward. The pumps cannot stop, and still the water rises.",
+			"voice": "t541",
+			"look": {
+				"ships": [
+					"sisoy_veliky",
+					"admiral_nakhimov"
+				]
+			},
+			"happens": [
+				{
+					"kind": "flooding",
+					"ship": "sisoy_veliky",
+					"where": "stern",
+					"severity": 0.8
+				}
+			],
+			"retimed_from": 506.0
+		},
+		{
+			"t": 513.92,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "鷹號跟著涅博加托夫夜航。艦上的火已經撲滅，下層艙室擠滿傷員，多數砲位已經損壞，但輪機完好，還能跟上十節左右的隊速。",
+			"en": "Oryol follows Nebogatov through the night. Her fires are out and her lower decks are full of wounded; most gun positions are wrecked, but her engines are sound and she can keep up the squadron's ten knots.",
+			"voice": "t556",
+			"look": {
+				"ships": [
+					"oryol"
+				]
+			},
+			"retimed_from": 511.0
+		},
+		{
+			"t": 519.02,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "恩奎斯特帶著三艘巡洋艦一路向南，沒有被日艦追上。奧列格號鍋爐受損，速度受限。他們放棄了海參崴，選擇保全軍艦和人員。",
+			"en": "Enkvist leads his three cruisers south, and no Japanese ship catches them. Oleg's boilers are damaged, limiting her speed. They have given up on Vladivostok and chosen to save their ships and men.",
+			"voice": "t596",
+			"look": {
+				"ships": [
+					"oleg",
+					"aurora",
+					"zhemchug"
+				]
+			},
+			"retimed_from": 516.0
+		},
+		{
+			"t": 524.12,
+			"duration": 10.0,
+			"category": "tactic",
+			"zh": "說說火砲。雙方戰艦的主砲都是十二吋，一發三百多公斤。但這時的射擊指揮才剛起步，重砲打得慢，也不容易打中；一發一發數下來，白天落在俄艦身上的，大多是日方數量多得多的六吋、八吋速射砲。",
+			"en": "A word on the guns. Both sides' battleships carry twelve-inch main guns firing shells of over three hundred kilograms. But fire control is only just beginning: the big guns fire slowly and seldom hit. Counted shell by shell, most of what lands on the Russian ships by day comes from Japan's far more numerous six- and eight-inch quick-firers.",
+			"voice": "t531",
+			"look": {
+				"ships": [
+					"oryol"
+				],
+				"distance": 0.7
+			},
+			"retimed_from": 521.0
+		},
+		{
+			"t": 534.31,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "半夜以後，攻擊逐漸停止。俄艦已分散成幾群，彼此看不到，也無法聯絡。到海參崴還有五百海里左右，按十節算要走兩天。",
+			"en": "After midnight the attacks die down. The Russians are split into several groups that cannot see or contact each other. Vladivostok is still about five hundred nautical miles away, two days at ten knots.",
+			"voice": "t506",
+			"look": {
+				"ships": [
+					"imperator_nikolai_i",
+					"oryol",
+					"admiral_senyavin",
+					"general_admiral_apraksin"
+				],
+				"distance": 1.5
+			},
+			"retimed_from": 531.0
+		},
+		{
+			"t": 539.41,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "俄方戰前的命令只有一條：航向北偏東二十三度，去海參崴。沒有規定打散後在哪裡會合，隊形一散，各艦只能自己決定去向。",
+			"en": "The Russian pre-battle order had one line: course north 23 degrees east, to Vladivostok. It set no rendezvous for a scattered fleet, so once the formation breaks, each ship must decide for itself.",
+			"voice": "t521",
+			"look": {
+				"ships": [
+					"dmitrii_donskoi"
+				]
+			},
+			"retimed_from": 536.0
+		},
+		{
+			"t": 544.51,
+			"duration": 5.0,
+			"category": "fleeing",
+			"zh": "巡洋艦斯維特蘭娜號和驅逐艦貝斯特雷號、別茲烏普列奇內號掉了隊，和大隊失去聯絡。等到天亮，它們會分別碰上日本巡洋艦。",
+			"en": "The cruiser Svetlana and the destroyers Bystry and Bezuprechny have fallen behind and lost touch with the main body. After daybreak each will run into Japanese cruisers.",
+			"voice": "t516",
+			"look": {
+				"ships": [
+					"svetlana",
+					"bystry",
+					"bezuprechny"
+				]
+			},
+			"retimed_from": 541.0
+		},
+		{
+			"t": 549.61,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "驅逐艦布拉維號和格羅茲尼號各自北上。整個艦隊裡，最後開進海參崴的只有它們兩艘和小巡洋艦阿爾馬茲號。",
+			"en": "The destroyers Bravy and Grozny head north on their own. Of the whole fleet, only these two and the small cruiser Almaz will actually reach Vladivostok.",
+			"voice": "t511",
+			"look": {
+				"ships": [
+					"bravy",
+					"grozny"
+				],
+				"lens": 42.0
+			},
+			"retimed_from": 546.0
+		},
+		{
+			"t": 554.71,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "頓河的德米特里號是一八八〇年代的老巡洋艦，航速慢。它原本跟著恩奎斯特，南撤時沒跟上，只好改為單獨向北，艙裡擠著救上來的人。",
+			"en": "Dmitrii Donskoi is an old, slow cruiser from the 1880s. She had been following Enkvist but could not keep up when he turned south, so she heads north alone, with rescued men crowded below.",
+			"voice": "t526",
+			"look": {
+				"ships": [
+					"dmitrii_donskoi"
+				]
+			},
+			"retimed_from": 551.0
+		},
+		{
+			"t": 559.8,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "就算開進海參崴又如何？那裡冬季港口結冰，船塢容量有限，大型戰艦修理困難。但只要有艦隊在那裡，日本就得分出兵力盯著。",
+			"en": "And if they did reach Vladivostok? The harbour freezes in winter and dock space is limited, so repairing big ships is hard. But as long as a fleet is there, Japan must keep forces watching it.",
+			"voice": "t586",
+			"look": {
+				"ships": [
+					"imperator_nikolai_i",
+					"oryol",
+					"admiral_senyavin",
+					"general_admiral_apraksin"
+				]
+			},
+			"retimed_from": 556.0
+		},
+		{
+			"t": 564.9,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "這背後是「存在艦隊」的道理：艦隊不一定要出戰，只要存在，就能牽制對手。所以日方的目標不是打散，而是盡量全殲。",
+			"en": "Behind this is the idea of a \"fleet in being\": a fleet need not come out to fight; merely existing, it ties down the enemy. So Japan's aim is not to scatter the Russians but to destroy as many as possible.",
+			"voice": "t591",
+			"look": {
+				"ships": [
+					"imperator_nikolai_i"
+				],
+				"distance": 2.0
+			},
+			"retimed_from": 561.0
+		},
+		{
+			"t": 570.0,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "接下來畫面加快：從半夜到次日上午的十一個多小時，會快速帶過。海上的俄艦這一夜各走各的，有的逃脫，有的沉沒，有的投降。",
+			"en": "From here the picture speeds up: the eleven-plus hours from midnight to the next morning pass quickly. The Russian ships go their own ways this night: some escape, some sink, some surrender.",
+			"look": {
+				"ships": [
+					"imperator_nikolai_i",
+					"oryol",
+					"admiral_senyavin",
+					"general_admiral_apraksin"
+				],
+				"distance": 1.4,
+				"height": 20.0
+			},
+			"retimed_from": 566.0,
+			"voice": "t566"
+		},
+		{
+			"t": 577.69,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "這一仗日本輸不起。陸軍主力在中國東北，兵員和物資都得靠海運。俄艦只要有幾艘開進海參崴，日本的海上運輸線就始終受威脅。",
+			"en": "Japan cannot afford to lose this battle. Its main army is in Manchuria, and men and supplies all go by sea. If even a few Russian ships reach Vladivostok, Japan's sea lanes will never be safe.",
+			"voice": "t546",
+			"look": {
+				"ships": [
+					"mikasa",
+					"shikishima",
+					"fuji",
+					"asahi"
+				]
+			},
+			"retimed_from": 571.0
+		},
+		{
+			"t": 585.38,
+			"duration": 9.0,
+			"category": "tactic",
+			"zh": "俄國國內這時也不穩。一月彼得堡發生流血星期日，軍隊向請願工人開槍，各地工潮此起彼伏。沙皇政府急需一場勝利，也需要體面地結束戰爭。",
+			"en": "Russia is unsettled at home too. In January came Bloody Sunday in St Petersburg, troops firing on petitioning workers, and strikes keep breaking out. The Tsar's government badly needs a victory, and a dignified way out of the war.",
+			"voice": "t551",
+			"look": {
+				"ships": [
+					"imperator_nikolai_i"
+				],
+				"distance": 1.6
+			},
+			"retimed_from": 576.0
+		},
+		{
+			"t": 599.23,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "再說這趟遠航。途中在馬達加斯加一停就是兩個多月，等援兵，也等聖彼得堡的命令。熱帶高溫、疾病和煩悶，消耗了官兵不少體力和士氣。",
+			"en": "Consider the voyage. On the way the fleet sat at Madagascar for over two months, waiting for reinforcements and for orders from St Petersburg. Tropical heat, sickness and boredom wore down the men's strength and morale.",
+			"voice": "t561",
+			"look": {
+				"ships": [
+					"imperator_nikolai_i",
+					"oryol",
+					"admiral_senyavin",
+					"general_admiral_apraksin"
+				]
+			},
+			"retimed_from": 585.0
+		},
+		{
+			"t": 606.92,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "岸防艦原本是為波羅的海近岸作戰設計的，排水量四千多噸，乾舷低，遠洋航行很吃力。讓它們跑一萬八千海里來打決戰，本身就很勉強。",
+			"en": "Coast-defence ships were designed for inshore work in the Baltic: some four thousand tons, low freeboard, hard-pressed on the open sea. Sending them eighteen thousand miles to a decisive battle was a stretch from the start.",
+			"voice": "t634",
+			"look": {
+				"ships": [
+					"admiral_senyavin",
+					"general_admiral_apraksin"
+				]
+			},
+			"retimed_from": 590.0
+		},
+		{
+			"t": 614.62,
+			"duration": 10.0,
+			"category": "tactic",
+			"zh": "西索伊大帝號艦尾越來越低，舵機失靈，只能靠左右主機控制方向。艦員把傷員都抬到甲板上，做好棄船準備。",
+			"en": "Sisoy Veliky sinks lower by the stern. Her steering gone, she can only steer with her two engines. The crew carry the wounded up on deck, ready to abandon ship.",
+			"voice": "t581",
+			"look": {
+				"ships": [
+					"sisoy_veliky"
+				]
+			},
+			"retimed_from": 595.0
+		},
+		{
+			"t": 630.0,
+			"duration": 4.0,
+			"category": "tactic",
+			"zh": "半夜，日本第四驅逐隊找到了落在後面的納瓦林號。據日方記錄，他們沒有直接衝，而是搶到前方，在它的航路上投放連繫水雷。",
+			"en": "At midnight Japan's 4th Destroyer Division finds the straggling Navarin. According to Japanese records they do not charge in, but get ahead of her and lay linked mines across her path.",
+			"look": {
+				"ships": [
+					"navarin"
+				]
+			},
+			"retimed_from": 605.0,
+			"voice": "t605"
+		},
+		{
+			"t": 807.5,
+			"duration": 5.0,
+			"category": "sinking",
+			"zh": "凌晨兩點前後，納瓦林號連續發生爆炸，很快翻沉。艦上六百多名官兵，只有三人獲救。致命的是水雷還是魚雷，日俄雙方說法不同。",
+			"en": "Around 2 am Navarin is shaken by explosions and quickly turns over. Of more than six hundred aboard, three are saved. Whether mines or torpedoes did it, Japanese and Russian accounts disagree.",
+			"look": {
+				"ships": [
+					"navarin"
+				],
+				"height": -1.0
+			},
+			"happens": [
+				{
+					"kind": "hit",
+					"by": "",
+					"at": "navarin",
+					"when": 0.0,
+					"explosion": 3.0
+				},
+				{
+					"kind": "sinking",
+					"ship": "navarin",
+					"delay": 2.5,
+					"capsizes": true
+				}
+			],
+			"retimed_from": 609.0,
+			"voice": "t609"
+		},
+		{
+			"t": 853.75,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "日方戰報寫的是連繫水雷，俄方倖存者記得的是魚雷。連繫水雷當年屬於機密，戰後日本長期不公開，這讓事實更難核對。",
+			"en": "Japanese reports say linked mines; Russian survivors remembered torpedoes. The linked mine was secret at the time and Japan kept it unpublished long after the war, which makes the facts harder to check.",
+			"look": {
+				"ships": [
+					"navarin"
+				],
+				"distance": 1.2
+			},
+			"retimed_from": 614.0,
+			"voice": "t614"
+		},
+		{
+			"t": 900.0,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "天快亮了。涅博加托夫手下還剩五艘：尼古拉一世號、鷹號、兩艘岸防艦和綠寶石號。隊速只有十節上下，離海參崴還有三百多海里。",
+			"en": "Dawn is near. Nebogatov has five ships left: Nikolai I, Oryol, two coast-defence ships and Izumrud. The squadron makes only about ten knots, with Vladivostok still over three hundred nautical miles off.",
+			"voice": "t624",
+			"look": {
+				"ships": [
+					"imperator_nikolai_i",
+					"oryol",
+					"admiral_senyavin",
+					"general_admiral_apraksin",
+					"izumrud"
+				]
+			},
+			"retimed_from": 619.0
+		},
+		{
+			"t": 930.0,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "天一亮，日方各分隊散開搜索，範圍從朝鮮沿岸一直到日本海中部。俄艦的位置一個接一個報上來，東鄉據此調動主力。",
+			"en": "At first light the Japanese divisions fan out to search, from the Korean coast to the middle of the Sea of Japan. Russian positions come in one after another, and Togo moves his main body accordingly.",
+			"voice": "t644",
+			"look": {
+				"ships": [
+					"mikasa",
+					"shikishima",
+					"fuji",
+					"asahi"
+				]
+			},
+			"retimed_from": 624.0
+		},
+		{
+			"t": 950.0,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "五點過後，涅博加托夫的分隊發現遠方有煙。起初是幾艘日本巡洋艦，接著艦影越來越多，從幾個方向逐漸靠近。",
+			"en": "After five, Nebogatov's squadron sees smoke in the distance. First a few Japanese cruisers, then more and more ships, closing in from several directions.",
+			"voice": "t649",
+			"look": {
+				"ships": [
+					"imperator_nikolai_i",
+					"oryol",
+					"admiral_senyavin",
+					"general_admiral_apraksin"
+				]
+			},
+			"retimed_from": 629.0
+		},
+		{
+			"t": 1043.33,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "清晨，布伊內號機器故障，羅傑斯特文斯基被轉到驅逐艦別多維號上。布伊內號隨後由頓河的德米特里號用砲擊沉，以免落入日方手中。",
+			"en": "In the early morning Buiny's engines break down and Rozhestvensky is moved to the destroyer Bedovy. Buiny is then sunk by Dmitrii Donskoi's guns so she will not fall into Japanese hands.",
+			"voice": "t674",
+			"look": {
+				"ships": [
+					"buinyi"
+				]
+			},
+			"retimed_from": 634.0
+		},
+		{
+			"t": 1136.67,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "伊爾提什號運輸船白天中彈進水，夜裡勉強向東開，天亮後在日本本州沿岸沉沒，船員乘救生艇登岸後被俘。",
+			"en": "The transport Irtysh, holed by gunfire in the day, struggles east through the night. After dawn she sinks off the coast of Honshu, and her crew land in the boats and are taken prisoner.",
+			"voice": "t601",
+			"look": {
+				"ships": [
+					"irtysh"
+				]
+			},
+			"retimed_from": 639.0
+		},
+		{
+			"t": 1230.0,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "日方主力趕到：東鄉的戰艦、上村的裝甲巡洋艦，加上各巡洋艦分隊，分別占住俄艦前方和兩側。這是有計劃的合圍，不是單純追擊。",
+			"en": "The Japanese main force arrives: Togo's battleships, Kamimura's armoured cruisers and the cruiser divisions take station ahead of the Russians and on both sides. This is a planned encirclement, not just a chase.",
+			"voice": "t654",
+			"look": {
+				"ships": [
+					"mikasa",
+					"shikishima",
+					"fuji",
+					"asahi"
+				]
+			},
+			"retimed_from": 644.0
+		},
+		{
+			"t": 1237.0,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "涅博加托夫面對的是距離和速度問題。日艦航速比他快五節以上，可以停在他的有效射程外開砲；他追不上，也甩不掉。",
+			"en": "Nebogatov's problem is range and speed. The Japanese are more than five knots faster and can stay outside his effective range while firing; he can neither catch them nor get away.",
+			"voice": "t659",
+			"look": {
+				"ships": [
+					"imperator_nikolai_i",
+					"oryol",
+					"admiral_senyavin",
+					"general_admiral_apraksin"
+				]
+			},
+			"retimed_from": 649.0
+		},
+		{
+			"t": 1244.0,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "上午，日方二十多艘軍艦圍住涅博加托夫的分隊。兩天打下來，日方沒有損失一艘戰艦或巡洋艦，火力和彈藥都占絕對優勢。",
+			"en": "By mid-morning more than twenty Japanese warships surround Nebogatov's squadron. After two days of fighting Japan has not lost a single battleship or cruiser, and holds overwhelming superiority in firepower and ammunition.",
+			"voice": "t684",
+			"look": {
+				"ships": [
+					"imperator_nikolai_i",
+					"oryol",
+					"admiral_senyavin",
+					"general_admiral_apraksin"
+				],
+				"distance": 2.0,
+				"height": 20.0
+			},
+			"retimed_from": 654.0
+		},
+		{
+			"t": 1251.0,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "鷹號甲板上躺滿傷員，艦長榮格上校已經重傷，多數火砲不能射擊。對這艘船來說，再打一場砲戰，結果不難想像。",
+			"en": "Oryol's deck is covered with wounded, her captain, Jung, gravely wounded, and most of her guns unable to fire. For this ship the result of another gun battle is easy to foresee.",
+			"voice": "t689",
+			"look": {
+				"ships": [
+					"oryol"
+				]
+			},
+			"retimed_from": 659.0
+		},
+		{
+			"t": 1258.0,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "日艦在遠距離上首先開火。俄艦的舊砲很難還擊，日方卻可以按自己的節奏逐艘射擊。雙方都明白，這已經不是對等交戰。",
+			"en": "The Japanese open fire first, at long range. The Russians' old guns can hardly answer, while the Japanese can fire on one ship after another at their own pace. Both sides know this is no longer an even fight.",
+			"voice": "t694",
+			"look": {
+				"ships": [
+					"imperator_nikolai_i"
+				]
+			},
+			"happens": [
+				{
+					"kind": "fire",
+					"by": "mikasa",
+					"at": "imperator_nikolai_i",
+					"when": 0.3
+				}
+			],
+			"retimed_from": 664.0
+		},
+		{
+			"t": 1261.0,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "涅博加托夫的判斷是：打，火砲夠不著日艦；跑，航速差太多。四艘船上有兩千多名官兵，他認為繼續打只會白白送命。",
+			"en": "Nebogatov's reasoning: fight, and his guns cannot reach the Japanese; run, and he is far too slow. His four ships carry over two thousand men, and he believes fighting on would only throw their lives away.",
+			"voice": "t679",
+			"look": {
+				"ships": [
+					"imperator_nikolai_i"
+				]
+			},
+			"retimed_from": 669.0
+		},
+		{
+			"t": 1264.0,
+			"duration": 4.0,
+			"category": "famous_action",
+			"zh": "涅博加托夫的旗艦尼古拉一世號掛出投降信號。他說，責任他一人承擔，換兩千多人活命。回國後他被判死刑，後來減為監禁。",
+			"en": "Nebogatov's flagship Nikolai I hoists the surrender signal. He says he alone will bear the responsibility, in exchange for more than two thousand lives. At home he is sentenced to death, later reduced to imprisonment.",
+			"voice": "t699",
+			"look": {
+				"ships": [
+					"imperator_nikolai_i"
+				]
+			},
+			"retimed_from": 674.0
+		},
+		{
+			"t": 1267.0,
+			"duration": 4.0,
+			"category": "tactic",
+			"zh": "投降信號升起後，日艦沒有停火，因為俄艦仍在航行。按海上慣例，投降要停車才算數。俄艦停下，日方才停火。",
+			"en": "After the surrender signal goes up the Japanese keep firing, because the Russian ships are still under way. By the custom of the sea a surrender counts only when the ship stops. Once they stop, the Japanese cease fire.",
+			"voice": "t703",
+			"look": {
+				"ships": [
+					"imperator_nikolai_i"
+				],
+				"distance": 1.6
+			},
+			"retimed_from": 678.0
+		},
+		{
+			"t": 1270.0,
+			"duration": 3.0,
+			"category": "fleeing",
+			"zh": "綠寶石號沒有投降。艦長費爾森開足航速衝出包圍，甩掉了日艦。後來它在弗拉基米爾灣觸礁擱淺，被艦員自行炸毀。",
+			"en": "Izumrud does not surrender. Captain Ferzen goes to full speed, breaks out of the ring and outruns the Japanese. Later she runs aground in Vladimir Bay and is blown up by her own crew.",
+			"voice": "t707",
+			"look": {
+				"ships": [
+					"izumrud"
+				],
+				"distance": 1.2
+			},
+			"retimed_from": 682.0
+		},
+		{
+			"t": 1295.0,
+			"duration": 3.0,
+			"category": "sinking",
+			"zh": "夜裡受重創的三艘老艦，上午在對馬島附近自沉或沉沒：納希莫夫號、西索伊大帝號、莫諾馬赫號。斯維特蘭娜號也在朝鮮東岸外被擊沉。",
+			"en": "The three old ships crippled in the night are scuttled or sink near Tsushima during the morning: Nakhimov, Sisoy Veliky and Monomakh. Off Korea's east coast, Svetlana is sunk as well.",
+			"voice": "t713",
+			"look": {
+				"ships": [
+					"admiral_nakhimov",
+					"sisoy_veliky",
+					"vladimir_monomakh"
+				],
+				"height": -1.0
+			},
+			"retimed_from": 685.0
+		},
+		{
+			"t": 1373.46,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "驅逐艦別茲烏普列奇內號獨自北上。上午它被日方巡洋艦千歲號、驅逐艦有明號追上擊沉，艦上無人生還。",
+			"en": "The destroyer Bezuprechny heads north alone. In the morning the Japanese cruiser Chitose and destroyer Ariake catch and sink her, with no survivors.",
+			"voice": "t639",
+			"look": {
+				"ships": [
+					"bezuprechny"
+				]
+			},
+			"retimed_from": 688.0
+		},
+		{
+			"t": 1504.23,
+			"duration": 5.0,
+			"category": "fleeing",
+			"zh": "驅逐艦貝斯特雷號一路跟著斯維特蘭娜號，巡洋艦被擊沉以後，它無處可去。艦長索性讓船在朝鮮海岸擱淺，艦員上岸後炸毀艦艇。",
+			"en": "The destroyer Bystry has been following Svetlana; once the cruiser is sunk, she has nowhere to go. Her captain runs her aground on the Korean coast, and the crew go ashore and blow her up.",
+			"voice": "t619",
+			"look": {
+				"ships": [
+					"bystry"
+				]
+			},
+			"retimed_from": 693.0
+		},
+		{
+			"t": 1635.0,
+			"duration": 3.0,
+			"category": "famous_action",
+			"zh": "當天下午，驅逐艦別多維號被日本驅逐艦漣號追上，艦上載著羅傑斯特文斯基，一砲未發就升了白旗。俄艦隊司令就這樣成了俘虜。",
+			"en": "That afternoon the destroyer Bedovy, carrying Rozhestvensky, is caught by the Japanese destroyer Sazanami and hoists the white flag without firing a shot. The commander of the Russian fleet becomes a prisoner.",
+			"voice": "t710",
+			"look": {
+				"ships": [
+					"bedovy"
+				]
+			},
+			"retimed_from": 698.0
+		},
+		{
+			"t": 1720.0,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "水線下破損的烏沙科夫海軍上將號掉了隊。第二天下午，日艦磐手號、八雲號向它勸降，艦長米克盧哈下令開火，最後自沉。",
+			"en": "Holed below the waterline, Admiral Ushakov has fallen behind. Next afternoon the Japanese Iwate and Yakumo call on her to surrender; Captain Miklukha orders fire to be opened, and in the end she is scuttled.",
+			"voice": "t629",
+			"look": {
+				"ships": [
+					"admiral_ushakov"
+				]
+			},
+			"retimed_from": 701.0
+		},
+		{
+			"t": 1790.0,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "頓河的德米特里號這天傍晚在鬱陵島附近，被六艘日本巡洋艦和幾艘驅逐艦追上。它打傷了浪速號和音羽號，入夜擊退魚雷攻擊，第二天清晨自沉。",
+			"en": "That evening near Ulleungdo, Dmitrii Donskoi is caught by six Japanese cruisers and several destroyers. She damages Naniwa and Otowa, beats off torpedo attacks after dark, and is scuttled the next morning.",
+			"voice": "t664",
+			"look": {
+				"ships": [
+					"dmitrii_donskoi"
+				]
+			},
+			"retimed_from": 706.0
+		},
+		{
+			"t": 1805.0,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "常說對馬海戰催生了無畏號。其實英國的全重砲設計在海戰前已經定案。對馬正處在過渡期：重砲的射擊指揮剛開始管用，比黃海好一些，但遠不成熟，用砲打沉一艘戰艦往往要好幾個小時。十一年後的日德蘭，一發重砲彈打進彈藥庫，一艘戰列巡洋艦幾分鐘就沒了。",
+			"en": "It is often said Tsushima gave birth to HMS Dreadnought. In fact Britain's all-big-gun design was settled before the battle. Tsushima sits in a transition: fire control for the big guns is just beginning to work, a little better than at the Yalu but far from mature, and sinking a battleship with guns often takes hours. At Jutland eleven years later, one heavy shell reaching a magazine finishes a battlecruiser in minutes.",
+			"voice": "t669",
+			"look": {
+				"ships": [
+					"mikasa"
+				],
+				"distance": 0.9
+			},
+			"retimed_from": 711.0
+		},
+		{
+			"t": 1820.0,
+			"duration": 6.0,
+			"category": "overall",
+			"zh": "對馬海戰結束。俄方戰死五千多人，被俘六千多人，主力艦沉沒或被俘；日方戰死一百一十七人，損失三艘魚雷艇。三個多月後，日俄在美國簽訂和約。",
+			"en": "The Battle of Tsushima is over. Russia lost over five thousand dead and more than six thousand captured, its capital ships sunk or taken; Japan lost 117 dead and three torpedo boats. Just over three months later the two countries signed a peace treaty in the United States.",
+			"look": {
+				"ships": [
+					"imperator_nikolai_i",
+					"oryol",
+					"admiral_senyavin",
+					"general_admiral_apraksin"
+				],
+				"frame": "local",
+				"distance": 1.6,
+				"height": 15.0
+			},
+			"retimed_from": 716.0,
+			"voice": "t716"
+		}
+	]
+}

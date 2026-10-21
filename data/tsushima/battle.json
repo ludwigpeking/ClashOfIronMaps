@@ -1,0 +1,37 @@
+{
+ "id": "tsushima",
+ "title": "Tsushima",
+ "title_zh": "對馬海戰",
+ "clock_zero_minutes": 810,
+ "clock_zone": "JST",
+ "days": [
+  "27 May",
+  "28 May"
+ ],
+ "sides": [
+  {
+   "id": "japan",
+   "en": "Japanese",
+   "zh": "日本",
+   "ja": "日本"
+  },
+  {
+   "id": "russia",
+   "en": "Russian",
+   "zh": "俄國",
+   "ja": "ロシア"
+  }
+ ],
+ "view": {
+  "x": 0.0,
+  "y": -2.0,
+  "km_across": 70.0
+ },
+ "gun_reach_km": 14.0,
+ "torpedo_reach_km": 3.0,
+ "torpedo_km_per_minute": 0.803,
+ "searchlight_reach_km": 5.0,
+ "scuttled_by_own_side": {},
+ "default_underlay": "jacar_03_p06",
+ "reading_hint": "Dots are positions read off the Japanese official history's track charts (極秘 明治三十七八年海戦史, JACAR C05110095600, charts No.1-48) within three minutes of the shown time, red Japanese, blue Russian, faint where the reading is uncertain; a ringed dot is the selected ship's own mark. The Chart menu lays 37 of those charts under the map; each title gives how well it fits the coast (km). Times are JST. The coast is Natural Earth's 1:10m land. Hulls are to scale when zoomed in. Drag the map to pan, wheel or pinch to zoom."
+}

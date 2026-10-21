@@ -1,0 +1,29 @@
+{
+ "rule": "hulls touch (length and beam along the heading, 25 m margin), exact between samples",
+ "episodes": [
+  {
+   "ships": [
+    "guangbing",
+    "fulong"
+   ],
+   "sides": "same",
+   "from": 199.5,
+   "to": 203.0,
+   "closest_km": 0.001,
+   "needed_km": 0.068,
+   "at": 201.17
+  },
+  {
+   "ships": [
+    "yoshino",
+    "takachiho"
+   ],
+   "sides": "same",
+   "from": 283.0,
+   "to": 290.0,
+   "closest_km": 0.007,
+   "needed_km": 0.04,
+   "at": 286.62
+  }
+ ]
+}

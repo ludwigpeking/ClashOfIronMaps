@@ -1,0 +1,807 @@
+{
+	"_readme": [
+		"劇本第三式（2026-10-12）。一個事件只有三件事：台詞 line、看什麼 look、發生什麼 happens。電影剪輯（圖板 board、諸元卡 spec card、巡覽 tour、節奏 pacing）不在此檔，放在同目錄 film.json，只有拍片工具讀。遊戲內劇本編輯器（` 鍵）就是本檔的編輯介面。",
+		"Third form of the story (2026-10-12). An event is three things: the LINE, what we LOOK at, what HAPPENS. Film editing (boards, spec cards, tours, pacing) is NOT here: it lives in film.json beside this file and only the film tools read it. The in-game story editor (` key) edits this file.",
+		"line: t（戰場分鐘）、duration（分鐘）、category（字幕標題，不動鏡頭）、zh/en/tts、voice（錄音檔名）、voice_seconds（量測秒數，改台詞即清除）、silent（無聲事件：不看不說，只發生）、note。",
+		"look: ships（看哪些艦；空=全艦隊）、frame（auto/individual/local/overall）、distance（自動取景的倍數）、height（水平線上仰角度數；負數=水下）、bearing（鏡頭所在方位度數）、motion（sway/still/orbit/hover）、hover_height（公尺）、lens（鏡頭角度）、from/toward（機位艦、望向艦）、seaplane（乘水上飛機）。",
+		"happens: [{kind, ...}] kinds = fire(by,at,when) / hit(by,at,when,where,side,explosion,fire_level,fire_minutes; camera by the victim) / duel(same; camera follows the shell) / detonation(ship,when,breaks,station) / burning(ship,where,minutes,level) / flooding(ship,where,severity) / torpedo(by,at,hit,when,companions,combed,detonates,breaks,watch) / mute(minutes; 0 = rest of the replay) / sinking(ship,when here|track,delay,minutes,trim,list,capsizes,breaks) / searchlight(by,on,seconds,when) / starshell(over,count,seconds,when) / seaplane(near,when) / weather(visibility_km) / flagship(ships).",
+		"when = 事件時刻之後的戰場分鐘。霧氣與旗艦用無聲事件。工具：tools/story_format.py（check / migrate），引擎同規則在 demo/story_format.gd。"
+	],
+	"events": [
+		{
+			"t": 0.0,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "1894年，清日在朝鮮半島開戰，史稱甲午戰爭。九月，日軍攻占平壤。日本聯合艦隊出動大部分主力，在黃海上四處搜索，希望發現清軍運輸船隊或有生力量，兌現制海權。\n可以看出，日方對己方優勢頗有把握。",
+			"en": "In 1894 China and Japan go to war over Korea — the First Sino-Japanese War. In September the Japanese army takes Pyongyang. The Combined Fleet sends out most of its main strength and sweeps the Yellow Sea, hoping to find Chinese convoys or warships and make its command of the sea real. Clearly, the Japanese are confident of their advantage.",
+			"look": {
+				"ships": [
+					"dingyuan",
+					"yoshino"
+				],
+				"bearing": 0.0,
+				"lens": 26.0
+			}
+		},
+		{
+			"t": 0.5,
+			"duration": 1.0,
+			"category": "overall",
+			"zh": "",
+			"en": "",
+			"silent": true,
+			"note": "Flagships: Ding Ruchang in Dingyuan, Ito Sukeyuki in Matsushima",
+			"look": {
+				"ships": [
+					"dingyuan",
+					"matsushima"
+				]
+			},
+			"happens": [
+				{
+					"kind": "flagship",
+					"ships": [
+						"dingyuan",
+						"matsushima"
+					]
+				}
+			]
+		},
+		{
+			"t": 5.0,
+			"duration": 5.0,
+			"category": "overall",
+			"zh": "九月十六日，北洋艦隊全軍護送運兵船抵達鴨綠江口的大東溝；次日仍在外海警戒，掩護陸軍上岸。應該說，北洋艦隊已經采取了最佳應對。",
+			"en": "On 16 September the whole Beiyang Fleet escorts an army convoy to Taedonggou at the Yalu mouth; the next day it still stands guard offshore, covering the landing. It has to be said: this is the best response the Beiyang Fleet could have made.",
+			"look": {
+				"ships": [
+					"dingyuan",
+					"laiyuan",
+					"jiyuan"
+				],
+				"frame": "local"
+			}
+		},
+		{
+			"t": 10.0,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "中午，兩軍的瞭望兵幾乎同時發現了對方的煤煙，彼此判斷遭遇敵方主力。日軍決意出擊，北洋艦隊整隊迎戰——一場五個小時的大海戰就此展開。",
+			"en": "At noon the lookouts of both fleets sight each other's smoke almost at once, and each side knows it has met the enemy's main force. The Japanese commit to the attack, the Beiyang Fleet turns to meet them — a five-hour fleet action begins.",
+			"look": {
+				"ships": [
+					"matsushima",
+					"dingyuan"
+				]
+			}
+		},
+		{
+			"t": 15.0,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "北洋艦隊擺出雁行陣：定遠、鎮遠兩艘鐵甲艦居中靠前，其餘軍艦兩兩一組，互相掩護。這是要複刻1866年奧地利海軍以弱勝强，擊敗意大利的亂戰戰術。拒絕和速度、輸出都占優的聯合艦隊平行炮戰。",
+			"en": "The Beiyang Fleet deploys in a wedged line-abreast: the ironclads Dingyuan and Zhenyuan at the apex, the other ships paired two-by-two, covering each other. The idea is to repeat the melee tactics of 1866, when the weaker Austrian navy beat the Italians — and to refuse a parallel gunnery duel with a Combined Fleet that has the edge in both speed and firepower.",
+			"look": {
+				"ships": [
+					"dingyuan",
+					"zhenyuan",
+					"chaoyong",
+					"jiyuan"
+				]
+			}
+		},
+		{
+			"t": 20.0,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "日本艦隊分成兩隊：四艘快速巡洋艦打頭陣，旗艦為吉野：主要裝備小口徑火炮，任務是打擊北洋艦隊巡洋艦等輕型艦艇；主力隨後跟進，旗艦為松島：裝備大口徑火炮，分工是打擊定遠、鎮遠。日本海軍軍令部長樺山資紀恰好乘商船西京丸同行觀戰，與小砲艦赤城居於隊列外側。",
+			"en": "The Combined Fleet forms two divisions. Four fast cruisers lead under Yoshino; they carry mostly small-calibre guns, and their job is to hit the Beiyang cruisers and lighter ships. The main body follows under Matsushima; it carries the large-calibre guns, and its job is Dingyuan and Zhenyuan. Navy Chief of Staff Kabayama Sukenori happens to be along as an observer aboard the liner Saikyo Maru, keeping to the flank with the little gunboat Akagi.",
+			"look": {
+				"ships": [
+					"yoshino",
+					"matsushima",
+					"saikyo_maru",
+					"akagi"
+				]
+			}
+		},
+		{
+			"t": 25.0,
+			"duration": 5.0,
+			"category": "first_fire",
+			"zh": "十二點五十分，定遠的三百零五毫米主砲打響第一砲。巨大的砲風震塌了自家飛橋，提督丁汝昌負傷不退，坐鎮甲板督戰。",
+			"en": "12:50 — Dingyuan's 305 mm main guns fire the first shot of the battle. The huge muzzle blast brings down her own flying bridge. Admiral Ding Ruchang is injured but refuses to leave; he stays on deck and directs the fight.",
+			"look": {
+				"ships": [
+					"dingyuan"
+				],
+				"lens": 42.0
+			},
+			"happens": [
+				{
+					"kind": "fire",
+					"by": "dingyuan",
+					"at": "matsushima",
+					"when": 0.8
+				}
+			]
+		},
+		{
+			"t": 30.0,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "五分鐘後，日方回擊。吉野率三艘快速巡洋艦，砲火齊集北洋艦隊右翼最弱的兩艘老艦——超勇與揚威。",
+			"en": "Five minutes later the Japanese reply. Yoshino leads three fast cruisers, and their fire converges on the two weakest old ships of the Beiyang right wing — Chaoyong and Yangwei.",
+			"look": {
+				"ships": [
+					"yoshino",
+					"takachiho",
+					"akitsushima",
+					"naniwa",
+					"chaoyong",
+					"yangwei"
+				]
+			},
+			"happens": [
+				{
+					"kind": "duel",
+					"by": "yoshino",
+					"at": "chaoyong",
+					"when": 0.5,
+					"all_guns": true
+				}
+			]
+		},
+		{
+			"t": 35.0,
+			"duration": 4.0,
+			"category": "tactic",
+			"zh": "北洋艦隊撲向對手，然而對手已經幾乎通過。北洋艦隊試圖整體右轉，以艦首對敵；然而左翼迴轉半徑大，未能跟上，陣形意圖已經失敗。",
+			"en": "The Beiyang Fleet lunges at the enemy — but the enemy has almost passed by already. The whole line tries to wheel right and meet the column bows-on; the left wing's turning circle is too wide, it falls behind, and the plan behind the formation has already failed.",
+			"look": {
+				"ships": [
+					"dingyuan",
+					"zhenyuan",
+					"jiyuan",
+					"chaoyong"
+				]
+			}
+		},
+		{
+			"t": 39.0,
+			"duration": 4.0,
+			"category": "catch_fire",
+			"zh": "北洋艦隊右翼舊艦超勇、揚威接連中彈。兩艦的木質艙面遇火即燃，頓成海上兩支火炬。",
+			"en": "On the Beiyang right, the old ships Chaoyong and Yangwei are hit again and again. Their wooden decks catch at the first flame, and in moments the two ships are torches on the sea.",
+			"look": {
+				"ships": [
+					"chaoyong",
+					"yangwei"
+				]
+			}
+		},
+		{
+			"t": 43.0,
+			"duration": 3.0,
+			"category": "fleeing",
+			"zh": "兩艦帶火退出戰鬥，向北駛往淺灘，力圖搶灘保船。",
+			"en": "The burning pair haul out northward, making for the shallows to fight their fires and save their ships.",
+			"look": {
+				"ships": [
+					"chaoyong",
+					"yangwei"
+				]
+			}
+		},
+		{
+			"t": 46.0,
+			"duration": 3.0,
+			"category": "tactic",
+			"zh": "北洋艦隊陣型咬向聯合艦隊隊尾，西京丸與赤城被懷疑為運兵船，遭到集火。",
+			"en": "The Beiyang formation bites into the tail of the Japanese column. Saikyo Maru and Akagi are taken for troop transports, and fire concentrates on the pair.",
+			"look": {
+				"ships": [
+					"laiyuan",
+					"akagi"
+				]
+			},
+			"happens": [
+				{
+					"kind": "mute",
+					"ships": [
+						"laiyuan",
+						"akagi"
+					]
+				}
+			]
+		},
+		{
+			"t": 49.0,
+			"duration": 5.0,
+			"category": "struck",
+			"zh": "落單的赤城遭集火壓制。來遠一發二百一十毫米砲彈橫掃艦橋，艦長坂元八郎太，當場陣亡。",
+			"en": "Gunboat Akagi, straggling, is caught by the Chinese main line — a 21 cm shell from Laiyuan sweeps her bridge, killing Commander Sakamoto Hachirōta at his post.",
+			"look": {
+				"ships": [
+					"laiyuan",
+					"akagi"
+				]
+			},
+			"happens": [
+				{
+					"kind": "duel",
+					"by": "laiyuan",
+					"at": "akagi",
+					"when": 0.2
+				}
+			]
+		},
+		{
+			"t": 54.0,
+			"duration": 3.0,
+			"category": "tactic",
+			"zh": "來遠突出於前，攻擊赤城不捨。",
+			"en": "Laiyuan breaks out of the line, chasing the crippled Akagi on her own.",
+			"look": {
+				"ships": [
+					"laiyuan",
+					"akagi"
+				],
+				"distance": 2.0
+			}
+		},
+		{
+			"t": 57.0,
+			"duration": 9.0,
+			"category": "catch_fire",
+			"zh": "老式鐵甲艦比叡中彈起火。危急之下，她逕直穿越北洋艦隊陣列，從兩艦之間奪路而出。該艦穿行北洋艦隊陣列整整十分鐘，卻僥幸逃生。可見當時火炮觀瞄技術尚未成熟，整體命中率尚低。",
+			"en": "The old ironclad Hiei is hit and set ablaze. In desperation she runs straight through the Beiyang line, forcing her way out between two ships. She spends a full ten minutes inside the Chinese formation — and still gets away. Gun-laying was in its infancy, and overall hit rates were low.",
+			"look": {
+				"ships": [
+					"hiei",
+					"dingyuan",
+					"zhenyuan"
+				]
+			}
+		},
+		{
+			"t": 66.0,
+			"duration": 6.0,
+			"category": "catch_fire",
+			"zh": "西京丸連中重砲，舵機受損，蹣跚駛離隊列躲避；聯合艦隊隊尾三艦險象環生——軍令部長樺山資紀在西京丸上親歷了這一切。",
+			"en": "Saikyo Maru takes several heavy shells and her steering is damaged; she staggers out of line to evade. The three ships at the tail of the Combined Fleet are in real danger — and Chief of Staff Kabayama Sukenori lives through all of it aboard Saikyo Maru.",
+			"look": {
+				"ships": [
+					"saikyo_maru"
+				],
+				"distance": 2.0
+			},
+			"happens": [
+				{
+					"kind": "hit",
+					"by": "",
+					"at": "saikyo_maru",
+					"when": 0.0,
+					"fire_level": 1.0,
+					"fire_minutes": 10.0,
+					"mute_minutes": 20.0
+				}
+			]
+		},
+		{
+			"t": 72.0,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "西京丸發出警訊，聯合艦隊司令伊東祐亨急令第一遊擊隊掉頭回援。吉野四艦掉轉船頭，折回戰場中央。吉野反向掉頭，遠離了北洋艦隊右翼。",
+			"en": "Saikyo Maru signals the alarm, and Admiral Itō Sukeyuki orders the Flying Squadron back at once. Yoshino's four cruisers reverse course and steam for the centre of the fight. In turning back, Yoshino moves away from the Beiyang right wing.",
+			"look": {
+				"ships": [
+					"yoshino",
+					"takachiho",
+					"akitsushima",
+					"naniwa"
+				]
+			}
+		},
+		{
+			"t": 84.0,
+			"duration": 5.0,
+			"category": "struck",
+			"zh": "赤城且退且戰，退向淺水——尾砲打中來遠艉樓，引燃大火。來遠艉部大火蔓延，半條甲板陷入火海——她仍堅持砲戰。",
+			"en": "Akagi fights as she runs for shallow water — her stern gun strikes Laiyuan's poop and starts a big fire. The blaze spreads across Laiyuan's stern until half her deck is in flames — and still she keeps up the gun duel.",
+			"look": {
+				"ships": [
+					"akagi",
+					"laiyuan"
+				]
+			},
+			"happens": [
+				{
+					"kind": "duel",
+					"by": "akagi",
+					"at": "laiyuan",
+					"when": 0.5,
+					"all_guns": true,
+					"explosion": 1.0,
+					"fire_level": 2.0,
+					"fire_minutes": 40.0,
+					"mute_minutes": 10.0
+				}
+			]
+		},
+		{
+			"t": 92.0,
+			"duration": 3.0,
+			"category": "fleeing",
+			"zh": "火勢終難控制。來遠與僚艦靖遠結伴退往北面淺水，滅火保船。",
+			"en": "Laiyuan's fires rage beyond control — she and Ching Yuen retire north to the shallows to fight the flames and save their ships.",
+			"look": {
+				"ships": [
+					"laiyuan",
+					"jingyuan_1886"
+				]
+			}
+		},
+		{
+			"t": 95.0,
+			"duration": 4.0,
+			"category": "fleeing",
+			"zh": "重傷的比叡脫出火網，自行退出戰場。",
+			"en": "Battered Hiei, clear of the melee, withdraws from the line.",
+			"look": {
+				"ships": [
+					"hiei"
+				]
+			}
+		},
+		{
+			"t": 108.0,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "失去操舵的西京丸橫穿遊擊隊隊列，浪速緊急停車避讓——游擊隊隊形一時混亂。",
+			"en": "The unsteerable Saikyo Maru cuts straight through the Flying Squadron's line — Naniwa crash-stops her engines to avoid collision, throwing the formation into momentary chaos.",
+			"look": {
+				"ships": [
+					"saikyo_maru",
+					"naniwa"
+				]
+			}
+		},
+		{
+			"t": 113.0,
+			"duration": 6.0,
+			"category": "sinking",
+			"zh": "下午兩點二十三分，超勇向右舷翻覆沉沒。管帶黃建勳落水後推開救援，隨艦同沉。",
+			"en": "14:23 — Chaoyong rolls over to starboard and sinks. Captain Huang Jianxun, in the water, pushes away his rescuers and goes down with his ship.",
+			"look": {
+				"ships": [
+					"chaoyong"
+				],
+				"lens": 34.0
+			}
+		},
+		{
+			"t": 120.0,
+			"duration": 7.0,
+			"category": "tactic",
+			"zh": "與此同時，炮艦平遠、廣丙與魚雷艇福龍等正從大東溝錨地趕來增援。",
+			"en": "Meanwhile the gunboats Pingyuan and Guangbing, and torpedo boats led by Fulong, are hurrying from the Taedonggou anchorage to reinforce the fleet.",
+			"look": {
+				"ships": [
+					"fulong",
+					"guangbing",
+					"pingyuan"
+				]
+			}
+		},
+		{
+			"t": 130.0,
+			"duration": 12.0,
+			"category": "tactic",
+			"zh": "戰場中央，定遠、鎮遠、和北洋艦隊主隊遭日軍兩隊前後夾擊，腹背受敵。",
+			"en": "In the centre of the battle, Dingyuan, Zhenyuan and the Beiyang main body are caught between the two Japanese divisions, attacked from front and rear.",
+			"look": {
+				"ships": [
+					"dingyuan",
+					"zhiyuan",
+					"jiyuan"
+				],
+				"distance": 3.0
+			}
+		},
+		{
+			"t": 142.0,
+			"duration": 5.0,
+			"category": "famous_action",
+			"zh": "福龍逼近西京丸至四百米內，連發魚雷——魚雷卻自船底擦過。樺山目睹雷跡撲來，驚呼：「吾事畢矣！」",
+			"en": "Fulong presses to within 400 metres of Saikyo Maru and fires her torpedoes — they run under the shallow-draft hull. Kabayama, watching them come, cries: 'My work is done!'",
+			"look": {
+				"ships": [
+					"saikyo_maru",
+					"fulong"
+				],
+				"distance": 0.8
+			},
+			"happens": [
+				{
+					"kind": "torpedo",
+					"by": "fulong",
+					"at": "saikyo_maru",
+					"hit": false,
+					"when": 0.0
+				},
+				{
+					"kind": "torpedo",
+					"by": "fulong",
+					"at": "saikyo_maru",
+					"hit": false,
+					"when": 1.5,
+					"under": true
+				}
+			]
+		},
+		{
+			"t": 147.0,
+			"duration": 4.0,
+			"category": "catch_fire",
+			"zh": "戰事最烈之際，致遠、經遠先後負傷起火，北洋艦隊陣列愈發散亂。",
+			"en": "At the battle's height Zhiyuan and King Yuen are both hit and burning; the Beiyang line is breaking up.",
+			"look": {
+				"ships": [
+					"zhiyuan",
+					"jingyuan_1887"
+				],
+				"lens": 52.0
+			},
+			"happens": [
+				{
+					"kind": "hit",
+					"by": "",
+					"at": "jingyuan_1887",
+					"when": 0.0,
+					"fire_level": 2.0,
+					"fire_minutes": 30.0
+				}
+			]
+		},
+		{
+			"t": 152.0,
+			"duration": 5.0,
+			"category": "struck",
+			"zh": "初到戰場的平遠遠距離上一發二百六十毫米巨彈貫入聯合艦隊旗艦松島魚雷發射室——所幸魚雷未爆，但一時起火。",
+			"en": "Fresh to the field, Pingyuan lands a 260 mm shell at long range in the torpedo room of the Japanese flagship Matsushima. Luckily the torpedoes there do not go off, but a fire breaks out for a time.",
+			"look": {
+				"ships": [
+					"pingyuan",
+					"matsushima"
+				]
+			},
+			"happens": [
+				{
+					"kind": "duel",
+					"by": "pingyuan",
+					"at": "matsushima",
+					"when": 0.5,
+					"fire_minutes": 5.0
+				}
+			]
+		},
+		{
+			"t": 157.0,
+			"duration": 5.0,
+			"category": "catch_fire",
+			"zh": "北洋艦隊旗艦定遠亦中彈起火，水兵冒死撲救。",
+			"en": "Flagship Dingyuan takes a hit and burns; her crew fights the fire under fire.",
+			"look": {
+				"ships": [
+					"dingyuan"
+				]
+			}
+		},
+		{
+			"t": 162.0,
+			"duration": 7.0,
+			"category": "sinking",
+			"zh": "揚威傷勢沉重，擱淺於淺灘，終至焚燬。丁汝昌的報告中，揚威為濟遠逃跑時撞沉，不過北洋艦隊方面的記錄在劉公島陷落時被毀，該事件也不見于日本記錄。目前的航跡模擬無法支持這次碰撞的存在。",
+			"en": "Yangwei, badly wounded, runs onto the shoal and finally burns out. Ding Ruchang's report says Yangwei was rammed and sunk by Jiyuan as Jiyuan fled — but the Beiyang Fleet's records were destroyed when Liugong Island fell, and the Japanese records say nothing of it. The present track simulation cannot support such a collision.",
+			"look": {
+				"ships": [
+					"yangwei"
+				]
+			}
+		},
+		{
+			"t": 169.0,
+			"duration": 6.0,
+			"category": "famous_action",
+			"zh": "致遠彈藥將盡，艦身進水。鄧世昌激勵全艦：「吾輩從軍衛國，生死早已置之度外！」隨即開足馬力，擋在旗艦之前。此時定遠、鎮遠深陷重圍；而致遠并肩奮戰，最爲勇烈。",
+			"en": "Zhiyuan is almost out of ammunition and taking water. Deng Shichang rallies the whole ship: 'We joined the navy to defend our country; life and death were never the question.' Then he goes to full speed and puts his ship in front of the flagship. Dingyuan and Zhenyuan are deep in encirclement; Zhiyuan fights at their side, the bravest of all.",
+			"look": {
+				"ships": [
+					"zhiyuan"
+				],
+				"distance": 1.3,
+				"lens": 40.0
+			}
+		},
+		{
+			"t": 175.0,
+			"duration": 6.0,
+			"category": "sinking",
+			"zh": "三點二十五分，致遠爆炸，頃刻沉沒。鄧世昌推開救生圈，與兩百餘名官兵一同殉國。考古證實爆炸存在，但是鍋爐爆炸，或是艦内魚雷殉爆并無定論。考慮當時雙方在魚雷射程之外，可以排除遭日艦雷擊的可能。",
+			"en": "15:25 — Zhiyuan explodes and sinks in moments. Deng Shichang pushes away the lifebuoy and dies with more than two hundred of his officers and men. Archaeology confirms there was an explosion, but whether it was a boiler or the ship's own torpedoes is undecided. Both fleets were outside torpedo range, so a Japanese torpedo hit can be ruled out.",
+			"look": {
+				"ships": [
+					"zhiyuan"
+				],
+				"lens": 34.0
+			},
+			"happens": [
+				{
+					"kind": "detonation",
+					"ship": "zhiyuan",
+					"when": 0.0
+				}
+			]
+		},
+		{
+			"t": 181.0,
+			"duration": 1.5,
+			"category": "struck",
+			"zh": "15點31分，鎮遠巨砲鎖定松島齊射。",
+			"en": "15:31 — Zhenyuan's big guns lock onto Matsushima and fire a salvo.",
+			"look": {
+				"ships": [
+					"zhenyuan"
+				],
+				"lens": 40.0,
+				"from": "zhenyuan",
+				"toward": "matsushima"
+			},
+			"happens": [
+				{
+					"kind": "duel",
+					"by": "zhenyuan",
+					"at": "matsushima",
+					"when": 0.4
+				}
+			]
+		},
+		{
+			"t": 182.5,
+			"duration": 7.5,
+			"category": "struck",
+			"zh": "這發三百零五毫米砲彈貫入松島砲甲板，引爆副炮堆放的彈藥，死傷近百人。傳説，重傷垂死的砲手三浦虎次郎猶自發問：「定遠怎麼打不沉？」",
+			"en": "The 305 mm shell goes through Matsushima's gun deck and sets off the ammunition stacked by the secondary guns — nearly a hundred are killed or wounded. It is said the dying gunner Miura Torajirō still asked: 'Why can't we sink the Dingyuan?'",
+			"look": {
+				"ships": [
+					"matsushima"
+				],
+				"lens": 38.0
+			},
+			"happens": [
+				{
+					"kind": "detonation",
+					"ship": "matsushima",
+					"when": 0.1
+				},
+				{
+					"kind": "hit",
+					"by": "",
+					"at": "matsushima",
+					"when": 0.0,
+					"mute_minutes": 15.0
+				}
+			]
+		},
+		{
+			"t": 190.0,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "經遠受創甚深，獨自向西撤退。",
+			"en": "King Yuen, badly wounded, withdraws westward alone.",
+			"look": {
+				"ships": [
+					"jingyuan_1887"
+				],
+				"distance": 2.0
+			}
+		},
+		{
+			"t": 200.0,
+			"duration": 6.0,
+			"category": "fleeing",
+			"zh": "旗艦尚被圍困之中，而濟遠卻掉頭先遁，僚艦廣甲隨之而逃。濟遠管帶方伯謙戰後以臨陣脫逃罪處斬。",
+			"en": "Heedless of the encircled flagship, Jiyuan swings away and runs under Captain Fang Boqian, Guangjia following. Fang will be beheaded for cowardice.",
+			"look": {
+				"ships": [
+					"jiyuan",
+					"guangjia"
+				]
+			}
+		},
+		{
+			"t": 217.0,
+			"duration": 6.0,
+			"category": "fleeing",
+			"zh": "松島重創，一片狼藉。伊東祐亨移將旗於橋立，繼續指揮。",
+			"en": "Matsushima is badly damaged, her decks a shambles. Admiral Itō shifts his flag to Hashidate and keeps command.",
+			"look": {
+				"ships": [
+					"hashidate"
+				],
+				"lens": 44.0
+			}
+		},
+		{
+			"t": 230.0,
+			"duration": 7.0,
+			"category": "tactic",
+			"zh": "第一遊擊隊四艦，按照攻擊北洋艦隊巡洋艦的既定任務，銜尾追擊經遠。經遠固然是一個高價值目標，卻造成四艦實際脫離主戰場。",
+			"en": "The four cruisers of the Flying Squadron, following their set task of attacking the Beiyang cruisers, chase King Yuen. She is a valuable target — but the chase takes all four ships away from the main battle.",
+			"look": {
+				"ships": [
+					"yoshino",
+					"jingyuan_1887"
+				],
+				"distance": 1.5
+			}
+		},
+		{
+			"t": 237.0,
+			"duration": 6.0,
+			"category": "fleeing",
+			"zh": "受傷日艦西京丸與比叡先後帶傷脫離戰場，向南退去。",
+			"en": "The battered Saikyo Maru and Hiei slip clear of the battlefield, escaping southward.",
+			"look": {
+				"ships": [
+					"saikyo_maru",
+					"hiei"
+				],
+				"distance": 2.0
+			}
+		},
+		{
+			"t": 245.0,
+			"duration": 12.0,
+			"category": "tactic",
+			"zh": "定遠、鎮遠遭日軍主力五艦環攻。合計中彈379發，官兵陣亡30人，卻巍然不動。定遠級的兩門主炮并置，形成核心堡壘區，看似奇特，但是可以讓裝甲防護高度集中，生存能力驚人。",
+			"en": "Dingyuan and Zhenyuan are ringed by five ships of the Japanese main force. Between them they take 379 hits and lose 30 men — and stand unmoved. The Dingyuan class mounts its two main turrets side by side in a central citadel. It looks odd, but it concentrates the armour, and the ships' survivability is astonishing.",
+			"look": {
+				"ships": [
+					"dingyuan"
+				],
+				"frame": "local",
+				"distance": 2.0
+			}
+		},
+		{
+			"t": 262.0,
+			"duration": 10.0,
+			"category": "tactic",
+			"zh": "這是靖遠、來遠已經撲滅大火，重回隊列。靖遠升旗「重整隊形」，殘存各艦重新聚攏。",
+			"en": "By now Ching Yuen and Laiyuan have put out their fires and rejoin the line. Ching Yuen hoists the signal 'reform the line', and the surviving ships close up again.",
+			"look": {
+				"ships": [
+					"jingyuan_1886",
+					"laiyuan",
+					"pingyuan"
+				]
+			}
+		},
+		{
+			"t": 272.0,
+			"duration": 4.0,
+			"category": "tactic",
+			"zh": "平遠亦修復損傷，與福龍、廣丙一道靠攏旗艦。",
+			"en": "Pingyuan too has repaired her damage; with Fulong and Guangbing she closes on the flagship.",
+			"look": {
+				"ships": [
+					"pingyuan",
+					"fulong",
+					"guangbing",
+					"dingyuan"
+				]
+			}
+		},
+		{
+			"t": 276.0,
+			"duration": 6.0,
+			"category": "tactic",
+			"zh": "定遠、鎮遠已與日軍主力鏖戰一個小時。在覆滅的前景之中，兩艦看到了一線生機。",
+			"en": "Dingyuan and Zhenyuan have slugged it out with the Japanese main force for a full hour — and in the shadow of annihilation, they glimpse a thread of hope.",
+			"look": {
+				"ships": [
+					"dingyuan",
+					"zhenyuan"
+				]
+			}
+		},
+		{
+			"t": 285.0,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "松島、嚴島、橋立三艦裝備的三百二十毫米法國加耐巨砲，是此戰口徑最大的火砲；然而效率不佳，與定遠、鎮遠交戰良久，始終未有關鍵命中。",
+			"en": "The 320 mm French Canet guns of Matsushima, Itsukushima and Hashidate are the largest calibre in this battle — yet they prove slow and clumsy, and after long action against Dingyuan and Zhenyuan land no decisive hit.",
+			"look": {
+				"ships": [
+					"matsushima",
+					"itsukushima",
+					"hashidate"
+				]
+			}
+		},
+		{
+			"t": 291.0,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "而定遠、鎮遠的大口徑主砲，此時備彈也已幾乎用盡。",
+			"en": "Aboard Dingyuan and Zhenyuan, the great guns are down to almost their last shells.",
+			"look": {
+				"ships": [
+					"dingyuan",
+					"zhenyuan"
+				]
+			}
+		},
+		{
+			"t": 299.0,
+			"duration": 7.0,
+			"category": "sinking",
+			"zh": "經遠以一敵四，力戰至最後。管帶林永升中砲殉國；五點二十九分，經遠傾覆沉沒。",
+			"en": "King Yuen, alone against four, fights to the last. Captain Lin Yongsheng is killed by a shell; at 17:29 King Yuen capsizes and sinks.",
+			"look": {
+				"ships": [
+					"jingyuan_1887"
+				],
+				"lens": 34.0
+			}
+		},
+		{
+			"t": 306.0,
+			"duration": 18.0,
+			"category": "overall",
+			"zh": "至此，北洋艦隊超勇、揚威、致遠、經遠四艦葬身大海。另四艦重創，總傷亡約1,350人。碧波之下，忠骨長眠。\n而日軍含旗艦内四艦重創，傷亡898人。也精疲力竭。",
+			"en": "By now the Beiyang Fleet has lost four ships to the sea — Chaoyong, Yangwei, Zhiyuan and King Yuen. Four more are badly damaged; casualties total about 1,350. Beneath the blue waves, the faithful sleep. The Japanese have four ships badly damaged, the flagship among them, with 898 casualties — and they too are exhausted.",
+			"look": {
+				"ships": [
+					"zhiyuan"
+				],
+				"frame": "individual",
+				"height": -1.0,
+				"lens": 40.0
+			}
+		},
+		{
+			"t": 330.0,
+			"duration": 8.0,
+			"category": "overall",
+			"zh": "暮色漸沉。靖遠、來遠重回戰列，第一遊擊隊，遠離主戰場。伊東祐亨自知無法聚殲北洋艦隊，又慮及魚雷艇夜襲，遂下令收隊，向南脫離戰場。",
+			"en": "With Ching Yuen and Laiyuan back in line and the Flying Squadron far from the main action, Itō knows he cannot destroy the Beiyang Fleet — dusk is closing and torpedo boats prowl the dark. He orders the Combined Fleet to break off southward.",
+			"look": {
+				"ships": [],
+				"lens": 62.0
+			}
+		},
+		{
+			"t": 338.0,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "北洋艦隊收攏殘部，退往旅順整修。",
+			"en": "The Beiyang Fleet gathers its remnant and steers for Port Arthur to refit.",
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 344.0,
+			"duration": 4.0,
+			"category": "overall",
+			"zh": "暮色之中，兩軍脫離接觸。歷時五小時的黃海海戰就此落幕——自此黃海制海權完全被日方掌握。日後威海衛絕命之戰已難挽回。",
+			"en": "In the dusk the two fleets lose contact. After five hours the Battle of the Yellow Sea is over — from this day the Yellow Sea is entirely in Japanese hands. The fatal battle at Weihaiwei that follows can no longer be averted.",
+			"look": {
+				"ships": []
+			}
+		}
+	]
+}

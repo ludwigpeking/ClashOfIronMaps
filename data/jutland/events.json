@@ -1,0 +1,1212 @@
+{
+"events": [
+{
+"t": 13.0,
+"kind": "fire_opened",
+"by": "galatea",
+"source": "groos_02",
+"id": "groos_02:fire_opened:galatea:-:1300"
+},
+{
+"t": 13.0,
+"kind": "fire_opened",
+"by": "b109",
+"source": "groos_02",
+"id": "groos_02:fire_opened:b109:-:1300"
+},
+{
+"t": 17.0,
+"kind": "fire_opened",
+"by": "elbing",
+"source": "groos_02",
+"id": "groos_02:fire_opened:elbing:-:1700"
+},
+{
+"t": 17.1,
+"kind": "fire",
+"by": "galatea",
+"at": "elbing",
+"source": "story",
+"id": "story:fire:galatea:elbing:1710"
+},
+{
+"t": 18.0,
+"kind": "fire",
+"by": "elbing",
+"at": "galatea",
+"source": "story",
+"id": "story:fire:elbing:galatea:1800"
+},
+{
+"t": 33.0,
+"kind": "fire_opened",
+"by": "elbing",
+"source": "groos_03",
+"id": "groos_03:fire_opened:elbing:-:3300"
+},
+{
+"t": 57.0,
+"kind": "fire_opened",
+"by": "frankfurt",
+"source": "groos_03",
+"id": "groos_03:fire_opened:frankfurt:-:5700"
+},
+{
+"t": 93.0,
+"kind": "fire",
+"by": "luetzow",
+"at": "lion",
+"source": "story",
+"id": "story:fire:luetzow:lion:9300"
+},
+{
+"t": 93.01,
+"kind": "fire",
+"by": "lion",
+"at": "luetzow",
+"source": "story",
+"id": "story:fire:lion:luetzow:9301"
+},
+{
+"t": 93.02,
+"kind": "fire",
+"by": "derfflinger",
+"at": "princess_royal",
+"source": "story",
+"id": "story:fire:derfflinger:princess_royal:9302"
+},
+{
+"t": 93.03,
+"kind": "fire",
+"by": "princess_royal",
+"at": "derfflinger",
+"source": "story",
+"id": "story:fire:princess_royal:derfflinger:9303"
+},
+{
+"t": 96.0,
+"kind": "hit",
+"at": "lion",
+"source": "groos_05",
+"id": "groos_05:hit:-:lion:9600"
+},
+{
+"t": 97.0,
+"kind": "hit",
+"at": "tiger",
+"source": "groos_05",
+"id": "groos_05:hit:-:tiger:9700"
+},
+{
+"t": 100.0,
+"kind": "hit",
+"at": "seydlitz",
+"source": "groos_05",
+"id": "groos_05:hit:-:seydlitz:10000"
+},
+{
+"t": 100.0,
+"kind": "hit",
+"at": "tiger",
+"source": "groos_05",
+"id": "groos_05:hit:-:tiger:10000"
+},
+{
+"t": 100.1,
+"kind": "hit",
+"by": "luetzow",
+"at": "lion",
+"source": "story",
+"id": "story:hit:luetzow:lion:10010"
+},
+{
+"t": 101.0,
+"kind": "hit",
+"at": "tiger",
+"source": "groos_05",
+"id": "groos_05:hit:-:tiger:10100"
+},
+{
+"t": 102.0,
+"kind": "hit",
+"at": "seydlitz",
+"source": "groos_05",
+"id": "groos_05:hit:-:seydlitz:10200"
+},
+{
+"t": 103.0,
+"kind": "hit",
+"at": "princess_royal",
+"source": "groos_05",
+"id": "groos_05:hit:-:princess_royal:10300"
+},
+{
+"t": 103.7,
+"kind": "fire",
+"by": "moltke",
+"at": "tiger",
+"source": "story",
+"id": "story:fire:moltke:tiger:10370"
+},
+{
+"t": 104.0,
+"kind": "hit",
+"at": "princess_royal",
+"source": "groos_05",
+"id": "groos_05:hit:-:princess_royal:10400"
+},
+{
+"t": 105.0,
+"kind": "hit",
+"at": "luetzow",
+"source": "groos_05",
+"id": "groos_05:hit:-:luetzow:10500"
+},
+{
+"t": 105.0,
+"kind": "hit",
+"at": "lion",
+"source": "groos_05",
+"id": "groos_05:hit:-:lion:10500"
+},
+{
+"t": 105.1,
+"kind": "hit",
+"by": "luetzow",
+"at": "lion",
+"source": "story",
+"id": "story:hit:luetzow:lion:10510"
+},
+{
+"t": 106.0,
+"kind": "burning",
+"at": "lion",
+"until": 128.0,
+"source": "tracks",
+"id": "tracks:burning:-:lion:10600"
+},
+{
+"t": 107.0,
+"kind": "hit",
+"at": "indefatigable",
+"source": "groos_05",
+"id": "groos_05:hit:-:indefatigable:10700"
+},
+{
+"t": 108.0,
+"kind": "hit",
+"by": "",
+"at": "lion",
+"source": "story",
+"id": "story:hit:-:lion:10800"
+},
+{
+"t": 109.0,
+"kind": "torpedo",
+"by": "moltke",
+"at": null,
+"hit": false,
+"source": "groos_05",
+"id": "groos_05:torpedo:moltke:-:10900"
+},
+{
+"t": 110.0,
+"kind": "fire",
+"by": "von_der_tann",
+"at": "indefatigable",
+"source": "story",
+"id": "story:fire:von_der_tann:indefatigable:11000"
+},
+{
+"t": 110.0,
+"kind": "hit",
+"at": "lion",
+"source": "groos_05",
+"id": "groos_05:hit:-:lion:11000"
+},
+{
+"t": 110.065,
+"kind": "detonation",
+"at": "indefatigable",
+"source": "story",
+"id": "story:detonation:-:indefatigable:11006"
+},
+{
+"t": 113.2,
+"kind": "fire",
+"by": "barham",
+"at": "von_der_tann",
+"source": "story",
+"id": "story:fire:barham:von_der_tann:11320"
+},
+{
+"t": 117.0,
+"kind": "hit",
+"at": "von_der_tann",
+"source": "groos_06",
+"id": "groos_06:hit:-:von_der_tann:11700"
+},
+{
+"t": 120.0,
+"kind": "hit",
+"at": "lion",
+"source": "groos_06",
+"id": "groos_06:hit:-:lion:12000"
+},
+{
+"t": 122.0,
+"kind": "hit",
+"at": "seydlitz",
+"source": "groos_06",
+"id": "groos_06:hit:-:seydlitz:12200"
+},
+{
+"t": 123.0,
+"kind": "hit",
+"at": "moltke",
+"source": "groos_06",
+"id": "groos_06:hit:-:moltke:12300"
+},
+{
+"t": 124.2,
+"kind": "fire",
+"by": "queen_mary",
+"at": "seydlitz",
+"source": "story",
+"id": "story:fire:queen_mary:seydlitz:12420"
+},
+{
+"t": 125.0,
+"kind": "hit",
+"at": "von_der_tann",
+"source": "groos_06",
+"id": "groos_06:hit:-:von_der_tann:12500"
+},
+{
+"t": 128.0,
+"kind": "hit",
+"at": "von_der_tann",
+"source": "groos_06",
+"id": "groos_06:hit:-:von_der_tann:12800"
+},
+{
+"t": 128.0,
+"kind": "hit",
+"at": "barham",
+"source": "groos_06",
+"id": "groos_06:hit:-:barham:12800"
+},
+{
+"t": 130.0,
+"kind": "hit",
+"at": "tiger",
+"source": "groos_06",
+"id": "groos_06:hit:-:tiger:13000"
+},
+{
+"t": 131.0,
+"kind": "fire",
+"by": "derfflinger",
+"at": "queen_mary",
+"source": "story",
+"id": "story:fire:derfflinger:queen_mary:13100"
+},
+{
+"t": 131.0,
+"kind": "hit",
+"at": "moltke",
+"source": "groos_06",
+"id": "groos_06:hit:-:moltke:13100"
+},
+{
+"t": 131.0,
+"kind": "hit",
+"at": "new_zealand",
+"source": "groos_06",
+"id": "groos_06:hit:-:new_zealand:13100"
+},
+{
+"t": 131.0,
+"kind": "hit",
+"at": "tiger",
+"source": "groos_06",
+"id": "groos_06:hit:-:tiger:13100"
+},
+{
+"t": 131.065,
+"kind": "detonation",
+"at": "queen_mary",
+"source": "story",
+"id": "story:detonation:-:queen_mary:13106"
+},
+{
+"t": 132.0,
+"kind": "hit",
+"at": "moltke",
+"source": "groos_06",
+"id": "groos_06:hit:-:moltke:13200"
+},
+{
+"t": 132.0,
+"kind": "burning",
+"at": "seydlitz",
+"until": 175.0,
+"source": "tracks",
+"id": "tracks:burning:-:seydlitz:13200"
+},
+{
+"t": 133.0,
+"kind": "hit",
+"at": "princess_royal",
+"source": "groos_06",
+"id": "groos_06:hit:-:princess_royal:13300"
+},
+{
+"t": 137.0,
+"kind": "hit",
+"at": "princess_royal",
+"source": "groos_07",
+"id": "groos_07:hit:-:princess_royal:13700"
+},
+{
+"t": 139.5,
+"kind": "hit",
+"by": "nestor",
+"at": "v27",
+"source": "story",
+"id": "story:hit:nestor:v27:13950"
+},
+{
+"t": 145.0,
+"kind": "torpedo",
+"by": "nottingham",
+"at": null,
+"hit": false,
+"source": "groos_07",
+"id": "groos_07:torpedo:nottingham:-:14500"
+},
+{
+"t": 149.1,
+"kind": "fire",
+"by": "koenig",
+"at": "southampton",
+"source": "story",
+"id": "story:fire:koenig:southampton:14910"
+},
+{
+"t": 149.5,
+"kind": "fire",
+"by": "grosser_kurfuerst",
+"at": "southampton",
+"source": "story",
+"id": "story:fire:grosser_kurfuerst:southampton:14950"
+},
+{
+"t": 151.0,
+"kind": "hit",
+"at": "valiant",
+"source": "groos_07",
+"id": "groos_07:hit:-:valiant:15100"
+},
+{
+"t": 152.0,
+"kind": "burning",
+"at": "malaya",
+"until": 168.0,
+"source": "tracks",
+"id": "tracks:burning:-:malaya:15200"
+},
+{
+"t": 153.0,
+"kind": "hit",
+"at": "obdurate",
+"source": "groos_07",
+"id": "groos_07:hit:-:obdurate:15300"
+},
+{
+"t": 162.0,
+"kind": "torpedo",
+"by": "petard",
+"at": "seydlitz",
+"hit": true,
+"source": "story",
+"id": "story:torpedo:petard:seydlitz:16200"
+},
+{
+"t": 162.0,
+"kind": "hit",
+"by": "",
+"at": "seydlitz",
+"source": "story",
+"id": "story:hit:-:seydlitz:16200"
+},
+{
+"t": 162.0,
+"kind": "hit",
+"at": "seydlitz",
+"source": "groos_08",
+"id": "groos_08:hit:-:seydlitz:16200"
+},
+{
+"t": 163.0,
+"kind": "hit",
+"at": "tiger",
+"source": "groos_08",
+"id": "groos_08:hit:-:tiger:16300"
+},
+{
+"t": 163.0,
+"kind": "hit",
+"at": "lion",
+"source": "groos_08",
+"id": "groos_08:hit:-:lion:16300"
+},
+{
+"t": 163.0,
+"kind": "hit",
+"at": "barham",
+"source": "groos_08",
+"id": "groos_08:hit:-:barham:16300"
+},
+{
+"t": 165.0,
+"kind": "hit",
+"at": "lion",
+"source": "groos_08",
+"id": "groos_08:hit:-:lion:16500"
+},
+{
+"t": 165.0,
+"kind": "hit",
+"at": "barham",
+"source": "groos_08",
+"id": "groos_08:hit:-:barham:16500"
+},
+{
+"t": 167.0,
+"kind": "hit",
+"at": "barham",
+"source": "groos_08",
+"id": "groos_08:hit:-:barham:16700"
+},
+{
+"t": 167.70000000000002,
+"kind": "fire",
+"by": "koenig",
+"at": "barham",
+"source": "story",
+"id": "story:fire:koenig:barham:16770"
+},
+{
+"t": 168.1,
+"kind": "fire",
+"by": "koenig",
+"at": "valiant",
+"source": "story",
+"id": "story:fire:koenig:valiant:16810"
+},
+{
+"t": 168.3,
+"kind": "fire",
+"by": "grosser_kurfuerst",
+"at": "warspite",
+"source": "story",
+"id": "story:fire:grosser_kurfuerst:warspite:16830"
+},
+{
+"t": 168.5,
+"kind": "fire",
+"by": "markgraf",
+"at": "malaya",
+"source": "story",
+"id": "story:fire:markgraf:malaya:16850"
+},
+{
+"t": 168.6,
+"kind": "hit",
+"by": "",
+"at": "malaya",
+"source": "story",
+"id": "story:hit:-:malaya:16860"
+},
+{
+"t": 169.4,
+"kind": "fire",
+"by": "barham",
+"at": "koenig",
+"source": "story",
+"id": "story:fire:barham:koenig:16940"
+},
+{
+"t": 170.0,
+"kind": "hit",
+"at": "seydlitz",
+"source": "groos_08",
+"id": "groos_08:hit:-:seydlitz:17000"
+},
+{
+"t": 170.4,
+"kind": "fire",
+"by": "malaya",
+"at": "seydlitz",
+"source": "story",
+"id": "story:fire:malaya:seydlitz:17040"
+},
+{
+"t": 173.0,
+"kind": "hit",
+"at": "seydlitz",
+"source": "groos_08",
+"id": "groos_08:hit:-:seydlitz:17300"
+},
+{
+"t": 175.0,
+"kind": "hit",
+"at": "seydlitz",
+"source": "groos_08",
+"id": "groos_08:hit:-:seydlitz:17500"
+},
+{
+"t": 175.0,
+"kind": "hit",
+"at": "markgraf",
+"source": "groos_08",
+"id": "groos_08:hit:-:markgraf:17500"
+},
+{
+"t": 176.0,
+"kind": "hit",
+"at": "barham",
+"source": "groos_09",
+"id": "groos_09:hit:-:barham:17600"
+},
+{
+"t": 178.0,
+"kind": "hit",
+"at": "luetzow",
+"source": "groos_09",
+"id": "groos_09:hit:-:luetzow:17800"
+},
+{
+"t": 178.0,
+"kind": "hit",
+"at": "malaya",
+"source": "groos_09",
+"id": "groos_09:hit:-:malaya:17800"
+},
+{
+"t": 184.0,
+"kind": "hit",
+"at": "derfflinger",
+"source": "groos_09",
+"id": "groos_09:hit:-:derfflinger:18400"
+},
+{
+"t": 185.0,
+"kind": "hit",
+"at": "malaya",
+"source": "groos_09",
+"id": "groos_09:hit:-:malaya:18500"
+},
+{
+"t": 190.0,
+"kind": "hit",
+"at": "malaya",
+"source": "groos_09",
+"id": "groos_09:hit:-:malaya:19000"
+},
+{
+"t": 192.0,
+"kind": "hit",
+"at": "malaya",
+"source": "groos_09",
+"id": "groos_09:hit:-:malaya:19200"
+},
+{
+"t": 192.2,
+"kind": "fire",
+"by": "markgraf",
+"at": "warspite",
+"source": "story",
+"id": "story:fire:markgraf:warspite:19220"
+},
+{
+"t": 192.7,
+"kind": "fire",
+"by": "warspite",
+"at": "markgraf",
+"source": "story",
+"id": "story:fire:warspite:markgraf:19270"
+},
+{
+"t": 195.0,
+"kind": "hit",
+"at": "luetzow",
+"source": "groos_09",
+"id": "groos_09:hit:-:luetzow:19500"
+},
+{
+"t": 195.0,
+"kind": "hit",
+"at": "malaya",
+"source": "groos_09",
+"id": "groos_09:hit:-:malaya:19500"
+},
+{
+"t": 200.0,
+"kind": "hit",
+"at": "malaya",
+"source": "groos_09",
+"id": "groos_09:hit:-:malaya:20000"
+},
+{
+"t": 201.0,
+"kind": "burning",
+"at": "chester",
+"until": 212.0,
+"source": "tracks",
+"id": "tracks:burning:-:chester:20100"
+},
+{
+"t": 210.0,
+"kind": "hit",
+"at": "luetzow",
+"source": "groos_10",
+"id": "groos_10:hit:-:luetzow:21000"
+},
+{
+"t": 220.0,
+"kind": "hit",
+"at": "wiesbaden",
+"source": "groos_11",
+"id": "groos_11:hit:-:wiesbaden:22000"
+},
+{
+"t": 221.0,
+"kind": "burning",
+"at": "wiesbaden",
+"until": 375.0,
+"source": "tracks",
+"id": "tracks:burning:-:wiesbaden:22100"
+},
+{
+"t": 221.2,
+"kind": "fire",
+"by": "invincible",
+"at": "wiesbaden",
+"source": "story",
+"id": "story:fire:invincible:wiesbaden:22120"
+},
+{
+"t": 221.6,
+"kind": "hit",
+"by": "invincible",
+"at": "wiesbaden",
+"source": "story",
+"id": "story:hit:invincible:wiesbaden:22160"
+},
+{
+"t": 222.5,
+"kind": "fire",
+"by": "pillau",
+"at": "shark",
+"source": "story",
+"id": "story:fire:pillau:shark:22250"
+},
+{
+"t": 222.65,
+"kind": "torpedo",
+"by": "shark",
+"at": "pillau",
+"hit": false,
+"source": "story",
+"id": "story:torpedo:shark:pillau:22265"
+},
+{
+"t": 223.0,
+"kind": "hit",
+"at": "pillau",
+"source": "groos_11",
+"id": "groos_11:hit:-:pillau:22300"
+},
+{
+"t": 231.0,
+"kind": "hit",
+"at": "lion",
+"source": "groos_11",
+"id": "groos_11:hit:-:lion:23100"
+},
+{
+"t": 235.0,
+"kind": "hit",
+"at": "onslow",
+"source": "groos_11",
+"id": "groos_11:hit:-:onslow:23500"
+},
+{
+"t": 235.0,
+"kind": "hit",
+"at": "shark",
+"source": "groos_11",
+"id": "groos_11:hit:-:shark:23500"
+},
+{
+"t": 235.0,
+"kind": "hit",
+"at": "acasta",
+"source": "groos_11",
+"id": "groos_11:hit:-:acasta:23500"
+},
+{
+"t": 238.0,
+"kind": "hit",
+"at": "invincible",
+"source": "groos_12",
+"id": "groos_12:hit:-:invincible:23800"
+},
+{
+"t": 244.0,
+"kind": "burning",
+"at": "defence",
+"until": 246.0,
+"source": "tracks",
+"id": "tracks:burning:-:defence:24400"
+},
+{
+"t": 244.9,
+"kind": "fire",
+"by": "luetzow",
+"at": "defence",
+"source": "story",
+"id": "story:fire:luetzow:defence:24490"
+},
+{
+"t": 244.965,
+"kind": "detonation",
+"at": "defence",
+"source": "story",
+"id": "story:detonation:-:defence:24496"
+},
+{
+"t": 245.0,
+"kind": "hit",
+"at": "warspite",
+"source": "groos_12",
+"id": "groos_12:hit:-:warspite:24500"
+},
+{
+"t": 245.0,
+"kind": "hit",
+"at": "warrior",
+"source": "groos_12",
+"id": "groos_12:hit:-:warrior:24500"
+},
+{
+"t": 246.0,
+"kind": "burning",
+"at": "warrior",
+"until": 285.0,
+"source": "tracks",
+"id": "tracks:burning:-:warrior:24600"
+},
+{
+"t": 255.4,
+"kind": "fire",
+"by": "iron_duke",
+"at": "koenig",
+"source": "story",
+"id": "story:fire:iron_duke:koenig:25540"
+},
+{
+"t": 257.0,
+"kind": "hit",
+"at": "koenig",
+"source": "groos_15",
+"id": "groos_15:hit:-:koenig:25700"
+},
+{
+"t": 257.0,
+"kind": "burning",
+"at": "invincible",
+"until": 258.0,
+"source": "tracks",
+"id": "tracks:burning:-:invincible:25700"
+},
+{
+"t": 258.0,
+"kind": "fire",
+"by": "derfflinger",
+"at": "invincible",
+"source": "story",
+"id": "story:fire:derfflinger:invincible:25800"
+},
+{
+"t": 258.065,
+"kind": "detonation",
+"at": "invincible",
+"source": "story",
+"id": "story:detonation:-:invincible:25806"
+},
+{
+"t": 259.0,
+"kind": "hit",
+"at": "koenig",
+"source": "groos_15",
+"id": "groos_15:hit:-:koenig:25900"
+},
+{
+"t": 260.0,
+"kind": "hit",
+"at": "markgraf",
+"source": "groos_15",
+"id": "groos_15:hit:-:markgraf:26000"
+},
+{
+"t": 261.0,
+"kind": "hit",
+"at": "koenig",
+"source": "groos_16",
+"id": "groos_16:hit:-:koenig:26100"
+},
+{
+"t": 264.0,
+"kind": "hit",
+"at": "koenig",
+"source": "groos_16",
+"id": "groos_16:hit:-:koenig:26400"
+},
+{
+"t": 279.5,
+"kind": "torpedo",
+"by": "wiesbaden",
+"at": "marlborough",
+"hit": true,
+"source": "story",
+"id": "story:torpedo:wiesbaden:marlborough:27950"
+},
+{
+"t": 279.5,
+"kind": "hit",
+"by": "",
+"at": "marlborough",
+"source": "story",
+"id": "story:hit:-:marlborough:27950"
+},
+{
+"t": 291.0,
+"kind": "hit",
+"at": "luetzow",
+"source": "groos_22",
+"id": "groos_22:hit:-:luetzow:29100"
+},
+{
+"t": 293.4,
+"kind": "hit",
+"by": "",
+"at": "koenig",
+"source": "story",
+"id": "story:hit:-:koenig:29340"
+},
+{
+"t": 296.0,
+"kind": "burning",
+"at": "luetzow",
+"until": 345.0,
+"source": "tracks",
+"id": "tracks:burning:-:luetzow:29600"
+},
+{
+"t": 299.2,
+"kind": "hit",
+"by": "",
+"at": "derfflinger",
+"source": "story",
+"id": "story:hit:-:derfflinger:29920"
+},
+{
+"t": 301.0,
+"kind": "burning",
+"at": "derfflinger",
+"until": 322.0,
+"source": "tracks",
+"id": "tracks:burning:-:derfflinger:30100"
+},
+{
+"t": 309.0,
+"kind": "torpedo",
+"by": null,
+"at": "canada",
+"hit": false,
+"source": "story",
+"id": "story:torpedo:-:canada:30900"
+},
+{
+"t": 480.0,
+"kind": "hit",
+"at": "castor",
+"source": "groos_34",
+"id": "groos_34:hit:-:castor:48000"
+},
+{
+"t": 486.05,
+"kind": "searchlight",
+"by": "stettin",
+"at": "southampton",
+"seconds": 14.0,
+"source": "story",
+"id": "story:searchlight:stettin:southampton:48605"
+},
+{
+"t": 486.15,
+"kind": "fire",
+"by": "muenchen",
+"at": "southampton",
+"source": "story",
+"id": "story:fire:muenchen:southampton:48615"
+},
+{
+"t": 486.35,
+"kind": "fire",
+"by": "southampton",
+"at": "stettin",
+"source": "story",
+"id": "story:fire:southampton:stettin:48635"
+},
+{
+"t": 489.05,
+"kind": "searchlight",
+"by": "muenchen",
+"at": "southampton",
+"seconds": 16.0,
+"source": "story",
+"id": "story:searchlight:muenchen:southampton:48905"
+},
+{
+"t": 489.1,
+"kind": "fire",
+"by": "stettin",
+"at": "southampton",
+"source": "story",
+"id": "story:fire:stettin:southampton:48910"
+},
+{
+"t": 489.2,
+"kind": "torpedo",
+"by": "southampton",
+"at": "frauenlob",
+"hit": true,
+"source": "story",
+"id": "story:torpedo:southampton:frauenlob:48920"
+},
+{
+"t": 530.05,
+"kind": "searchlight",
+"by": "westfalen",
+"at": "tipperary",
+"seconds": 16.0,
+"source": "story",
+"id": "story:searchlight:westfalen:tipperary:53005"
+},
+{
+"t": 530.1,
+"kind": "fire",
+"by": "westfalen",
+"at": "tipperary",
+"source": "story",
+"id": "story:fire:westfalen:tipperary:53010"
+},
+{
+"t": 530.2,
+"kind": "fire",
+"by": "nassau",
+"at": "tipperary",
+"source": "story",
+"id": "story:fire:nassau:tipperary:53020"
+},
+{
+"t": 530.3,
+"kind": "fire",
+"by": "rheinland",
+"at": "tipperary",
+"source": "story",
+"id": "story:fire:rheinland:tipperary:53030"
+},
+{
+"t": 555.0,
+"kind": "torpedo",
+"by": "contest",
+"at": "rostock",
+"hit": true,
+"source": "story",
+"id": "story:torpedo:contest:rostock:55500"
+},
+{
+"t": 584.55,
+"kind": "searchlight",
+"by": "westfalen",
+"at": "fortune",
+"seconds": 14.0,
+"source": "story",
+"id": "story:searchlight:westfalen:fortune:58455"
+},
+{
+"t": 584.6,
+"kind": "fire",
+"by": "rheinland",
+"at": "fortune",
+"source": "story",
+"id": "story:fire:rheinland:fortune:58460"
+},
+{
+"t": 584.7,
+"kind": "fire",
+"by": "westfalen",
+"at": "fortune",
+"source": "story",
+"id": "story:fire:westfalen:fortune:58470"
+},
+{
+"t": 594.55,
+"kind": "searchlight",
+"by": "thueringen",
+"at": "black_prince",
+"seconds": 16.0,
+"source": "story",
+"id": "story:searchlight:thueringen:black_prince:59455"
+},
+{
+"t": 594.6,
+"kind": "fire",
+"by": "thueringen",
+"at": "black_prince",
+"source": "story",
+"id": "story:fire:thueringen:black_prince:59460"
+},
+{
+"t": 594.65,
+"kind": "fire",
+"by": "ostfriesland",
+"at": "black_prince",
+"source": "story",
+"id": "story:fire:ostfriesland:black_prince:59465"
+},
+{
+"t": 594.7,
+"kind": "fire",
+"by": "friedrich_der_grosse",
+"at": "black_prince",
+"source": "story",
+"id": "story:fire:friedrich_der_grosse:black_prince:59470"
+},
+{
+"t": 594.95,
+"kind": "detonation",
+"at": "black_prince",
+"source": "story",
+"id": "story:detonation:-:black_prince:59495"
+},
+{
+"t": 595.2,
+"kind": "searchlight",
+"by": "westfalen",
+"at": "ardent",
+"seconds": 14.0,
+"source": "story",
+"id": "story:searchlight:westfalen:ardent:59520"
+},
+{
+"t": 595.25,
+"kind": "fire",
+"by": "westfalen",
+"at": "ardent",
+"source": "story",
+"id": "story:fire:westfalen:ardent:59525"
+},
+{
+"t": 609.5,
+"kind": "searchlight",
+"by": "westfalen",
+"at": "petard",
+"seconds": 14.0,
+"source": "story",
+"id": "story:searchlight:westfalen:petard:60950"
+},
+{
+"t": 609.55,
+"kind": "fire",
+"by": "westfalen",
+"at": "petard",
+"source": "story",
+"id": "story:fire:westfalen:petard:60955"
+},
+{
+"t": 612.5,
+"kind": "searchlight",
+"by": "westfalen",
+"at": "turbulent",
+"seconds": 14.0,
+"source": "story",
+"id": "story:searchlight:westfalen:turbulent:61250"
+},
+{
+"t": 612.55,
+"kind": "fire",
+"by": "westfalen",
+"at": "turbulent",
+"source": "story",
+"id": "story:fire:westfalen:turbulent:61255"
+},
+{
+"t": 689.8,
+"kind": "torpedo",
+"by": "g38",
+"at": "luetzow",
+"hit": true,
+"source": "story",
+"id": "story:torpedo:g38:luetzow:68980"
+},
+{
+"t": 705.1,
+"kind": "torpedo",
+"by": "faulknor",
+"at": "pommern",
+"hit": false,
+"source": "story",
+"id": "story:torpedo:faulknor:pommern:70510"
+},
+{
+"t": 705.18,
+"kind": "torpedo",
+"by": "obedient",
+"at": "deutschland",
+"hit": false,
+"source": "story",
+"id": "story:torpedo:obedient:deutschland:70518"
+},
+{
+"t": 705.26,
+"kind": "torpedo",
+"by": "marvel",
+"at": "hannover",
+"hit": false,
+"source": "story",
+"id": "story:torpedo:marvel:hannover:70526"
+},
+{
+"t": 715.0,
+"kind": "torpedo",
+"by": "onslaught",
+"at": "pommern",
+"hit": true,
+"source": "story",
+"id": "story:torpedo:onslaught:pommern:71500"
+},
+{
+"t": 905.0,
+"kind": "hit",
+"at": "ostfriesland",
+"source": "groos_36",
+"id": "groos_36:hit:-:ostfriesland:90500"
+}
+]
+}

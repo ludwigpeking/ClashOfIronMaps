@@ -1,0 +1,76 @@
+{
+ "events": [
+  {
+   "t": 35.0,
+   "kind": "burning",
+   "at": "chaoyong",
+   "until": 113.0,
+   "source": "tracks",
+   "id": "tracks:burning:-:chaoyong:3500"
+  },
+  {
+   "t": 60.0,
+   "kind": "burning",
+   "at": "hiei",
+   "until": 150.0,
+   "source": "tracks",
+   "id": "tracks:burning:-:hiei:6000"
+  },
+  {
+   "t": 35.0,
+   "kind": "burning",
+   "at": "yangwei",
+   "until": 165.0,
+   "source": "tracks",
+   "id": "tracks:burning:-:yangwei:3500"
+  },
+  {
+   "t": 150.0,
+   "kind": "burning",
+   "at": "zhiyuan",
+   "until": 175.0,
+   "source": "tracks",
+   "id": "tracks:burning:-:zhiyuan:15000"
+  },
+  {
+   "t": 44.0,
+   "kind": "burning",
+   "at": "akagi",
+   "until": 180.0,
+   "source": "tracks",
+   "id": "tracks:burning:-:akagi:4400"
+  },
+  {
+   "t": 154.0,
+   "kind": "burning",
+   "at": "dingyuan",
+   "until": 200.0,
+   "source": "tracks",
+   "id": "tracks:burning:-:dingyuan:15400"
+  },
+  {
+   "t": 180.0,
+   "kind": "burning",
+   "at": "matsushima",
+   "until": 230.0,
+   "source": "tracks",
+   "id": "tracks:burning:-:matsushima:18000"
+  },
+  {
+   "t": 90.0,
+   "kind": "burning",
+   "at": "laiyuan",
+   "until": 235.0,
+   "source": "tracks",
+   "id": "tracks:burning:-:laiyuan:9000"
+  },
+  {
+   "t": 150.0,
+   "kind": "burning",
+   "at": "jingyuan_1887",
+   "until": 299.0,
+   "source": "tracks",
+   "id": "tracks:burning:-:jingyuan_1887:15000"
+  }
+ ]
+}

@@ -1,0 +1,17 @@
+{
+ "rule": "hulls touch (length and beam along the heading, 25 m margin), exact between samples",
+ "episodes": [
+  {
+   "ships": [
+    "itsukushima",
+    "chinyen"
+   ],
+   "sides": "same",
+   "from": 700.2912130609311,
+   "to": 700.5,
+   "closest_km": 0.114,
+   "needed_km": 0.116,
+   "at": 700.29
+  }
+ ]
+}

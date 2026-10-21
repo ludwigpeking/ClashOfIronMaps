@@ -1,0 +1,38 @@
+{
+ "id": "jutland",
+ "title": "Jutland",
+ "title_zh": "日德蘭海戰",
+ "clock_zero_minutes": 855,
+ "clock_zone": "GMT",
+ "days": [
+  "31 May",
+  "1 June"
+ ],
+ "sides": [
+  {
+   "id": "britain",
+   "en": "British",
+   "zh": "英國"
+  },
+  {
+   "id": "germany",
+   "en": "German",
+   "zh": "德國"
+  }
+ ],
+ "view": {
+  "x": 15.0,
+  "y": 40.0,
+  "pixels_per_km": 6.0
+ },
+ "gun_reach_km": 21.0,
+ "torpedo_reach_km": 11.0,
+ "torpedo_km_per_minute": 0.9,
+ "searchlight_reach_km": 6.0,
+ "scuttled_by_own_side": {
+  "luetzow": [
+   "g38"
+  ]
+ },
+ "default_underlay": "harper_02"
+}

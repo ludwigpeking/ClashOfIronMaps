@@ -1,0 +1,1122 @@
+{
+	"_readme": [
+		"劇本第三式（2026-10-12）。一個事件只有三件事：台詞 line、看什麼 look、發生什麼 happens。電影剪輯（圖板 board、諸元卡 spec card、巡覽 tour、節奏 pacing）不在此檔，放在同目錄 film.json，只有拍片工具讀。遊戲內劇本編輯器（` 鍵）就是本檔的編輯介面。",
+		"Third form of the story (2026-10-12). An event is three things: the LINE, what we LOOK at, what HAPPENS. Film editing (boards, spec cards, tours, pacing) is NOT here: it lives in film.json beside this file and only the film tools read it. The in-game story editor (` key) edits this file.",
+		"line: t（戰場分鐘）、duration（分鐘）、category（字幕標題，不動鏡頭）、zh/en/tts、voice（錄音檔名）、voice_seconds（量測秒數，改台詞即清除）、silent（無聲事件：不看不說，只發生）、note。",
+		"look: ships（看哪些艦；空=全艦隊）、frame（auto/individual/local/overall）、distance（自動取景的倍數）、height（水平線上仰角度數；負數=水下）、bearing（鏡頭所在方位度數）、motion（sway/still/orbit/hover）、hover_height（公尺）、lens（鏡頭角度）、from/toward（機位艦、望向艦）、seaplane（乘水上飛機）。",
+		"happens: [{kind, ...}] kinds = fire(by,at,when) / hit(by,at,when,where,side,explosion,fire_level,fire_minutes; camera by the victim) / duel(same; camera follows the shell) / detonation(ship,when,breaks,station) / burning(ship,where,minutes,level) / flooding(ship,where,severity) / torpedo(by,at,hit,when,companions,combed,detonates,breaks,watch) / mute(minutes; 0 = rest of the replay) / sinking(ship,when here|track,delay,minutes,trim,list,capsizes,breaks) / searchlight(by,on,seconds,when) / starshell(over,count,seconds,when) / seaplane(near,when) / weather(visibility_km) / flagship(ships).",
+		"when = 事件時刻之後的戰場分鐘。霧氣與旗艦用無聲事件。工具：tools/story_format.py（check / migrate），引擎同規則在 demo/story_format.gd。",
+		"2026-10-18: onto the real-clock tracks (Morison's chart + Atago's and the 4th Destroyer Squadron's battle reports) by tools/guadalcanal/retime_story_real_clock.py; 'retimed_from' is the old minute.",
+		"2026-10-19: rewritten by tools/guadalcanal/rewrite_story_20261019.py (documentary register with background, the destroyer action re-staged from research/destroyer_action_record.md; every line re-voiced)."
+	],
+	"events": [
+		{
+			"t": 0.0,
+			"duration": 8.0,
+			"category": "tactic",
+			"look": {
+				"ships": [
+					"washington",
+					"south_dakota"
+				],
+				"lens": 42.0,
+				"distance": 4.0
+			},
+			"zh": "一九四二年十一月十四日深夜，南太平洋所羅門群島，瓜達爾卡納爾島北面的海峽。三個月來，美日兩國海軍在這片水域反覆夜戰，沉沒的軍艦太多，水兵們乾脆叫它「鐵底灣」。今夜，兩艘美國戰列艦正駛向這裡。",
+			"en": "Late on the night of 14 November 1942, in the Solomon Islands, the strait off Guadalcanal's northern shore. For three months American and Japanese warships have fought here, night after night, and so many have gone down that sailors call it Ironbottom Sound. Tonight two American battleships are steaming into it.",
+			"voice_seconds": {
+				"zh": 21.79
+			}
+		},
+		{
+			"t": 0.5,
+			"duration": 1.0,
+			"category": "overall",
+			"silent": true,
+			"note": "Flagships: Lee in Washington, Kondo in Atago",
+			"look": {
+				"ships": [
+					"washington",
+					"atago"
+				]
+			},
+			"happens": [
+				{
+					"kind": "flagship",
+					"ships": [
+						"washington",
+						"atago"
+					]
+				}
+			]
+		},
+		{
+			"t": 5.0,
+			"duration": 4.0,
+			"category": "tactic",
+			"look": {
+				"ships": [],
+				"lens": 42.0
+			},
+			"zh": "瓜島爭奪戰從這年八月開始。美軍登島，奪下了島上的亨德森機場；日軍則每天夜裡派軍艦從北方運兵增援，美國人管這叫「東京快車」。誰守住機場，誰就控制周圍的海面和天空。而在夜晚的海上，一直是日本海軍佔上風。",
+			"en": "The fight for Guadalcanal began in August, when American Marines landed and took the island's airfield, Henderson Field. Every night since, Japanese warships have run down from the north with troops and supplies; the Americans call it the Tokyo Express. Whoever holds the airfield holds the sea and the sky around it. And at sea, at night, the Japanese navy has had the upper hand.",
+			"voice_seconds": {
+				"zh": 22.98
+			}
+		},
+		{
+			"t": 11.0,
+			"duration": 4.0,
+			"category": "tactic",
+			"look": {
+				"ships": [],
+				"lens": 42.0
+			},
+			"zh": "八月九日的第一次薩沃島海戰，日本艦隊趁夜摸到盟軍巡洋艦身邊，不到一個小時擊沉了四艘重巡洋艦。兩天前，十一月十三日凌晨，美軍巡洋艦隊又在這裡擋住了一次日軍砲擊，卻付出了兩名少將陣亡的代價。美軍手上能派的軍艦，已經不多了。",
+			"en": "On 9 August, at the First Battle of Savo Island, a Japanese force slipped up on the Allied cruisers in the dark and sank four heavy cruisers in under an hour. Two nights ago, before dawn on 13 November, an American cruiser force stopped another Japanese bombardment here, at the cost of two admirals killed. The US Navy has very few ships left to send.",
+			"voice_seconds": {
+				"zh": 23.38
+			}
+		},
+		{
+			"t": 17.0,
+			"duration": 4.0,
+			"category": "tactic",
+			"look": {
+				"ships": [
+					"washington",
+					"south_dakota"
+				],
+				"lens": 42.0
+			},
+			"zh": "南太平洋戰區司令哈爾西決定冒一次險：把最新的兩艘戰列艦華盛頓號和南達科他號，帶上四艘驅逐艦，派進這片狹窄、島礁密布的水域打夜戰。戰列艦是為大洋上的遠距離砲戰造的，很少有指揮官敢這樣用它。這支第六十四特混艦隊是臨時湊起來的，六艘船從沒一起打過仗。",
+			"en": "Admiral Halsey, commanding in the South Pacific, takes a gamble. He sends his two newest battleships, Washington and South Dakota, with four destroyers, into these narrow, island-crowded waters to fight at night. Battleships were built for long-range gunnery on the open ocean, and few commanders would risk them like this. Task Force 64 has been thrown together for the job; its six ships have never fought together.",
+			"voice_seconds": {
+				"zh": 26.57
+			}
+		},
+		{
+			"t": 23.0,
+			"duration": 4.0,
+			"category": "tactic",
+			"look": {
+				"ships": [
+					"washington"
+				],
+				"lens": 42.0
+			},
+			"zh": "指揮這支艦隊的是威利斯·李少將，坐鎮華盛頓號。他年輕時拿過奧運射擊冠軍，在海軍裡是公認最懂雷達的將領。夜裡，島上的美軍電台查問這支陌生的艦隊是誰，李用明語回答：告訴你們的大老闆，「清·李」來了。「清」是他在海軍學院時的綽號。",
+			"en": "In command, aboard Washington, is Rear Admiral Willis Lee: an Olympic champion marksman in his youth, and the admiral who best understands radar. When the radio station on Guadalcanal challenges his unknown ships, Lee answers in plain language: tell your big boss that Ching Lee is here. Ching was his nickname at the Naval Academy.",
+			"voice_seconds": {
+				"zh": 24.8
+			}
+		},
+		{
+			"t": 29.0,
+			"duration": 4.0,
+			"category": "tactic",
+			"look": {
+				"ships": [
+					"washington",
+					"south_dakota"
+				],
+				"lens": 42.0
+			},
+			"zh": "李敢在夜裡打這一仗，靠的是兩艘戰列艦桅杆頂上的SG對海搜索雷達。它向四周發射無線電脈衝，再接收反射回來的回波，把二十多公里內的每一艘船，都在螢幕上顯示成一個光點，距離和方位一清二楚，黑夜和煙幕都擋不住。這樣的雷達，日本艦隊這時還幾乎沒有。",
+			"en": "What lets Lee fight at night is the SG surface-search radar at the top of each battleship's mast. It sends out radio pulses and listens for the echoes, and shows every ship within twenty-odd kilometres as a point of light on a screen, with its range and bearing, through darkness and smoke alike. The Japanese fleet has almost nothing like it yet.",
+			"voice_seconds": {
+				"zh": 26.6
+			}
+		},
+		{
+			"t": 35.0,
+			"duration": 4.0,
+			"category": "tactic",
+			"look": {
+				"ships": [
+					"atago",
+					"kirishima"
+				],
+				"lens": 42.0
+			},
+			"zh": "從北方南下的，是日本海軍中將近藤信竹的艦隊：戰列艦霧島號，重巡洋艦愛宕號和高雄號，還有兩艘輕巡洋艦、九艘驅逐艦。他們的任務不是找美國艦隊決戰，而是砲擊亨德森機場。霧島號的彈藥艙裡，裝的是專門對付陸上目標的燃燒彈。",
+			"en": "Coming down from the north is Vice Admiral Kondo Nobutake: the battleship Kirishima, the heavy cruisers Atago and Takao, two light cruisers and nine destroyers. His task is not to seek out the American fleet but to shell Henderson Field, and Kirishima's magazines are loaded with incendiary shells meant for targets ashore.",
+			"voice_seconds": {
+				"zh": 23.23
+			}
+		},
+		{
+			"t": 40.0,
+			"duration": 4.0,
+			"category": "tactic",
+			"look": {
+				"ships": [
+					"atago",
+					"takao"
+				],
+				"lens": 42.0
+			},
+			"zh": "這次砲擊是為一支運輸船隊開路。船隊原有十一艘運輸船，載著陸軍部隊和物資，今天白天在海上被亨德森機場起飛的美軍飛機炸沉了大半，只剩四艘還在南下。只要今夜把機場砸癱，這四艘船就能在天亮前後衝上灘頭卸載。",
+			"en": "The bombardment is meant to clear the way for a convoy. It set out with eleven transports full of troops and supplies; today, in daylight, aircraft from Henderson Field sank most of them, and only four are still coming south. If the airfield is crippled tonight, those four can run onto the beach and unload around dawn.",
+			"voice_seconds": {
+				"zh": 23.42
+			}
+		},
+		{
+			"t": 46.0,
+			"duration": 4.0,
+			"category": "tactic",
+			"look": {
+				"ships": [
+					"kirishima"
+				],
+				"lens": 42.0
+			},
+			"zh": "先看一眼霧島號。她是這一夜兩邊最大、也最老的軍艦：一九一三年下水，原本是戰列巡洋艦，後來經過兩次大改裝，成了快速戰列艦，裝有八門三百五十六毫米主砲。兩天前，她的姊妹艦比叡號就在這片海域被打成重傷，最後自沉。",
+			"en": "A look at Kirishima herself, the largest and oldest ship on either side tonight. Launched in 1913 as a battlecruiser and twice rebuilt into a fast battleship, she carries eight 14-inch guns. Two days ago her sister ship Hiei was crippled in these same waters and finally scuttled.",
+			"voice_seconds": {
+				"zh": 23.01
+			}
+		},
+		{
+			"t": 50.0,
+			"duration": 4.0,
+			"category": "tactic",
+			"look": {
+				"ships": [
+					"south_dakota"
+				],
+				"lens": 42.0
+			},
+			"zh": "美方的南達科他號服役才半年多，裝甲厚重，艦長是蓋奇上校。她的運氣一直不好：九月在湯加觸了暗礁，十月的聖克魯斯海戰又被炸彈擊中前主砲塔。艦上的水兵常拿這事自嘲。",
+			"en": "On the American side, South Dakota has been in commission barely half a year: new and heavily armoured, under Captain Thomas Gatch. Her luck has been poor. In September she ran onto a coral pinnacle off Tonga; in October, at Santa Cruz, a bomb struck her forward turret. Her crew joke about it.",
+			"voice_seconds": {
+				"zh": 18.21
+			}
+		},
+		{
+			"t": 55.0,
+			"duration": 4.0,
+			"category": "tactic",
+			"look": {
+				"ships": [
+					"sendai",
+					"shikinami",
+					"uranami"
+				],
+				"lens": 42.0
+			},
+			"zh": "早在晚上十點多，日本輕巡洋艦川內號的瞭望員就在黑暗中發現了美艦，報告說是兩艘巡洋艦和四艘驅逐艦。夜色裡很難分清戰列艦和巡洋艦，近藤因此低估了對手。他讓主力留在後面，先派川內號和驅逐艦繞著薩沃島搜索。",
+			"en": "Back at a little after ten, lookouts in the Japanese light cruiser Sendai spotted the American ships in the dark and reported two cruisers and four destroyers. At night a battleship is hard to tell from a cruiser, and Kondo underestimates what he faces. He keeps his main body back and sends Sendai and destroyers to sweep round Savo Island.",
+			"voice_seconds": {
+				"zh": 23.42
+			}
+		},
+		{
+			"t": 60.0,
+			"duration": 4.0,
+			"category": "tactic",
+			"look": {
+				"ships": [
+					"washington",
+					"sendai"
+				],
+				"lens": 42.0
+			},
+			"zh": "十一點整，華盛頓號的雷達螢幕上出現了一組目標，正是川內號那一隊，在薩沃島附近尾隨美艦。日本人以為自己藏在黑暗裡，其實他們的每一次轉向，都被雷達報到了華盛頓號的作戰室，畫在標圖桌上。",
+			"en": "At eleven o'clock a group of contacts appears on Washington's radar screen: Sendai's group, near Savo Island, shadowing the Americans. The Japanese believe the darkness hides them. In fact every turn they make is reported by radar to Washington's plotting room and drawn on the plotting table.",
+			"voice_seconds": {
+				"zh": 17.97
+			}
+		},
+		{
+			"t": 65.0,
+			"duration": 4.0,
+			"category": "tactic",
+			"look": {
+				"ships": [
+					"washington"
+				],
+				"lens": 42.0
+			},
+			"zh": "李沒有急著開火。雷達上，薩沃島西側又陸續出現了新的目標。他要先弄清楚對面到底有多少船，因為只要一開砲，砲口的火光就會告訴日本人，美艦在哪裡。",
+			"en": "Lee does not rush to open fire. More contacts are appearing on the radar to the west of Savo. He wants to know what he is facing first, because the moment he fires, his muzzle flashes will show the Japanese exactly where he is.",
+			"voice_seconds": {
+				"zh": 15.01
+			}
+		},
+		{
+			"t": 71.0,
+			"duration": 4.0,
+			"category": "tactic",
+			"look": {
+				"ships": [
+					"walke",
+					"benham",
+					"preston",
+					"gwin"
+				],
+				"lens": 42.0
+			},
+			"zh": "四艘美國驅逐艦在戰列艦前方約五公里開路，依次是沃克號、本納姆號、普雷斯頓號和格溫號。它們裝的是舊式雷達，看得遠不如身後的戰列艦清楚。最先碰上敵人的，正是這四艘船。",
+			"en": "About five kilometres ahead of the battleships, four American destroyers lead the way: Walke, Benham, Preston and Gwin. They carry older radar sets and see far less than the battleships behind them. They will be the first to meet the enemy.",
+			"voice_seconds": {
+				"zh": 18.36
+			}
+		},
+		{
+			"t": 77.0,
+			"duration": 5.0,
+			"category": "first_fire",
+			"look": {
+				"ships": [
+					"washington",
+					"sendai"
+				],
+				"lens": 42.0,
+				"from": "washington",
+				"toward": "sendai"
+			},
+			"zh": "十一點十七分，距離約十四公里，華盛頓號的四百零六毫米主砲在雷達引導下開火，南達科他號隨後也開了砲。巨大的水柱在川內號周圍升起。川內號施放煙幕，掉頭撤走，沒有中彈，但對美艦的尾隨就此結束。",
+			"en": "At seventeen minutes past eleven, at about fourteen kilometres, Washington opens fire with her 16-inch guns, laid by radar, and South Dakota joins in. Huge columns of water rise around Sendai. She lays smoke and turns away unhurt, but her shadowing is over.",
+			"happens": [
+				{
+					"kind": "duel",
+					"by": "washington",
+					"at": "sendai",
+					"when": 0.25
+				},
+				{
+					"kind": "duel",
+					"by": "south_dakota",
+					"at": "sendai",
+					"when": 0.55
+				}
+			],
+			"voice_seconds": {
+				"zh": 22.24
+			}
+		},
+		{
+			"t": 81.0,
+			"duration": 5.0,
+			"category": "famous_action",
+			"look": {
+				"ships": [
+					"ayanami",
+					"walke"
+				],
+				"lens": 42.0
+			},
+			"zh": "與此同時，在薩沃島南側，日本驅逐艦綾波號從島後轉出，迎面撞上了美國艦隊。一艘驅逐艦面對六艘美艦，她沒有後退，先發出敵情報告，隨即用火砲和魚雷發起攻擊。這是當晚最大膽的一次行動，也是影響最大的一次。",
+			"en": "Meanwhile, on the south side of Savo, the Japanese destroyer Ayanami comes round the island and runs straight into the American force. One destroyer against six ships, she does not turn away. She reports the contact and attacks with guns and torpedoes. It is the boldest act of the night, and one of the most decisive.",
+			"happens": [
+				{
+					"kind": "duel",
+					"by": "ayanami",
+					"at": "walke",
+					"when": 0.5
+				},
+				{
+					"kind": "duel",
+					"by": "walke",
+					"at": "ayanami",
+					"when": 0.75
+				}
+			],
+			"voice_seconds": {
+				"zh": 21.98
+			}
+		},
+		{
+			"t": 85.0,
+			"duration": 5.0,
+			"category": "tactic",
+			"look": {
+				"ships": [
+					"nagara",
+					"gwin",
+					"preston"
+				],
+				"lens": 42.0,
+				"frame": "local"
+			},
+			"zh": "幾分鐘後，日本輕巡洋艦長良號帶著四艘驅逐艦，從薩沃島西側的陰影裡駛了出來。島嶼一直擋著美艦的雷達，四艘美國驅逐艦一下子陷入兩面夾擊。格溫號打出照明彈照亮海面，雙方的驅逐艦在幾公里內互相射擊。",
+			"en": "Minutes later the light cruiser Nagara, with four destroyers, comes out of the shadow of Savo's western shore. The island had masked them from American radar, and the four US destroyers are suddenly caught between two fires. Gwin fires star shells to light the sea, and destroyers on both sides trade fire at a few kilometres.",
+			"happens": [
+				{
+					"kind": "starshell",
+					"over": "nagara",
+					"count": 2,
+					"seconds": 25.0,
+					"when": 0.4
+				},
+				{
+					"kind": "fire",
+					"by": "nagara",
+					"at": "preston",
+					"when": 1.2
+				}
+			],
+			"voice_seconds": {
+				"zh": 20.97
+			}
+		},
+		{
+			"t": 90.0,
+			"duration": 5.0,
+			"category": "struck",
+			"look": {
+				"ships": [
+					"preston"
+				],
+				"lens": 42.0,
+				"frame": "individual"
+			},
+			"zh": "十一點半剛過，長良號的砲彈找上了普雷斯頓號。第一批兩發打在右舷，其中一發在兩個鍋爐艙之間爆炸，艙裡的人全部陣亡，後煙囪也倒了下來，砸在探照燈平台上。緊接著，又有幾發打中左舷，從煙囪往後，整艘船燒成了一片。",
+			"en": "Just after half past eleven, Nagara's shells find Preston. The first two strike her starboard side; one bursts between her two firerooms, killing every man in them, and her after funnel crashes down onto the searchlight platform. Seconds later more shells hit her port side, and everything aft of the funnels is ablaze.",
+			"happens": [
+				{
+					"kind": "duel",
+					"by": "nagara",
+					"at": "preston",
+					"when": 0.3,
+					"where": "midships",
+					"side": "starboard",
+					"explosion": 2,
+					"fire_level": 3,
+					"fire_minutes": 15.0
+				},
+				{
+					"kind": "hit",
+					"by": "nagara",
+					"at": "preston",
+					"when": 0.7,
+					"where": "aft_turret",
+					"side": "port",
+					"explosion": 1,
+					"fire_level": 3,
+					"fire_minutes": 15.0
+				}
+			],
+			"voice_seconds": {
+				"zh": 22.31
+			}
+		},
+		{
+			"t": 92.0,
+			"duration": 5.0,
+			"category": "catch_fire",
+			"look": {
+				"ships": [
+					"ayanami",
+					"gwin"
+				],
+				"lens": 42.0,
+				"frame": "local"
+			},
+			"zh": "綾波號的衝鋒，也招來了華盛頓號副砲的猛烈還擊。一百二十七毫米砲彈接連命中，綾波號從頭燒到尾，失去了動力。格溫號的後輪機艙也中了一彈，震得三枚魚雷滑落海中。可是在綾波號被打癱之前，她的六枚魚雷已經射出，正在水下駛向美國驅逐艦。",
+			"en": "Ayanami's charge draws the full weight of Washington's 5-inch guns. Hit after hit lands, and she burns from end to end, dead in the water. Gwin takes a shell in her after engine room, and the jolt sends three of her own torpedoes over the side. But before Ayanami was stopped, her six torpedoes were fired, and they are running toward the American destroyers.",
+			"happens": [
+				{
+					"kind": "duel",
+					"by": "washington",
+					"at": "ayanami",
+					"when": 0.3,
+					"where": "midships",
+					"explosion": 2,
+					"fire_level": 3,
+					"fire_minutes": 240.0
+				},
+				{
+					"kind": "hit",
+					"by": "",
+					"at": "gwin",
+					"when": 0.8,
+					"where": "aft_turret",
+					"side": "starboard",
+					"explosion": 1,
+					"fire_level": 1,
+					"fire_minutes": 4.0
+				}
+			],
+			"voice_seconds": {
+				"zh": 24.98
+			}
+		},
+		{
+			"t": 93.0,
+			"duration": 4.0,
+			"category": "tactic",
+			"look": {
+				"ships": [
+					"south_dakota"
+				],
+				"lens": 42.0
+			},
+			"zh": "十一點三十三分，南達科他號出了故障。主砲射擊的震動造成一處電路短路，而一個斷路器事先被人鎖死，跳不開，故障一路蔓延，艦體後部全部斷電。雷達黑了，砲塔失去動力，無線電也斷了。三分鐘後電力部分恢復，可雷達一時修不好。",
+			"en": "At 23:33 South Dakota breaks down. The shock of her own guns shorts a circuit, and because a circuit breaker had been locked shut it cannot trip; the fault spreads and the after part of the ship loses all power. Her radar goes dark, her turrets lose power, her radio goes silent. Some power returns three minutes later, but her radar cannot be put right.",
+			"voice_seconds": {
+				"zh": 23.37
+			}
+		},
+		{
+			"t": 94.0,
+			"duration": 5.0,
+			"category": "struck",
+			"look": {
+				"ships": [
+					"walke"
+				],
+				"lens": 42.0,
+				"frame": "individual"
+			},
+			"zh": "十一點三十五分前後，一枚魚雷擊中了打頭的沃克號，正打在二號砲塔下方的右舷。艦艏的彈藥庫隨之爆炸，從艦橋往前的整段船頭被炸斷。船身迅速下沉。究竟是誰射中了她，日方記錄說是綾波號，美國的研究者則認為是長良號帶領的驅逐艦。",
+			"en": "At about 23:35 a torpedo strikes Walke, at the head of the line, on her starboard side directly below her No. 2 gun. Her forward magazine explodes, and everything forward of the bridge is blown away. She begins to sink fast. Japanese records credit Ayanami with the hit; some American historians credit the destroyers with Nagara.",
+			"happens": [
+				{
+					"kind": "torpedo",
+					"by": "ayanami",
+					"at": "walke",
+					"hit": true,
+					"when": 0.0,
+					"companions": 2,
+					"where": "fore_turret",
+					"severs": true,
+					"watch": "victim"
+				}
+			],
+			"voice_seconds": {
+				"zh": 23.98
+			}
+		},
+		{
+			"t": 95.3,
+			"duration": 5.0,
+			"category": "struck",
+			"look": {
+				"ships": [
+					"benham"
+				],
+				"lens": 42.0,
+				"frame": "individual"
+			},
+			"zh": "緊跟在後的本納姆號正急轉舵避開沃克號，一枚魚雷擊中了她的艦艏尖端。整艘船先被頂了起來，又向右傾斜了三十度，主甲板以下的船頭被炸掉。她沒有起火，也沒有沉，但航速從二十七節掉到了五節，只能慢慢退出戰鬥。",
+			"en": "Close astern, Benham is swinging hard to clear Walke when a torpedo hits the very tip of her bow. The whole ship is lifted, then rolls thirty degrees to starboard, and her bow below the main deck is torn away. She does not burn and she does not sink, but her speed falls from twenty-seven knots to five, and she limps out of the fight.",
+			"happens": [
+				{
+					"kind": "torpedo",
+					"by": "ayanami",
+					"at": "benham",
+					"hit": true,
+					"when": 0.0,
+					"companions": 1,
+					"where": "bow",
+					"severs": true,
+					"watch": "victim"
+				},
+				{
+					"kind": "flooding",
+					"ship": "benham",
+					"where": "bow",
+					"severity": 0.3
+				}
+			],
+			"voice_seconds": {
+				"zh": 22.76
+			}
+		},
+		{
+			"t": 96.6,
+			"duration": 6.0,
+			"category": "sinking",
+			"look": {
+				"ships": [
+					"preston"
+				],
+				"lens": 42.0,
+				"frame": "individual"
+			},
+			"zh": "普雷斯頓號已經沒救了，艦員奉命棄艦。不到半分鐘，她就向右翻倒，船尾先沉了下去，船頭翹起，幾乎垂直地立在燃燒的海面上，就這樣停了大約十分鐘，才滑入水中。連同艦長斯托姆斯中校在內，一百一十六名艦員隨艦犧牲。",
+			"en": "Preston cannot be saved, and her crew are ordered to abandon ship. In less than half a minute she rolls over to starboard. Her stern goes under first, and her bow rises until it stands almost upright above the burning sea. It stays there about ten minutes before it slides under. One hundred and sixteen men are lost with her, Commander Max Stormes among them.",
+			"happens": [
+				{
+					"kind": "sinking",
+					"ship": "preston",
+					"when": "track",
+					"minutes": 10.0,
+					"trim": "stern",
+					"list": "starboard",
+					"capsizes": true,
+					"upends": true
+				}
+			],
+			"voice_seconds": {
+				"zh": 24.17
+			}
+		},
+		{
+			"t": 98.0,
+			"duration": 4.0,
+			"category": "tactic",
+			"look": {
+				"ships": [
+					"south_dakota",
+					"preston"
+				],
+				"lens": 42.0,
+				"from": "south_dakota",
+				"toward": "preston"
+			},
+			"zh": "十一點三十八分，南達科他號從普雷斯頓號旁邊駛過，落水的艦員就在她左舷不遠處。艦上的人聽得見水裡的呼喊，看得見點點手電筒的光。可是交戰中的戰列艦不能停下來救人，她只能繼續往前開。",
+			"en": "At 23:38 South Dakota passes close by Preston, her survivors in the water just off the battleship's port side. Men on deck can hear the shouting and see flashlights in the water. But a battleship in action cannot stop to pick men up, and she steams on.",
+			"voice_seconds": {
+				"zh": 19.55
+			}
+		},
+		{
+			"t": 102.0,
+			"duration": 5.0,
+			"category": "sinking",
+			"look": {
+				"ships": [
+					"walke"
+				],
+				"lens": 42.0,
+				"frame": "individual"
+			},
+			"zh": "十一點四十二分，沃克號沉沒。斷下來的船頭還浮在水上，一些倖存者抓著它。大約一分鐘後，水下突然接連爆炸：沃克號的深水炸彈事先檢查過，已經設在保險位置，卻還是炸了，正炸在落水的艦員中間，原因至今不明。沃克號共有八十二人陣亡，艦長弗雷澤中校也在其中。",
+			"en": "At 23:42 Walke goes down. Her severed bow is still afloat, with survivors clinging to it. About a minute later the water erupts beneath them: her depth charges, checked and set to safe, explode anyway, right among the men swimming. No one has ever explained why. Eighty-two of Walke's crew are dead, Commander Thomas Fraser among them.",
+			"happens": [
+				{
+					"kind": "sinking",
+					"ship": "walke",
+					"when": "track",
+					"trim": "bow",
+					"minutes": 3.0
+				},
+				{
+					"kind": "depth_charges",
+					"ship": "walke",
+					"count": 6,
+					"when": 1.0
+				}
+			],
+			"voice_seconds": {
+				"zh": 28.24
+			}
+		},
+		{
+			"t": 104.0,
+			"duration": 5.0,
+			"category": "tactic",
+			"look": {
+				"ships": [
+					"south_dakota",
+					"benham"
+				],
+				"lens": 42.0,
+				"frame": "local"
+			},
+			"zh": "十一點四十四分，斷了船頭的本納姆號正從南達科他號前方橫穿過去。為了避開她，南達科他號向右轉。這一轉，讓她駛到了普雷斯頓號和沃克號燃燒的殘骸與油火旁邊。火光把戰列艦高大的輪廓映了出來，西北方的日本艦隊看得清清楚楚。",
+			"en": "At 23:44 the crippled Benham is crossing ahead of South Dakota. To clear her, South Dakota turns to starboard, and the turn carries her past the burning wrecks of Preston and Walke. Their flames throw the battleship's tall outline against the night, plain to see for the Japanese ships to the northwest.",
+			"voice_seconds": {
+				"zh": 23.15
+			}
+		},
+		{
+			"t": 106.0,
+			"duration": 5.0,
+			"category": "overall",
+			"look": {
+				"ships": [
+					"benham",
+					"gwin"
+				],
+				"lens": 42.0,
+				"frame": "local"
+			},
+			"zh": "前後不過二十分鐘，李的四艘驅逐艦全部失去了戰鬥力：沃克號和普雷斯頓號沉沒，本納姆號斷了船頭，格溫號輪機艙中彈。李命令剩下的兩艘撤出戰場。現在，只剩兩艘戰列艦繼續向前。",
+			"en": "In barely twenty minutes all four of Lee's destroyers are out of action: Walke and Preston sunk, Benham without her bow, Gwin hit in the engine room. Lee orders the two that are left to withdraw. Now only the two battleships go on.",
+			"voice_seconds": {
+				"zh": 19.58
+			}
+		},
+		{
+			"t": 110.0,
+			"duration": 4.0,
+			"category": "tactic",
+			"look": {
+				"ships": [
+					"washington"
+				],
+				"lens": 42.0
+			},
+			"zh": "華盛頓號從燃燒殘骸靠外海的一側駛過，火光反而替她遮住了身影。她的雷達上，有一個大目標正從北面靠近。李不能確定那是霧島號，還是已經失去聯絡的南達科他號。在弄清楚之前，他不肯開火。",
+			"en": "Washington passes the burning wrecks on their seaward side, where the glare hides her instead of showing her. On her radar a large contact is closing from the north. Lee cannot tell whether it is Kirishima or South Dakota, with whom he has lost contact. Until he is sure, he will not fire.",
+			"voice_seconds": {
+				"zh": 20.99
+			}
+		},
+		{
+			"t": 113.0,
+			"duration": 4.0,
+			"category": "tactic",
+			"look": {
+				"ships": [
+					"kirishima",
+					"atago",
+					"takao"
+				],
+				"lens": 42.0
+			},
+			"zh": "這時，近藤的前衛向他報告，美國驅逐艦已被擊潰。十一點五十二分，愛宕號的瞭望員發現了一艘大型軍艦。近藤率領霧島號、愛宕號和高雄號轉向東南，準備先打掉這艘船，再去砲擊機場。",
+			"en": "Kondo's screening units report the American destroyers beaten. At 23:52 lookouts in Atago sight a large warship. Kondo turns Kirishima, Atago and Takao to the southeast, to deal with her first and then go on to the airfield.",
+			"voice_seconds": {
+				"zh": 19.39
+			}
+		},
+		{
+			"t": 116.0,
+			"duration": 4.0,
+			"category": "tactic",
+			"look": {
+				"ships": [
+					"south_dakota"
+				],
+				"lens": 42.0
+			},
+			"zh": "南達科他號正朝這支日本主力駛去，只有她一艘。雷達還沒修好，主砲只能各自瞄準。艦上的人還不知道，幾分鐘後，他們將迎來整場海戰中最猛烈的砲火。",
+			"en": "South Dakota is heading toward that Japanese main body, alone. Her radar is still not working, and her turrets are aiming on their own. No one aboard knows that in a few minutes they will face the heaviest fire of the whole battle.",
+			"voice_seconds": {
+				"zh": 15.81
+			}
+		},
+		{
+			"t": 118.0,
+			"duration": 6.0,
+			"category": "famous_action",
+			"look": {
+				"ships": [
+					"atago",
+					"south_dakota"
+				],
+				"lens": 42.0,
+				"from": "atago",
+				"toward": "south_dakota"
+			},
+			"zh": "接近午夜，距離五、六公里。愛宕號的探照燈突然亮起，一道強光直直照在南達科他號的上層建築上，霧島號的探照燈隨後也照了過來。這是日本海軍夜戰的看家本領：先用強光鎖住目標，再讓所有火砲對準它集中射擊。",
+			"en": "Just before midnight, at five or six kilometres, Atago's searchlight snaps on and a hard white beam fixes on South Dakota's superstructure. Kirishima's lights follow. It is the Japanese navy's trademark of night fighting: pin the target in light, then bring every gun to bear on it.",
+			"happens": [
+				{
+					"kind": "searchlight",
+					"by": "atago",
+					"on": "south_dakota",
+					"seconds": 20.0,
+					"when": 1.5
+				},
+				{
+					"kind": "searchlight",
+					"by": "kirishima",
+					"on": "south_dakota",
+					"seconds": 16.0,
+					"when": 2.5
+				}
+			],
+			"voice_seconds": {
+				"zh": 21.15
+			}
+		},
+		{
+			"t": 119.0,
+			"duration": 6.0,
+			"category": "struck",
+			"look": {
+				"ships": [
+					"south_dakota"
+				],
+				"lens": 42.0
+			},
+			"zh": "霧島號、愛宕號和高雄號的砲火一齊落下，愛宕號還向她射出了魚雷。幾分鐘之內，南達科他號被命中二十多發，上層建築和雷達天線被打爛，到處起火，三十九人陣亡。好在主裝甲擋住了重砲彈，要害部位沒有受損，魚雷也全部落空。",
+			"en": "Gunfire from Kirishima, Atago and Takao falls on her together, and Atago fires torpedoes at her as well. Within minutes South Dakota is hit more than twenty times. Her superstructure and radar antennas are wrecked, fires break out, and thirty-nine men are killed. But her main armour stops the heavy shells, her vitals are untouched, and every torpedo misses.",
+			"happens": [
+				{
+					"kind": "duel",
+					"by": "atago",
+					"at": "south_dakota",
+					"when": 1.4
+				},
+				{
+					"kind": "duel",
+					"by": "kirishima",
+					"at": "south_dakota",
+					"when": 1.8
+				},
+				{
+					"kind": "duel",
+					"by": "takao",
+					"at": "south_dakota",
+					"when": 2.2
+				},
+				{
+					"kind": "torpedo",
+					"by": "atago",
+					"at": "south_dakota",
+					"hit": false,
+					"when": 2.0,
+					"companions": 3
+				},
+				{
+					"kind": "torpedo",
+					"by": "asagumo",
+					"at": "south_dakota",
+					"hit": false,
+					"when": 4.0,
+					"companions": 1
+				}
+			],
+			"voice_seconds": {
+				"zh": 21.56
+			}
+		},
+		{
+			"t": 120.0,
+			"duration": 8.0,
+			"category": "famous_action",
+			"look": {
+				"ships": [
+					"washington",
+					"kirishima"
+				],
+				"lens": 42.0,
+				"from": "washington",
+				"toward": "kirishima"
+			},
+			"zh": "正是午夜。探照燈的光替李解開了疑問：那個大目標就是霧島號。華盛頓號早已用雷達算好了射擊諸元，距離約八公里。李下令開火，九門四百零六毫米主砲一齊射擊。霧島號完全沒有察覺到她。",
+			"en": "It is midnight. The searchlights answer Lee's question: the big contact is Kirishima. Washington has had her firing data worked out by radar for minutes; the range is about eight kilometres. Lee gives the order, and nine 16-inch guns fire together. Kirishima has no idea Washington is there.",
+			"happens": [
+				{
+					"kind": "duel",
+					"by": "washington",
+					"at": "kirishima",
+					"when": 0.35
+				},
+				{
+					"kind": "duel",
+					"by": "washington",
+					"at": "kirishima",
+					"when": 0.7
+				}
+			],
+			"voice_seconds": {
+				"zh": 20.2
+			}
+		},
+		{
+			"t": 122.0,
+			"duration": 6.0,
+			"category": "struck",
+			"look": {
+				"ships": [
+					"washington",
+					"kirishima"
+				],
+				"lens": 42.0
+			},
+			"zh": "這正是探照燈戰術的另一面。光柱照亮敵艦的同時，也暴露了開燈的船自己。日本人沒有想到，黑暗中有一部火控雷達，正在等這樣一個確定無疑的目標。",
+			"en": "Here is the other side of the searchlight tactic. A beam that lights up the enemy also shows where the ship holding it lies. What the Japanese have not reckoned with is a fire-control radar in the dark, waiting for exactly such a certain target.",
+			"happens": [
+				{
+					"kind": "duel",
+					"by": "washington",
+					"at": "kirishima",
+					"when": 0.4
+				}
+			],
+			"voice_seconds": {
+				"zh": 13.8
+			}
+		},
+		{
+			"t": 124.0,
+			"duration": 6.0,
+			"category": "struck",
+			"look": {
+				"ships": [
+					"kirishima"
+				],
+				"lens": 42.0
+			},
+			"zh": "十六吋砲彈接連落下，霧島號來不及弄清是誰在打她。幾分鐘之內，她被重砲彈命中至少九發，還有大量一百二十七毫米砲彈。兩座主砲塔失去戰鬥力，艦橋起火，水線以下的舵機艙也被打中。她只能朝著遠處的砲口火光還擊，沒有命中。",
+			"en": "The 16-inch shells keep coming before Kirishima can work out who is firing. Within minutes she takes at least nine heavy hits, and many 5-inch. Two main turrets are knocked out, her bridge is on fire, and shells below the waterline reach her steering gear. She fires back at distant muzzle flashes, and misses.",
+			"happens": [
+				{
+					"kind": "duel",
+					"by": "washington",
+					"at": "kirishima",
+					"when": 0.25
+				},
+				{
+					"kind": "duel",
+					"by": "washington",
+					"at": "kirishima",
+					"when": 0.65
+				}
+			],
+			"voice_seconds": {
+				"zh": 24.36
+			}
+		},
+		{
+			"t": 127.0,
+			"duration": 6.0,
+			"category": "catch_fire",
+			"look": {
+				"ships": [
+					"kirishima"
+				],
+				"lens": 42.0
+			},
+			"zh": "華盛頓號一共只射擊了大約七分鐘。霧島號的舵被卡在左滿舵，只能拖著大火，在海上一圈一圈地打轉。日本派往瓜島的最後一艘戰列艦，從此失去了控制。",
+			"en": "Washington fires for only about seven minutes. Kirishima's rudder is jammed hard to port, and she can only steam in circles, trailing fire. The last battleship Japan will send against Guadalcanal is out of control.",
+			"voice_seconds": {
+				"zh": 14.99
+			}
+		},
+		{
+			"t": 130.0,
+			"duration": 4.0,
+			"category": "tactic",
+			"look": {
+				"ships": [
+					"atago",
+					"takao",
+					"washington"
+				],
+				"lens": 42.0
+			},
+			"zh": "近藤不肯罷手。他命令各艦向華盛頓號發起魚雷攻擊，九三式魚雷一批接一批射向她。九三式是當時世界上射程最遠、威力最大的魚雷，以純氧為動力，航跡幾乎看不見。但這一夜，射向華盛頓號的魚雷，一枚也沒有命中。",
+			"en": "Kondo will not give up. He orders torpedo attacks on Washington, and spread after spread of Type 93s are fired at her. The Type 93 is the longest-ranged, most powerful torpedo in the world, driven by pure oxygen and leaving almost no visible wake. Tonight not one of those fired at Washington finds her.",
+			"happens": [
+				{
+					"kind": "torpedo",
+					"by": "atago",
+					"at": "washington",
+					"hit": false,
+					"when": 4.0,
+					"companions": 3
+				},
+				{
+					"kind": "torpedo",
+					"by": "atago",
+					"at": "washington",
+					"hit": false,
+					"when": 13.0,
+					"companions": 1
+				}
+			],
+			"voice_seconds": {
+				"zh": 21.56
+			}
+		},
+		{
+			"t": 136.0,
+			"duration": 5.0,
+			"category": "fleeing",
+			"look": {
+				"ships": [
+					"south_dakota"
+				],
+				"lens": 42.0
+			},
+			"zh": "傷痕累累的南達科他號沒有通知旗艦，自己向南撤出了戰鬥，因為她的無線電已經壞了。她一共挨了二十六發砲彈，裝甲沒有被擊穿，仍能以二十六節的速度航行。當時的報紙不許公開她的名字，只稱她為「X號戰列艦」。",
+			"en": "Battered South Dakota turns south out of the fight without telling the flagship; her radio is wrecked. She has taken twenty-six hits, her armour unbroken, and she can still make twenty-six knots. The newspapers of the day are not allowed to print her name; they call her simply Battleship X.",
+			"voice_seconds": {
+				"zh": 20.79
+			}
+		},
+		{
+			"t": 145.0,
+			"duration": 5.0,
+			"category": "famous_action",
+			"look": {
+				"ships": [
+					"washington"
+				],
+				"lens": 42.0
+			},
+			"zh": "華盛頓號成了美軍唯一完好的軍艦。李沒有立刻撤退，而是率艦向西北駛去，主動把日本軍艦引向自己，讓追兵遠離受傷的南達科他號，和海裡的落水者。",
+			"en": "Washington is now the only undamaged American ship. Rather than withdraw at once, Lee steers northwest, drawing the Japanese ships after him, away from the damaged South Dakota and the men in the water.",
+			"happens": [
+				{
+					"kind": "torpedo",
+					"by": "takao",
+					"at": "washington",
+					"hit": false,
+					"when": 0.5
+				}
+			],
+			"voice_seconds": {
+				"zh": 14.76
+			}
+		},
+		{
+			"t": 153.0,
+			"duration": 5.0,
+			"category": "tactic",
+			"look": {
+				"ships": [
+					"washington"
+				],
+				"lens": 42.0
+			},
+			"zh": "零點半前後，李下令大角度轉向，打亂日本魚雷的瞄準。這一招奏效了，幾枚魚雷在她的尾流中提前爆炸，水柱就在艦尾後方升起。整夜沒有中過一彈的華盛頓號，全速消失在黑暗中。",
+			"en": "Around half past midnight Lee orders a hard turn to throw off the Japanese torpedo aim. It works: several torpedoes explode early in her wake, their columns rising astern. Untouched all night, Washington runs on at full speed into the dark.",
+			"happens": [
+				{
+					"kind": "torpedo",
+					"by": "takao",
+					"at": "washington",
+					"hit": false,
+					"when": 0.65
+				}
+			],
+			"voice_seconds": {
+				"zh": 18.38
+			}
+		},
+		{
+			"t": 164.0,
+			"duration": 4.0,
+			"category": "tactic",
+			"look": {
+				"ships": [
+					"kirishima"
+				],
+				"lens": 42.0
+			},
+			"zh": "霧島號的輪機兵終於讓她勉強能直線航行。岩淵艦長想把船開到薩沃島擱淺，好保住艦員和火砲。但艦內的進水越來越多，傾斜越來越大，薩沃島始終靠不過去。",
+			"en": "Kirishima's engineers finally get her moving in a straight line, and Captain Iwabuchi tries to steer for Savo Island to run her aground and save her crew and guns. But the water inside her keeps rising, her list keeps growing, and Savo stays out of reach.",
+			"voice_seconds": {
+				"zh": 16.98
+			}
+		},
+		{
+			"t": 175.0,
+			"duration": 4.0,
+			"category": "tactic",
+			"look": {
+				"ships": [
+					"washington"
+				],
+				"lens": 42.0
+			},
+			"zh": "華盛頓號確認擺脫了追兵，轉向南方，去和南達科他號會合。身後的鐵底灣火光點點。李的整支艦隊裡，只有她一彈未中。",
+			"en": "Sure at last that she has shaken off the pursuit, Washington turns south to rejoin South Dakota. Behind her, fires dot Ironbottom Sound. Of Lee's whole force, she alone has not been hit.",
+			"voice_seconds": {
+				"zh": 13.02
+			}
+		},
+		{
+			"t": 195.0,
+			"duration": 6.0,
+			"category": "fleeing",
+			"look": {
+				"ships": [
+					"atago",
+					"takao"
+				],
+				"lens": 42.0
+			},
+			"zh": "凌晨一點一刻，近藤下令撤出戰場，向北返航。亨德森機場一發燃燒彈也沒有挨到。天亮以後，剩下的四艘運輸船在塔薩法隆加衝上海灘，隨即被美軍的飛機和火砲摧毀，只卸下了一小部分人員和物資。日本增援瓜島的計畫，就此失敗。",
+			"en": "At a quarter past one Kondo orders his ships to break off and head north. Not a single incendiary shell has fallen on Henderson Field. After dawn the four surviving transports run themselves aground at Tassafaronga and are destroyed by American aircraft and guns, having landed only part of their troops and supplies. Japan's attempt to reinforce Guadalcanal has failed.",
+			"voice_seconds": {
+				"zh": 23.0
+			}
+		},
+		{
+			"t": 240.0,
+			"duration": 6.0,
+			"category": "sinking",
+			"look": {
+				"ships": [
+					"ayanami",
+					"uranami"
+				],
+				"lens": 42.0,
+				"frame": "individual"
+			},
+			"zh": "凌晨兩點，燒了四個小時的綾波號，仍然漂在薩沃島以南。浦波號接走了她的大部分艦員，艦長和三十多人則已划著小艇去了瓜島。隨後，浦波號射出一枚魚雷，擊沉了綾波號。她以一艦之力衝向整支美國艦隊，雖然戰沉，卻打出了日本海軍這一夜不多的戰果。",
+			"en": "At two in the morning, after burning for four hours, Ayanami is still afloat south of Savo. Uranami has taken off most of her crew; her captain and some thirty men have already rowed to Guadalcanal. Then Uranami fires a torpedo and sinks her. She charged an entire American force alone, and though she was lost, she won the Japanese navy much of what it won that night.",
+			"happens": [
+				{
+					"kind": "torpedo",
+					"by": "uranami",
+					"at": "ayanami",
+					"hit": true,
+					"when": 0.4
+				}
+			],
+			"voice_seconds": {
+				"zh": 25.76
+			}
+		},
+		{
+			"t": 250.0,
+			"duration": 6.0,
+			"category": "overall",
+			"look": {
+				"ships": [],
+				"lens": 42.0
+			},
+			"zh": "清點這一夜：美軍沉沒驅逐艦兩艘，本納姆號也將在第二天自沉，共約二百四十二人陣亡；日本損失驅逐艦綾波號，戰列艦霧島號正在沉沒。這是太平洋戰爭中僅有的兩次戰列艦對決之一。決定勝負的，不只是火砲和勇氣，還有雷達和一張標圖桌。",
+			"en": "The count for the night: two American destroyers sunk and a third, Benham, to be scuttled the next day; about 242 Americans dead. Japan has lost the destroyer Ayanami, and the battleship Kirishima is sinking. It is one of only two battleship-against-battleship actions of the Pacific war, and it was decided not by guns and courage alone, but by radar and a plotting table.",
+			"voice_seconds": {
+				"zh": 26.96
+			}
+		},
+		{
+			"t": 300.0,
+			"duration": 4.0,
+			"category": "tactic",
+			"look": {
+				"ships": [
+					"kirishima",
+					"asagumo",
+					"teruzuki"
+				],
+				"lens": 42.0,
+				"frame": "local"
+			},
+			"zh": "霧島號上的損管搶救，一個艙接一個艙地失敗，傾斜再也扳不回來。凌晨三點，驅逐艦朝雲號和照月號在黑暗中靠上她的兩舷，五月雨號隨後趕到，一千多名艦員轉移了過去。岩淵艦長最後離艦，天皇的御真影也一同移走。",
+			"en": "Aboard Kirishima the damage-control parties lose one compartment after another, and the list can no longer be corrected. At three in the morning the destroyers Asagumo and Teruzuki come alongside in the dark, one on each side, with Samidare close behind, and more than a thousand men cross over. Captain Iwabuchi is among the last to leave, and the Emperor's portrait is carried off with him.",
+			"voice_seconds": {
+				"zh": 22.63
+			}
+		},
+		{
+			"t": 320.0,
+			"duration": 8.0,
+			"category": "sinking",
+			"look": {
+				"ships": [
+					"kirishima"
+				],
+				"lens": 42.0
+			},
+			"zh": "凌晨三點二十分，霧島號在薩沃島西北翻覆沉沒，約二百一十二名艦員隨艦陣亡。三個月前，黑夜還是日本海軍的獵場；從這一夜起，黑夜屬於雷達。此後，日本再也沒有派出戰列艦來爭奪瓜島周圍的海域。",
+			"en": "At twenty past three Kirishima capsizes and sinks northwest of Savo Island, taking about 212 of her crew with her. Three months ago the night belonged to the Japanese navy. From this night on, it belongs to radar. Japan never again sends a battleship to contest the waters around Guadalcanal.",
+			"happens": [
+				{
+					"kind": "sinking",
+					"ship": "kirishima",
+					"when": "track",
+					"capsizes": true
+				}
+			],
+			"voice_seconds": {
+				"zh": 21.01
+			}
+		}
+	]
+}

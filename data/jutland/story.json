@@ -1,0 +1,4630 @@
+{
+	"_readme": [
+		"劇本第三式（2026-10-12）。一個事件只有三件事：台詞 line、看什麼 look、發生什麼 happens。電影剪輯（圖板 board、諸元卡 spec card、巡覽 tour、節奏 pacing）不在此檔，放在同目錄 film.json，只有拍片工具讀。遊戲內劇本編輯器（` 鍵）就是本檔的編輯介面。",
+		"Third form of the story (2026-10-12). An event is three things: the LINE, what we LOOK at, what HAPPENS. Film editing (boards, spec cards, tours, pacing) is NOT here: it lives in film.json beside this file and only the film tools read it. The in-game story editor (` key) edits this file.",
+		"line: t（戰場分鐘）、duration（分鐘）、category（字幕標題，不動鏡頭）、zh/en/tts、voice（錄音檔名）、voice_seconds（量測秒數，改台詞即清除）、silent（無聲事件：不看不說，只發生）、note。",
+		"look: ships（看哪些艦；空=全艦隊）、frame（auto/individual/local/overall）、distance（自動取景的倍數）、height（水平線上仰角度數；負數=水下）、bearing（鏡頭所在方位度數）、motion（sway/still/orbit/hover）、hover_height（公尺）、lens（鏡頭角度）、from/toward（機位艦、望向艦）、seaplane（乘水上飛機）。",
+		"happens: [{kind, ...}] kinds = fire(by,at,when) / hit(by,at,when,where,side,explosion,fire_level,fire_minutes; camera by the victim) / duel(same; camera follows the shell) / detonation(ship,when,breaks,station) / burning(ship,where,minutes,level) / flooding(ship,where,severity) / torpedo(by,at,hit,when,companions,combed,detonates,breaks,watch) / mute(minutes; 0 = rest of the replay) / sinking(ship,when here|track,delay,minutes,trim,list,capsizes,breaks) / searchlight(by,on,seconds,when) / starshell(over,count,seconds,when) / seaplane(near,when) / weather(visibility_km) / flagship(ships).",
+		"when = 事件時刻之後的戰場分鐘。霧氣與旗艦用無聲事件。工具：tools/story_format.py（check / migrate），引擎同規則在 demo/story_format.gd。"
+	],
+	"pacing": "event",
+	"events": [
+		{
+			"t": 2,
+			"duration": 1,
+			"category": "tactic",
+			"zh": "1914年，第一次世界大戰爆發。\n英國皇家海軍開始封鎖德國的海上交通。\n英國的主力大艦隊以斯卡帕灣為主要基地，扼守北海北部出口；南面的多佛爾海峽則由另一支部隊控制。\n德國遠洋航運因此大受限制，海外物資也越來越難運入。",
+			"en": "",
+			"tts": "1914年8月4日，英國對德國宣戰。英國皇家海軍隨即對德國實施遠距離封鎖：大艦隊以奧克尼群島的斯卡帕灣為主要錨地，控制蘇格蘭和挪威之間的北海北部出口；多佛爾海峽則由另一支兵力封閉。德國遠洋商船自此無法進出本土港口。這一封鎖不以殲滅德國艦隊為前提，只要大艦隊保持存在並維持優勢，封鎖就告成立。",
+			"voice": "j3_t00000",
+			"voice_seconds": {
+				"zh": 25.53,
+				"ja": 31.78,
+				"en": 26.32
+			},
+			"look": {
+				"ships": [
+					"iron_duke",
+					"royal_oak",
+					"superb"
+				],
+				"height": 26
+			}
+		},
+		{
+			"t": 2.5,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "",
+			"en": "",
+			"silent": true,
+			"look": {
+				"ships": [
+					"invincible",
+					"iron_duke",
+					"lion",
+					"luetzow",
+					"friedrich_der_grosse"
+				]
+			},
+			"happens": [
+				{
+					"kind": "flagship",
+					"ships": [
+						"invincible",
+						"iron_duke",
+						"lion",
+						"luetzow",
+						"friedrich_der_grosse"
+					]
+				}
+			]
+		},
+		{
+			"t": 3.0,
+			"duration": 1.0,
+			"category": "tactic",
+			"zh": "舍爾為1916年5月底制定的計畫，原擬以戰列巡洋艦砲擊英國東北海岸的桑德蘭，誘使駐羅賽斯的英國戰列巡洋艦隊出擊；公海艦隊主力在後方接應，並用齊柏林飛艇實施遠距離偵察，確認大艦隊主力不在附近。為配合此次行動，德方自5月中旬起在英國各主要基地外部署了潛艇，任務是伏擊出港艦隻並報告其動向。",
+			"en": "",
+			"tts": "舍爾為1916年5月底制定的計畫，原擬以戰列巡洋艦砲擊英國東北海岸的桑德蘭，誘使駐羅賽斯的英國戰列巡洋艦隊出擊；公海艦隊主力在後方接應，並用齊柏林飛艇實施遠距離偵察，確認大艦隊主力不在附近。為配合此次行動，德方自5月中旬起在英國各主要基地外部署了潛艇，任務是伏擊出港艦隻並報告其動向。",
+			"voice": "j3_t00400",
+			"voice_seconds": {
+				"zh": 23.02,
+				"ja": 30.84,
+				"en": 23.9
+			},
+			"look": {
+				"ships": [
+					"friedrich_der_grosse",
+					"prinzregent_luitpold",
+					"ostfriesland"
+				],
+				"height": 12.0
+			}
+		},
+		{
+			"t": 4.0,
+			"duration": 1.0,
+			"category": "tactic",
+			"zh": "由於連日風向不利，飛艇無法升空，而潛艇的在航時間將在6月1日到期，舍爾就在5月30日改用備用方案：由第1偵察群司令弗朗茨·希佩爾海軍中將率戰列巡洋艦北上，在丹麥和挪威之間的斯卡格拉克海峽外顯示存在，襲擊當地的英國巡邏兵力和商船；公海艦隊主力在後方約50海里跟進。此方案的前提和原案相同，就是大艦隊主力不在戰場。這一前提在行動開始前已不成立。",
+			"en": "",
+			"tts": "由於連日風向不利，飛艇無法升空，而潛艇的在航時間將在6月1日到期，舍爾就在5月30日改用備用方案：由第1偵察群司令弗朗茨·希佩爾海軍中將率戰列巡洋艦北上，在丹麥和挪威之間的斯卡格拉克海峽外顯示存在，襲擊當地的英國巡邏兵力和商船；公海艦隊主力在後方約50海里跟進。此方案的前提和原案相同，就是大艦隊主力不在戰場。這一前提在行動開始前已不成立。",
+			"voice": "j3_t00520",
+			"voice_seconds": {
+				"zh": 27.78,
+				"ja": 37.03,
+				"en": 27.31
+			},
+			"look": {
+				"ships": [
+					"luetzow"
+				]
+			}
+		},
+		{
+			"t": 5.0,
+			"duration": 1.0,
+			"category": "tactic",
+			"zh": "德意志帝國海軍的主力是公海艦隊，駐泊在亞德灣和威廉港。開戰時其無畏型主力艦數量約為英國的六成，此後差距沒能縮小。德國海軍當局據此確定的方針，是避免和大艦隊全體決戰，設法誘出其一部加以殲滅，逐步改變兵力對比，等雙方接近均勢後再謀決戰。1916年1月，萊因哈德·舍爾海軍中將接替患病的胡戈·馮·波爾出任公海艦隊司令。舍爾主張在既定方針之內採取更積極的行動。同年4月24日至25日，德國戰列巡洋艦砲擊了英國東海岸的洛斯托夫特和雅茅斯。",
+			"en": "",
+			"tts": "德意志帝國海軍的主力是公海艦隊，駐泊在亞德灣和威廉港。開戰時其無畏型主力艦數量約為英國的六成，此後差距沒能縮小。德國海軍當局據此確定的方針，是避免和大艦隊全體決戰，設法誘出其一部加以殲滅，逐步改變兵力對比，等雙方接近均勢後再謀決戰。1916年1月，萊因哈德·舍爾海軍中將接替患病的胡戈·馮·波爾出任公海艦隊司令。舍爾主張在既定方針之內採取更積極的行動。同年4月24日至25日，德國戰列巡洋艦砲擊了英國東海岸的洛斯托夫特和雅茅斯。",
+			"voice": "j3_t00150",
+			"voice_seconds": {
+				"zh": 36.77,
+				"ja": 43.56,
+				"en": 36.92
+			},
+			"look": {
+				"ships": [
+					"luetzow",
+					"derfflinger",
+					"seydlitz"
+				],
+				"height": 32.0,
+				"lens": 40.0
+			}
+		},
+		{
+			"t": 6.0,
+			"duration": 1.0,
+			"category": "tactic",
+			"zh": "英國海軍部的密碼破譯機構設在海軍部舊樓40號房間，通稱「40號房」，能夠破譯德國海軍的大部分無線電報。5月30日，海軍部根據截獲的電報判明公海艦隊將在次日出海，在當日傍晚命令大艦隊出動。",
+			"en": "",
+			"tts": "英國海軍部的密碼破譯機構設在海軍部舊樓40號房間，通稱「40號房」，能夠破譯德國海軍的大部分無線電報。5月30日，海軍部根據截獲的電報判明公海艦隊將在次日出海，在當日傍晚命令大艦隊出動。",
+			"voice": "j3_t00640",
+			"voice_seconds": {
+				"zh": 15.33,
+				"ja": 20.18,
+				"en": 18.26
+			},
+			"look": {
+				"ships": [
+					"iron_duke",
+					"royal_oak",
+					"superb"
+				],
+				"height": 8.0
+			}
+		},
+		{
+			"t": 7.0,
+			"duration": 1.0,
+			"category": "tactic",
+			"zh": "大艦隊司令約翰·傑利科海軍上將在5月30日22時30分率部駛離斯卡帕灣；駐克羅默蒂的第2戰列艦分隊和駐羅賽斯的戰列巡洋艦隊同時出航。",
+			"en": "",
+			"tts": "大艦隊司令約翰·傑利科海軍上將在5月30日22時30分率部駛離斯卡帕灣；駐克羅默蒂的第2戰列艦分隊和駐羅賽斯的戰列巡洋艦隊同時出航。",
+			"voice": "j3_t00700",
+			"voice_seconds": {
+				"zh": 11.35,
+				"ja": 14.21,
+				"en": 11.98
+			},
+			"look": {
+				"ships": [
+					"lion"
+				]
+			}
+		},
+		{
+			"t": 8.2,
+			"duration": 1.0,
+			"category": "tactic",
+			"zh": "英方的部署如下：戰列巡洋艦隊司令戴維·貝蒂海軍中將率部先行，在5月31日14時到達日德蘭半島以西的預定位置；傑利科率戰列艦隊主力同時到達其西北偏北約69海里處。貝蒂如無發現，就轉向北，和主力會合，然後全艦隊一同搜索。",
+			"en": "",
+			"tts": "英方的部署如下：戰列巡洋艦隊司令戴維·貝蒂海軍中將率部先行，在5月31日14時到達日德蘭半島以西的預定位置；傑利科率戰列艦隊主力同時到達其西北偏北約69海里處。貝蒂如無發現，就轉向北，和主力會合，然後全艦隊一同搜索。",
+			"voice": "j3_t00820",
+			"look": {
+				"ships": [
+					"malaya",
+					"barham"
+				]
+			},
+			"voice_seconds": {
+				"zh": 21.85,
+				"ja": 24.26,
+				"en": 21.71
+			}
+		},
+		{
+			"t": 9.0,
+			"duration": 1.0,
+			"category": "tactic",
+			"zh": "埋伏在英國東海岸各基地外的德國潛艇沒能擊中任何一艘英國主力艦，其零星的發現報告也沒有使舍爾判明大艦隊已全體出動。出航途中英方出現一次情報失誤。5月31日12時30分，海軍部通報傑利科：據無線電測向，德國艦隊旗艦在11時10分仍在亞德灣內。",
+			"en": "",
+			"tts": "埋伏在英國東海岸各基地外的德國潛艇沒能擊中任何一艘英國主力艦，其零星的發現報告也沒有使舍爾判明大艦隊已全體出動。出航途中英方出現一次情報失誤。5月31日12時30分，海軍部通報傑利科：據無線電測向，德國艦隊旗艦在11時10分仍在亞德灣內。",
+			"voice": "j3_t00760",
+			"look": {
+				"ships": [
+					"iron_duke"
+				]
+			},
+			"voice_seconds": {
+				"zh": 20.31,
+				"ja": 26.04,
+				"en": 22.1
+			}
+		},
+		{
+			"t": 10.0,
+			"duration": 1.0,
+			"category": "tactic",
+			"zh": "傑利科據此判斷時間充裕，為節省驅逐艦燃料沒有提高航速，途中並停船檢查中立國船隻。後果有二：戰列艦隊主力到達戰場的時間推遲；傑利科對海軍部所供情報的信任降低，此點在當夜產生了更嚴重的影響。",
+			"en": "",
+			"tts": "傑利科據此判斷時間充裕，為節省驅逐艦燃料沒有提高航速，途中並停船檢查中立國船隻。後果有二：戰列艦隊主力到達戰場的時間推遲；傑利科對海軍部所供情報的信任降低，此點在當夜產生了更嚴重的影響。",
+			"voice": "j3_t00980",
+			"voice_seconds": {
+				"zh": 15.0,
+				"ja": 19.54,
+				"en": 17.87
+			},
+			"look": {
+				"ships": [
+					"iron_duke",
+					"royal_oak",
+					"benbow"
+				],
+				"motion": "hover",
+				"hover_height": 500.0
+			}
+		},
+		{
+			"t": 11.0,
+			"duration": 1.0,
+			"category": "tactic",
+			"zh": "實際情況是，舍爾出海時已按慣例將旗艦的港內呼號移交岸上電台，自身改用另一呼號。海軍部作戰處處長托馬斯·傑克遜海軍少將向40號房詢問的只是該呼號的位置，而不是舍爾本人的位置。",
+			"en": "",
+			"tts": "實際情況是，舍爾出海時已按慣例將旗艦的港內呼號移交岸上電台，自身改用另一呼號。海軍部作戰處處長托馬斯·傑克遜海軍少將向40號房詢問的只是該呼號的位置，而不是舍爾本人的位置。",
+			"voice": "j3_t00940",
+			"voice_seconds": {
+				"zh": 12.77,
+				"ja": 16.85,
+				"en": 14.49
+			},
+			"look": {
+				"ships": [
+					"friedrich_der_grosse",
+					"pommern"
+				],
+				"bearing": 20.0
+			}
+		},
+		{
+			"t": 12.0,
+			"duration": 1.0,
+			"category": "tactic",
+			"zh": "希佩爾在5月31日1時駛出亞德灣，舍爾的主力在2時30分跟進。英國艦隊出海在先，德國艦隊出海在後。",
+			"en": "",
+			"tts": "希佩爾在5月31日1時駛出亞德灣，舍爾的主力在2時30分跟進。英國艦隊出海在先，德國艦隊出海在後。",
+			"voice": "j3_t00730",
+			"voice_seconds": {
+				"zh": 8.59,
+				"ja": 10.13,
+				"en": 9.26
+			},
+			"look": {
+				"ships": [
+					"agincourt",
+					"marlborough"
+				],
+				"distance": 3.0
+			}
+		},
+		{
+			"t": 13.0,
+			"duration": 1.0,
+			"category": "tactic",
+			"zh": "英方參戰艦艇共151艘：無畏型戰列艦28艘，戰列巡洋艦9艘，裝甲巡洋艦8艘，輕巡洋艦26艘，驅逐艦78艘，佈雷艦1艘，水上飛機母艦1艘。官兵約6萬人。德方參戰艦艇共99艘：無畏型戰列艦16艘，前無畏型戰列艦6艘，戰列巡洋艦5艘，輕巡洋艦11艘，魚雷艇61艘；德國海軍把相當於驅逐艦的艦種稱為大型魚雷艇。官兵約4.5萬人。",
+			"en": "",
+			"tts": "英方參戰艦艇共151艘：無畏型戰列艦28艘，戰列巡洋艦9艘，裝甲巡洋艦8艘，輕巡洋艦26艘，驅逐艦78艘，佈雷艦1艘，水上飛機母艦1艘。官兵約6萬人。德方參戰艦艇共99艘：無畏型戰列艦16艘，前無畏型戰列艦6艘，戰列巡洋艦5艘，輕巡洋艦11艘，魚雷艇61艘；德國海軍把相當於驅逐艦的艦種稱為大型魚雷艇。官兵約4.5萬人。",
+			"voice": "j3_t01060",
+			"voice_seconds": {
+				"zh": 27.28,
+				"ja": 37.97,
+				"en": 25.71
+			},
+			"look": {
+				"ships": [
+					"iron_duke",
+					"royal_oak",
+					"superb",
+					"benbow"
+				],
+				"height": 38.0,
+				"lens": 44.0
+			}
+		},
+		{
+			"t": 14.0,
+			"duration": 1.0,
+			"category": "tactic",
+			"zh": "英方主力艦的主砲口徑是12英寸、13.5英寸和15英寸，德方是11英寸和12英寸。按舷側齊射彈重計算，英方超過德方的兩倍。",
+			"en": "",
+			"tts": "英方主力艦的主砲口徑是12英寸、13.5英寸和15英寸，德方是11英寸和12英寸。按舷側齊射彈重計算，英方超過德方的兩倍。",
+			"voice": "j3_t01100",
+			"voice_seconds": {
+				"zh": 11.61,
+				"ja": 12.91,
+				"en": 10.46
+			},
+			"look": {
+				"ships": [
+					"queen_mary",
+					"princess_royal"
+				],
+				"distance": 0.7,
+				"height": 6.0,
+				"lens": 36.0
+			}
+		},
+		{
+			"t": 15.0,
+			"duration": 1.0,
+			"category": "tactic",
+			"zh": "5月31日14時許，雙方前衛相距不足50海里，彼此還沒有察覺。貝蒂已準備按計畫轉向北。",
+			"en": "",
+			"tts": "5月31日14時許，雙方前衛相距不足50海里，彼此還沒有察覺。貝蒂已準備按計畫轉向北。",
+			"voice": "j3_t01200",
+			"voice_seconds": {
+				"zh": 7.64,
+				"ja": 10.34,
+				"en": 9.32
+			},
+			"look": {
+				"ships": [
+					"lion",
+					"princess_royal",
+					"queen_mary",
+					"tiger"
+				],
+				"height": 20.0
+			}
+		},
+		{
+			"t": 16.0,
+			"duration": 4.0,
+			"category": "tactic",
+			"zh": "此時兩軍之間有一艘丹麥貨輪「N.J.菲尤爾」號停航放汽。德國第2偵察群的輕巡洋艦「埃爾賓」號派出兩艘魚雷艇前往檢查，英國第1輕巡洋艦分隊的「加拉蒂亞」號也前往查看。",
+			"en": "",
+			"tts": "此時兩軍之間有一艘丹麥貨輪「N.J.菲尤爾」號停航放汽。德國第2偵察群的輕巡洋艦「埃爾賓」號派出兩艘魚雷艇前往檢查，英國第1輕巡洋艦分隊的「加拉蒂亞」號也前往查看。",
+			"voice": "j3_t01310",
+			"voice_seconds": {
+				"zh": 13.52,
+				"ja": 19.18,
+				"en": 16.0
+			},
+			"look": {
+				"ships": [
+					"elbing"
+				],
+				"distance": 1.0,
+				"height": 14.0,
+				"lens": 40.0,
+				"toward": "galatea"
+			}
+		},
+		{
+			"t": 17.0,
+			"duration": 4.0,
+			"category": "first_fire",
+			"zh": "14時20分，「加拉蒂亞」號發出發現敵艦的信號，14時28分開火。",
+			"en": "",
+			"tts": "14時20分，「加拉蒂亞」號發出發現敵艦的信號，14時28分開火。",
+			"voice": "j3_t01450",
+			"voice_seconds": {
+				"zh": 5.31,
+				"ja": 7.32,
+				"en": 6.72
+			},
+			"look": {
+				"ships": [
+					"galatea"
+				],
+				"frame": "local",
+				"distance": 0.8,
+				"height": 8.0,
+				"lens": 34.0,
+				"from": "galatea",
+				"toward": "elbing"
+			},
+			"happens": [
+				{
+					"kind": "fire",
+					"by": "galatea",
+					"at": "elbing",
+					"when": 0.1,
+					"all_guns": true
+				}
+			]
+		},
+		{
+			"t": 18.0,
+			"duration": 4.0,
+			"category": "struck",
+			"zh": "「埃爾賓」號隨後還擊，首先命中「加拉蒂亞」號一發，該彈沒有爆炸。",
+			"en": "",
+			"tts": "「埃爾賓」號隨後還擊，首先命中「加拉蒂亞」號一發，該彈沒有爆炸。",
+			"voice": "j3_t01550",
+			"voice_seconds": {
+				"zh": 5.09,
+				"ja": 4.87,
+				"en": 5.03
+			},
+			"look": {
+				"ships": [
+					"galatea"
+				]
+			},
+			"happens": [
+				{
+					"kind": "duel",
+					"by": "elbing",
+					"at": "galatea",
+					"when": 0.0,
+					"where": "bridge",
+					"side": "starboard"
+				}
+			]
+		},
+		{
+			"t": 19.0,
+			"duration": 6.0,
+			"category": "tactic",
+			"zh": "貝蒂接到報告後，在14時32分轉向東南偏南，企圖插入德國艦隊與其基地之間，切斷其退路。",
+			"en": "",
+			"tts": "貝蒂接到報告後，在14時32分轉向東南偏南，企圖插入德國艦隊與其基地之間，切斷其退路。",
+			"voice": "j3_t01700",
+			"voice_seconds": {
+				"zh": 8.15,
+				"ja": 10.63,
+				"en": 8.03
+			},
+			"look": {
+				"ships": [
+					"lion",
+					"princess_royal",
+					"queen_mary",
+					"tiger"
+				],
+				"height": 28.0,
+				"toward": "luetzow"
+			}
+		},
+		{
+			"t": 25.0,
+			"duration": 6.0,
+			"category": "tactic",
+			"zh": "此時發生了當天的第一次通信失誤。貝蒂麾下除6艘戰列巡洋艦外，另有臨時配屬的第5戰列艦分隊，由休·埃文－托馬斯海軍少將指揮，轄「巴勒姆」「勇敢」「厭戰」「馬來亞」4艘伊莉莎白女王級戰列艦，裝備15英寸主砲，航速24節，是當時火力最強的主力艦。",
+			"en": "",
+			"tts": "此時發生了當天的第一次通信失誤。貝蒂麾下除6艘戰列巡洋艦外，另有臨時配屬的第5戰列艦分隊，由休·埃文－托馬斯海軍少將指揮，轄「巴勒姆」「勇敢」「厭戰」「馬來亞」4艘伊莉莎白女王級戰列艦，裝備15英寸主砲，航速24節，是當時火力最強的主力艦。",
+			"voice": "j3_t02500",
+			"voice_seconds": {
+				"zh": 18.08,
+				"ja": 24.29,
+				"en": 19.24
+			},
+			"look": {
+				"ships": [
+					"barham",
+					"valiant",
+					"warspite",
+					"malaya"
+				],
+				"distance": 0.6,
+				"height": 34.0,
+				"lens": 36.0
+			}
+		},
+		{
+			"t": 25.5,
+			"duration": 4.0,
+			"category": "tactic",
+			"zh": "該分隊位於貝蒂旗艦「獅」號西北5海里處。貝蒂的轉向命令用旗號發出。",
+			"en": "",
+			"tts": "該分隊位於貝蒂旗艦「獅」號西北5海里處。貝蒂的轉向命令用旗號發出。",
+			"voice": "j3_t02550",
+			"voice_seconds": {
+				"zh": 6.01,
+				"ja": 8.38,
+				"en": 5.44
+			},
+			"look": {
+				"ships": [
+					"lion"
+				],
+				"distance": 1.2,
+				"height": 12.0,
+				"lens": 40.0,
+				"toward": "barham"
+			}
+		},
+		{
+			"t": 26.0,
+			"duration": 4.0,
+			"category": "tactic",
+			"zh": "這不是出於無線電靜默的考慮：接觸既已發生，「加拉蒂亞」號的發現報告本身就是用無線電拍發的。",
+			"en": "",
+			"tts": "這不是出於無線電靜默的考慮：接觸既已發生，「加拉蒂亞」號的發現報告本身就是用無線電拍發的。",
+			"voice": "j3_t02600",
+			"voice_seconds": {
+				"zh": 6.89,
+				"ja": 7.32,
+				"en": 6.41
+			},
+			"look": {
+				"ships": [
+					"lion"
+				],
+				"distance": 1.2,
+				"height": 12.0,
+				"lens": 40.0
+			}
+		},
+		{
+			"t": 26.5,
+			"duration": 2.0,
+			"category": "tactic",
+			"zh": "當時英國艦隊的戰術機動信號以旗號為正規手段，旗號降下就是執行，各艦可同時動作；無線電報須經譯碼，往返需幾分鐘，一般只用於情況報告和遠距離通報。",
+			"en": "",
+			"tts": "當時英國艦隊的戰術機動信號以旗號為正規手段，旗號降下就是執行，各艦可同時動作；無線電報須經譯碼，往返需幾分鐘，一般只用於情況報告和遠距離通報。",
+			"voice": "j3_t02650",
+			"voice_seconds": {
+				"zh": 13.06,
+				"ja": 15.0,
+				"en": 15.6
+			},
+			"look": {
+				"ships": [
+					"lion"
+				],
+				"distance": 1.2,
+				"height": 12.0,
+				"lens": 40.0,
+				"toward": "barham"
+			}
+		},
+		{
+			"t": 29.0,
+			"duration": 2.0,
+			"category": "tactic",
+			"zh": "旗號距離過遠時，照例應用探照燈複述。此次「獅」號的信號人員沒有向第5戰列艦分隊用探照燈複述，原定負責轉達的「虎」號因隊形調整已不在轉達位置。",
+			"en": "",
+			"tts": "旗號距離過遠時，照例應用探照燈複述。此次「獅」號的信號人員沒有向第5戰列艦分隊用探照燈複述，原定負責轉達的「虎」號因隊形調整已不在轉達位置。",
+			"voice": "j3_t02700",
+			"voice_seconds": {
+				"zh": 10.98,
+				"ja": 12.58,
+				"en": 12.19
+			},
+			"look": {
+				"ships": [
+					"lion"
+				],
+				"distance": 0.8,
+				"height": 12.0,
+				"lens": 40.0,
+				"toward": "tiger"
+			}
+		},
+		{
+			"t": 31.0,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "「巴勒姆」號因距離較遠並受煤煙遮擋，沒能辨認旗號。",
+			"en": "",
+			"tts": "「巴勒姆」號因距離較遠並受煤煙遮擋，沒能辨認旗號。",
+			"voice": "j3_t02750",
+			"voice_seconds": {
+				"zh": 4.5,
+				"ja": 5.04,
+				"en": 4.5
+			},
+			"look": {
+				"ships": [
+					"barham"
+				],
+				"distance": 1.2,
+				"height": 10.0,
+				"lens": 40.0,
+				"toward": "lion"
+			}
+		},
+		{
+			"t": 35.0,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "埃文－托馬斯臨時歸貝蒂指揮不過幾天，沒有收到戰列巡洋艦隊關於「未接信號也應隨旗艦行動」的常規訓令，他看到戰列巡洋艦轉向而沒有接到命令，就按原航向繼續行駛幾分鐘。",
+			"en": "",
+			"tts": "埃文－托馬斯臨時歸貝蒂指揮不過幾天，沒有收到戰列巡洋艦隊關於「未接信號也應隨旗艦行動」的常規訓令，他看到戰列巡洋艦轉向而沒有接到命令，就按原航向繼續行駛幾分鐘。",
+			"voice": "j3_t02800",
+			"voice_seconds": {
+				"zh": 12.43,
+				"ja": 15.62,
+				"en": 13.14
+			},
+			"look": {
+				"ships": [
+					"barham",
+					"valiant"
+				],
+				"height": 20.0,
+				"lens": 40.0
+			}
+		},
+		{
+			"t": 38.0,
+			"duration": 9.0,
+			"category": "tactic",
+			"zh": "等該分隊轉向跟進時，已落後約10海里。貝蒂沒有減速等待。結果是，戰列巡洋艦交戰開始後的最初二十分鐘內，英方最強的4艘主力艦沒能參戰。",
+			"en": "",
+			"tts": "等該分隊轉向跟進時，已落後約10海里。貝蒂沒有減速等待。結果是，戰列巡洋艦交戰開始後的最初二十分鐘內，英方最強的4艘主力艦沒能參戰。",
+			"voice": "j3_t03150",
+			"voice_seconds": {
+				"zh": 11.73,
+				"ja": 12.79,
+				"en": 10.06
+			},
+			"look": {
+				"ships": [
+					"barham",
+					"valiant",
+					"warspite",
+					"malaya"
+				],
+				"height": 24.0,
+				"motion": "hover",
+				"hover_height": 500.0,
+				"lens": 50.0
+			}
+		},
+		{
+			"t": 53.0,
+			"duration": 4.0,
+			"category": "famous_action",
+			"zh": "15時08分，英國水上飛機母艦「恩加丁」號放出一架肖特184型水上飛機，駕駛員是弗雷德里克·拉特蘭海軍上尉。因雲底高度只有約300米，該機只能在約270米的高度飛行。",
+			"en": "",
+			"tts": "15時08分，英國水上飛機母艦「恩加丁」號放出一架肖特184型水上飛機，駕駛員是弗雷德里克·拉特蘭海軍上尉。因雲底高度只有約300米，該機只能在約270米的高度飛行。",
+			"voice": "j3_t05300",
+			"voice_seconds": {
+				"zh": 12.75,
+				"ja": 15.77,
+				"en": 13.01
+			},
+			"look": {
+				"ships": [
+					"lion"
+				],
+				"distance": 4.0,
+				"height": 14.0,
+				"bearing": 40.0,
+				"seaplane": true
+			},
+			"happens": [
+				{
+					"kind": "seaplane",
+					"near": "lion",
+					"when": 0.0
+				}
+			]
+		},
+		{
+			"t": 56.5,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "拉特蘭發現了德國輕巡洋艦，並用無線電向母艦報告，但「恩加丁」號沒能將報告轉達「獅」號。這是海戰中首次用艦載飛機偵察敵方艦隊，沒有產生實際作用。",
+			"en": "",
+			"tts": "拉特蘭發現了德國輕巡洋艦，並用無線電向母艦報告，但「恩加丁」號沒能將報告轉達「獅」號。這是海戰中首次用艦載飛機偵察敵方艦隊，沒有產生實際作用。",
+			"voice": "j3_t05650",
+			"voice_seconds": {
+				"zh": 12.11,
+				"ja": 14.76,
+				"en": 12.49
+			},
+			"look": {
+				"ships": [
+					"lion"
+				],
+				"distance": 4.0,
+				"height": 6.0,
+				"bearing": 150.0,
+				"lens": 24.0,
+				"toward": "frankfurt",
+				"seaplane": true
+			}
+		},
+		{
+			"t": 61.0,
+			"duration": 25.0,
+			"category": "tactic",
+			"zh": "德艦隊的弱點在數量，而長處在於防護：主力艦裝甲較厚，水密分艙較細。15時20分前後，希佩爾和貝蒂的戰列巡洋艦相互發現。15時33分，希佩爾轉向東南。這一步不是退卻，而是按計畫將貝蒂引向其南方約50海里處的公海艦隊主力。",
+			"en": "",
+			"tts": "德艦隊的弱點在數量，而長處在於防護：主力艦裝甲較厚，水密分艙較細。15時20分前後，希佩爾和貝蒂的戰列巡洋艦相互發現。15時33分，希佩爾轉向東南。這一步不是退卻，而是按計畫將貝蒂引向其南方約50海里處的公海艦隊主力。",
+			"voice": "j3_t06100",
+			"look": {
+				"ships": [
+					"luetzow",
+					"derfflinger",
+					"seydlitz",
+					"moltke",
+					"von_der_tann"
+				],
+				"frame": "individual",
+				"distance": 0.9,
+				"lens": 32.0,
+				"toward": "lion"
+			},
+			"voice_seconds": {
+				"zh": 20.11,
+				"ja": 27.36,
+				"en": 20.7
+			}
+		},
+		{
+			"t": 85.0,
+			"duration": 10.0,
+			"category": "tactic",
+			"zh": "英艦13.5英寸主砲的射程大於德艦主砲，但貝蒂沒有利用，接近至雙方都可射擊的距離才開火。",
+			"en": "",
+			"tts": "英艦13.5英寸主砲的射程大於德艦主砲，但貝蒂沒有利用，接近至雙方都可射擊的距離才開火。",
+			"voice": "j3_t08500",
+			"voice_seconds": {
+				"zh": 7.16,
+				"ja": 9.46,
+				"en": 9.57
+			},
+			"look": {
+				"ships": [
+					"lion",
+					"princess_royal",
+					"queen_mary",
+					"tiger"
+				],
+				"distance": 1.2,
+				"height": 24.0,
+				"lens": 44.0,
+				"toward": "derfflinger"
+			}
+		},
+		{
+			"t": 93.0,
+			"duration": 5.0,
+			"category": "first_fire",
+			"zh": "15時48分，雙方戰列巡洋艦幾乎同時開火，距離約15000碼，就是約14公里。英方6艘，依次是「獅」「長公主」「瑪麗女王」「虎」「新西蘭」「不倦」；德方5艘，依次是「呂佐夫」「德弗林格」「塞德利茨」「毛奇」「馮·德·坦恩」。兩隊以大致平行的航向南駛。英國艦隊習稱此階段為「向南奔跑」。",
+			"en": "",
+			"tts": "15時48分，雙方戰列巡洋艦幾乎同時開火，距離約15000碼，就是約14公里。英方6艘，依次是「獅」「長公主」「瑪麗女王」「虎」「新西蘭」「不倦」；德方5艘，依次是「呂佐夫」「德弗林格」「塞德利茨」「毛奇」「馮·德·坦恩」。兩隊以大致平行的航向南駛。英國艦隊習稱此階段為「向南奔跑」。",
+			"voice": "j3_t09300",
+			"look": {
+				"ships": [
+					"lion",
+					"princess_royal",
+					"queen_mary",
+					"tiger",
+					"new_zealand",
+					"indefatigable",
+					"luetzow",
+					"derfflinger",
+					"seydlitz",
+					"moltke",
+					"von_der_tann"
+				],
+				"frame": "individual",
+				"height": 8.0,
+				"from": "princess_royal",
+				"toward": "luetzow"
+			},
+			"happens": [
+				{
+					"kind": "fire",
+					"by": "luetzow",
+					"at": "lion",
+					"when": 0.0
+				},
+				{
+					"kind": "fire",
+					"by": "lion",
+					"at": "luetzow",
+					"when": 0.01
+				},
+				{
+					"kind": "fire",
+					"by": "derfflinger",
+					"at": "princess_royal",
+					"when": 0.02
+				},
+				{
+					"kind": "fire",
+					"by": "princess_royal",
+					"at": "derfflinger",
+					"when": 0.03
+				}
+			],
+			"voice_seconds": {
+				"zh": 23.44,
+				"ja": 34.56,
+				"en": 22.72
+			}
+		},
+		{
+			"t": 97.0,
+			"duration": 3.0,
+			"category": "tactic",
+			"zh": "交戰初期的觀測條件有利於德方。英艦位於西側，以明亮的西方天空為背景，輪廓清晰；德艦位於東側，背景是灰暗的霧靄。風自西方吹來，英艦的煤煙和砲煙飄向兩隊之間，妨礙己方觀測。",
+			"en": "",
+			"tts": "交戰初期的觀測條件有利於德方。英艦位於西側，以明亮的西方天空為背景，輪廓清晰；德艦位於東側，背景是灰暗的霧靄。風自西方吹來，英艦的煤煙和砲煙飄向兩隊之間，妨礙己方觀測。",
+			"voice": "j3_t09650",
+			"voice_seconds": {
+				"zh": 15.84,
+				"ja": 16.94,
+				"en": 14.53
+			},
+			"look": {
+				"ships": [
+					"derfflinger",
+					"queen_mary"
+				],
+				"from": "derfflinger",
+				"toward": "lion"
+			}
+		},
+		{
+			"t": 100.0,
+			"duration": 3.0,
+			"category": "struck",
+			"zh": "德艦的立體測距儀在交戰初期測定距離較快。開火後幾分鐘內，「獅」「長公主」「虎」三艦相繼中彈，而英艦的彈著還遠離目標。",
+			"en": "",
+			"tts": "德艦的立體測距儀在交戰初期測定距離較快。開火後幾分鐘內，「獅」「長公主」「虎」三艦相繼中彈，而英艦的彈著還遠離目標。",
+			"voice": "j3_t09900",
+			"voice_seconds": {
+				"zh": 11.82,
+				"ja": 14.35,
+				"en": 10.06
+			},
+			"look": {
+				"ships": [
+					"lion",
+					"princess_royal",
+					"tiger"
+				]
+			},
+			"happens": [
+				{
+					"kind": "hit",
+					"by": "luetzow",
+					"at": "lion",
+					"when": 0.1,
+					"side": "port"
+				}
+			]
+		},
+		{
+			"t": 103.5,
+			"duration": 3.0,
+			"category": "struck",
+			"zh": "英方還出現了射擊目標分配的錯誤。按貝蒂的信號，前兩艦應集中射擊德方首艦，之後各艦依次射擊對應目標。由於信號沒有被全部正確接收，「瑪麗女王」號射擊了「塞德利茨」號，德方第二艦「德弗林格」號在近十分鐘內無人射擊，得以不受干擾地瞄準。",
+			"note": "v1 mechanics kept without a line",
+			"look": {
+				"ships": [
+					"tiger",
+					"moltke"
+				],
+				"frame": "individual"
+			},
+			"happens": [
+				{
+					"kind": "duel",
+					"by": "moltke",
+					"at": "tiger",
+					"when": 0.2
+				}
+			],
+			"voice": "j3_t10350",
+			"voice_seconds": {
+				"zh": 17.43,
+				"ja": 22.63,
+				"en": 18.44
+			}
+		},
+		{
+			"t": 105.0,
+			"duration": 3.0,
+			"category": "famous_action",
+			"zh": "16時整，「呂佐夫」號的一發砲彈擊穿「獅」號舯部Q砲塔，砲塔內人員大部傷亡。砲塔指揮官、皇家海軍陸戰隊少校弗朗西斯·哈維雙腿重傷，仍下令關閉彈藥庫門並向彈藥庫注水。",
+			"en": "",
+			"tts": "16時整，「呂佐夫」號的一發砲彈擊穿「獅」號舯部Q砲塔，砲塔內人員大部傷亡。砲塔指揮官、皇家海軍陸戰隊少校弗朗西斯·哈維雙腿重傷，仍下令關閉彈藥庫門並向彈藥庫注水。",
+			"voice": "j3_t10500",
+			"voice_seconds": {
+				"zh": 13.22,
+				"ja": 17.14,
+				"en": 14.51
+			},
+			"look": {
+				"ships": [
+					"lion",
+					"luetzow"
+				],
+				"distance": 0.8,
+				"height": 10.0,
+				"bearing": 129.0,
+				"lens": 30.0
+			},
+			"happens": [
+				{
+					"kind": "hit",
+					"by": "luetzow",
+					"at": "lion",
+					"when": 0.1,
+					"where": "midships",
+					"side": "port",
+					"explosion": 1.0,
+					"fire_level": 1.0,
+					"fire_minutes": 2.0
+				}
+			]
+		},
+		{
+			"t": 108.0,
+			"duration": 2.0,
+			"category": "famous_action",
+			"zh": "約二十分鐘後，砲塔內殘存的發射藥起火，火焰高過桅頂，但彈藥庫已經淹沒，「獅」號得以保全。哈維傷重身亡，追授維多利亞十字勳章。",
+			"en": "",
+			"tts": "約二十分鐘後，砲塔內殘存的發射藥起火，火焰高過桅頂，但彈藥庫已經淹沒，「獅」號得以保全。哈維傷重身亡，追授維多利亞十字勳章。",
+			"voice": "j3_t10590",
+			"voice_seconds": {
+				"zh": 10.78,
+				"ja": 15.19,
+				"en": 12.69
+			},
+			"look": {
+				"ships": [
+					"lion"
+				],
+				"distance": 0.7,
+				"height": 6.0
+			},
+			"happens": [
+				{
+					"kind": "hit",
+					"by": "",
+					"at": "lion",
+					"when": 0.0,
+					"fire_level": 2.0,
+					"fire_minutes": 1.0
+				}
+			]
+		},
+		{
+			"t": 110.0,
+			"duration": 3.0,
+			"category": "sinking",
+			"zh": "16時02分，隊尾的「不倦」號遭「馮·德·坦恩」號連續命中，彈藥庫爆炸，幾分鐘內沉沒。全艦1019人中1017人陣亡。",
+			"en": "",
+			"tts": "16時02分，隊尾的「不倦」號遭「馮·德·坦恩」號連續命中，彈藥庫爆炸，幾分鐘內沉沒。全艦1019人中1017人陣亡。",
+			"voice": "j3_t10700",
+			"voice_seconds": {
+				"zh": 9.73,
+				"ja": 13.2,
+				"en": 12.13
+			},
+			"look": {
+				"ships": [
+					"indefatigable"
+				],
+				"distance": 1.2
+			},
+			"happens": [
+				{
+					"kind": "duel",
+					"by": "von_der_tann",
+					"at": "indefatigable",
+					"when": 0.0
+				},
+				{
+					"kind": "detonation",
+					"ship": "indefatigable",
+					"when": 0.065
+				},
+				{
+					"kind": "sinking",
+					"ship": "indefatigable",
+					"delay": 0.085,
+					"minutes": 0.6,
+					"trim": "stern",
+					"list": "port",
+					"capsizes": true
+				}
+			]
+		},
+		{
+			"t": 113.0,
+			"duration": 15.0,
+			"category": "first_fire",
+			"zh": "16時08分，第5戰列艦分隊趕到最大射程附近，在約19000碼，就是約17公里的距離上向德方隊尾開火。「馮·德·坦恩」號和「毛奇」號相繼中彈，「馮·德·坦恩」號進水約600噸。",
+			"en": "",
+			"tts": "16時08分，第5戰列艦分隊趕到最大射程附近，在約19000碼，就是約17公里的距離上向德方隊尾開火。「馮·德·坦恩」號和「毛奇」號相繼中彈，「馮·德·坦恩」號進水約600噸。",
+			"voice": "j3_t11300",
+			"voice_seconds": {
+				"zh": 14.25,
+				"ja": 17.71,
+				"en": 12.22
+			},
+			"look": {
+				"ships": [
+					"barham",
+					"valiant",
+					"warspite",
+					"malaya"
+				],
+				"from": "barham",
+				"toward": "von_der_tann"
+			},
+			"happens": [
+				{
+					"kind": "duel",
+					"by": "barham",
+					"at": "von_der_tann",
+					"when": 0.2
+				}
+			]
+		},
+		{
+			"t": 124.0,
+			"duration": 3.0,
+			"category": "struck",
+			"silent": true,
+			"note": "v1 mechanics kept without a line",
+			"look": {
+				"ships": [
+					"queen_mary",
+					"seydlitz"
+				],
+				"frame": "individual"
+			},
+			"happens": [
+				{
+					"kind": "duel",
+					"by": "queen_mary",
+					"at": "seydlitz",
+					"when": 0.2
+				}
+			]
+		},
+		{
+			"t": 131.0,
+			"duration": 3.0,
+			"category": "sinking",
+			"zh": "16時26分，「瑪麗女王」號遭「德弗林格」號和「塞德利茨」號集中射擊，前部彈藥庫爆炸，艦體斷裂沉沒，1266人陣亡。",
+			"en": "",
+			"tts": "16時26分，「瑪麗女王」號遭「德弗林格」號和「塞德利茨」號集中射擊，前部彈藥庫爆炸，艦體斷裂沉沒，1266人陣亡。",
+			"voice": "j3_t13100",
+			"voice_seconds": {
+				"zh": 9.76,
+				"ja": 13.99,
+				"en": 9.67
+			},
+			"look": {
+				"ships": [
+					"queen_mary"
+				],
+				"distance": 1.2
+			},
+			"happens": [
+				{
+					"kind": "duel",
+					"by": "derfflinger",
+					"at": "queen_mary",
+					"when": 0.0
+				},
+				{
+					"kind": "detonation",
+					"ship": "queen_mary",
+					"when": 0.065,
+					"breaks": true
+				},
+				{
+					"kind": "sinking",
+					"ship": "queen_mary",
+					"delay": 0.085,
+					"minutes": 0.6,
+					"trim": "bow",
+					"list": "port",
+					"breaks": true
+				}
+			]
+		},
+		{
+			"t": 134.0,
+			"duration": 3.0,
+			"category": "famous_action",
+			"zh": "貝蒂在「獅」號艦橋上對艦長說：「今天我們這些該死的船好像有點問題。」",
+			"en": "",
+			"tts": "貝蒂在「獅」號艦橋上對艦長說：「今天我們這些該死的船好像有點問題。」",
+			"voice": "j3_t13400",
+			"voice_seconds": {
+				"zh": 5.03,
+				"ja": 7.03,
+				"en": 6.06
+			},
+			"look": {
+				"ships": [
+					"lion"
+				],
+				"distance": 0.7,
+				"height": 8.0,
+				"lens": 36.0,
+				"toward": "luetzow"
+			}
+		},
+		{
+			"t": 136.0,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "在此之前，「瑪麗女王」號曾擊中「塞德利茨」號的一座砲塔，塔內發射藥起火，但火勢沒有蔓延至彈藥庫。同類命中在雙方艦上造成了不同的後果，其原因在於發射藥管理而不是單純的裝甲厚度。",
+			"en": "",
+			"tts": "在此之前，「瑪麗女王」號曾擊中「塞德利茨」號的一座砲塔，塔內發射藥起火，但火勢沒有蔓延至彈藥庫。同類命中在雙方艦上造成了不同的後果，其原因在於發射藥管理而不是單純的裝甲厚度。",
+			"voice": "j3_t13600",
+			"voice_seconds": {
+				"zh": 13.47,
+				"ja": 16.34,
+				"en": 14.27
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 136.3,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "1914年8月28日的赫爾戈蘭灣海戰和1915年1月24日的多格灘海戰，都是雙方前衛兵力之間的交戰，德方兩戰都失利，德皇威廉二世因而進一步限制了艦隊的活動。",
+			"en": "",
+			"tts": "1914年8月28日的赫爾戈蘭灣海戰和1915年1月24日的多格灘海戰，都是雙方前衛兵力之間的交戰，德方兩戰都失利，德皇威廉二世因而進一步限制了艦隊的活動。",
+			"voice": "j3_t13630",
+			"voice_seconds": {
+				"zh": 11.79,
+				"ja": 17.02,
+				"en": 14.85
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 136.6,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "多格灘海戰中，戰列巡洋艦「塞德利茨」號後部砲塔中彈，引燃發射藥，兩座砲塔內的人員全部陣亡，彈藥庫因及時注水而得以保全。德國海軍據此改進了彈藥輸送和防火措施。",
+			"en": "",
+			"tts": "多格灘海戰中，戰列巡洋艦「塞德利茨」號後部砲塔中彈，引燃發射藥，兩座砲塔內的人員全部陣亡，彈藥庫因及時注水而得以保全。德國海軍據此改進了彈藥輸送和防火措施。",
+			"voice": "j3_t13660",
+			"voice_seconds": {
+				"zh": 13.28,
+				"ja": 17.66,
+				"en": 14.08
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 137.2,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "英國海軍沒有類似的經歷，沒有做相應改進。",
+			"en": "",
+			"tts": "英國海軍沒有類似的經歷，沒有做相應改進。",
+			"voice": "j3_t13720",
+			"voice_seconds": {
+				"zh": 3.48,
+				"ja": 4.44,
+				"en": 2.87
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 138.0,
+			"duration": 2.0,
+			"category": "famous_action",
+			"zh": "16時15分前後，雙方的驅逐艦和魚雷艇在兩隊主力艦之間展開交戰。雙方都企圖穿越中間海面，對敵方主力艦實施魚雷攻擊，結果在中途相遇，形成近距離混戰。",
+			"en": "",
+			"tts": "16時15分前後，雙方的驅逐艦和魚雷艇在兩隊主力艦之間展開交戰。雙方都企圖穿越中間海面，對敵方主力艦實施魚雷攻擊，結果在中途相遇，形成近距離混戰。",
+			"voice": "j3_t13800",
+			"voice_seconds": {
+				"zh": 13.19,
+				"ja": 14.83,
+				"en": 9.73
+			},
+			"look": {
+				"ships": [
+					"nestor",
+					"nomad",
+					"v27",
+					"v29"
+				],
+				"height": 15.0,
+				"motion": "hover",
+				"hover_height": 500.0,
+				"lens": 50.0
+			}
+		},
+		{
+			"t": 139.5,
+			"duration": 3.0,
+			"category": "sinking",
+			"zh": "德方魚雷艇V27、V29沉沒。",
+			"en": "",
+			"tts": "德方魚雷艇V27、V29沉沒。",
+			"voice": "j3_t13950",
+			"voice_seconds": {
+				"zh": 3.03,
+				"ja": 4.51,
+				"en": 4.19
+			},
+			"look": {
+				"ships": [
+					"v27",
+					"v29"
+				],
+				"distance": 0.5,
+				"height": 5.0,
+				"lens": 36.0
+			},
+			"happens": [
+				{
+					"kind": "hit",
+					"by": "nestor",
+					"at": "v27",
+					"when": 0.0,
+					"all_guns": true
+				},
+				{
+					"kind": "sinking",
+					"ship": "v27",
+					"delay": 0.1,
+					"minutes": 2.0
+				}
+			]
+		},
+		{
+			"t": 145.0,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "16時33分，在貝蒂前方偵察的第2輕巡洋艦分隊旗艦「南安普敦」號發現東南方向有大批戰列艦。分隊司令威廉·古迪納夫海軍准將在16時38分發出報告：發現敵戰列艦隊。",
+			"en": "",
+			"tts": "16時33分，在貝蒂前方偵察的第2輕巡洋艦分隊旗艦「南安普敦」號發現東南方向有大批戰列艦。分隊司令威廉·古迪納夫海軍准將在16時38分發出報告：發現敵戰列艦隊。",
+			"voice": "j3_t14500",
+			"voice_seconds": {
+				"zh": 13.86,
+				"ja": 17.69,
+				"en": 12.12
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 149.0,
+			"duration": 4.0,
+			"category": "tactic",
+			"zh": "他沒有立即脫離，繼續接近至約12公里，查明敵艦數量、隊形和航向後才轉向，其間持續遭到德國戰列艦射擊。",
+			"en": "",
+			"tts": "他沒有立即脫離，繼續接近至約12公里，查明敵艦數量、隊形和航向後才轉向，其間持續遭到德國戰列艦射擊。",
+			"voice": "j3_t14900",
+			"voice_seconds": {
+				"zh": 9.11,
+				"ja": 11.74,
+				"en": 10.72
+			},
+			"look": {
+				"ships": [
+					"southampton",
+					"birmingham"
+				],
+				"height": 20.0,
+				"lens": 40.0,
+				"toward": "koenig"
+			},
+			"happens": [
+				{
+					"kind": "fire",
+					"by": "koenig",
+					"at": "southampton",
+					"when": 0.1
+				},
+				{
+					"kind": "fire",
+					"by": "grosser_kurfuerst",
+					"at": "southampton",
+					"when": 0.5
+				}
+			]
+		},
+		{
+			"t": 150.0,
+			"duration": 4.0,
+			"category": "tactic",
+			"zh": "此後幾小時，「南安普敦」號一直保持接觸並連續報告。這是英方在此次海戰中質量最高的偵察報告。",
+			"en": "",
+			"tts": "此後幾小時，「南安普敦」號一直保持接觸並連續報告。這是英方在此次海戰中質量最高的偵察報告。",
+			"voice": "j3_t15000",
+			"voice_seconds": {
+				"zh": 7.58,
+				"ja": 10.25,
+				"en": 7.46
+			},
+			"look": {
+				"ships": [
+					"southampton",
+					"birmingham",
+					"nottingham"
+				],
+				"motion": "hover",
+				"hover_height": 500.0
+			}
+		},
+		{
+			"t": 151.0,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "南向階段在16時40分結束。英方損失戰列巡洋艦2艘，陣亡2283人；德方沒有損失大型艦隻。據戰後統計，此階段德國戰列巡洋艦共命中英艦重型砲彈約42發，英國戰列巡洋艦命中德艦約11發。",
+			"en": "",
+			"tts": "南向階段在16時40分結束。英方損失戰列巡洋艦2艘，陣亡2283人；德方沒有損失大型艦隻。據戰後統計，此階段德國戰列巡洋艦共命中英艦重型砲彈約42發，英國戰列巡洋艦命中德艦約11發。",
+			"voice": "j3_t15100",
+			"voice_seconds": {
+				"zh": 16.57,
+				"ja": 23.28,
+				"en": 15.83
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 153.0,
+			"duration": 2.5,
+			"category": "tactic",
+			"zh": "貝蒂在16時40分下令轉向北。自此雙方的角色互換：貝蒂負責將舍爾和希佩爾引向北方的大艦隊主力。",
+			"en": "",
+			"tts": "貝蒂在16時40分下令轉向北。自此雙方的角色互換：貝蒂負責將舍爾和希佩爾引向北方的大艦隊主力。",
+			"voice": "j3_t15300",
+			"voice_seconds": {
+				"zh": 7.81,
+				"ja": 9.67,
+				"en": 8.34
+			},
+			"look": {
+				"ships": [
+					"lion",
+					"princess_royal",
+					"tiger",
+					"new_zealand"
+				],
+				"distance": 1.2,
+				"height": 30.0,
+				"lens": 36.0
+			}
+		},
+		{
+			"t": 154.0,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "舍爾不知道傑利科已在海上，認為當面的敵人只是貝蒂所部，下令全速追擊。英國艦隊習稱此階段為「向北奔跑」。",
+			"en": "",
+			"tts": "舍爾不知道傑利科已在海上，認為當面的敵人只是貝蒂所部，下令全速追擊。英國艦隊習稱此階段為「向北奔跑」。",
+			"voice": "j3_t15400",
+			"voice_seconds": {
+				"zh": 8.21,
+				"ja": 10.3,
+				"en": 7.91
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 155.5,
+			"duration": 3.0,
+			"category": "tactic",
+			"zh": "第5戰列艦分隊再度出現通信延誤。貝蒂轉向時，該分隊仍在南駛，和北返的戰列巡洋艦相向駛過。",
+			"en": "",
+			"tts": "第5戰列艦分隊再度出現通信延誤。貝蒂轉向時，該分隊仍在南駛，和北返的戰列巡洋艦相向駛過。",
+			"voice": "j3_t15550",
+			"voice_seconds": {
+				"zh": 8.59,
+				"ja": 9.86,
+				"en": 8.0
+			},
+			"look": {
+				"ships": [
+					"barham",
+					"valiant"
+				],
+				"distance": 0.8,
+				"height": 24.0,
+				"toward": "lion"
+			},
+			"happens": [
+				{
+					"kind": "flooding",
+					"ship": "malaya",
+					"where": "starboard",
+					"severity": 0.2
+				}
+			]
+		},
+		{
+			"t": 162.0,
+			"duration": 4.0,
+			"category": "struck",
+			"zh": "16時57分，英國驅逐艦「佩塔德」號發射的一枚魚雷命中「塞德利茨」號艦艏，該艦進水，但仍保持航速留在隊列之中。",
+			"en": "",
+			"tts": "16時57分，英國驅逐艦「佩塔德」號發射的一枚魚雷命中「塞德利茨」號艦艏，該艦進水，但仍保持航速留在隊列之中。",
+			"voice": "j3_t15800",
+			"voice_seconds": {
+				"zh": 8.47,
+				"ja": 11.69,
+				"en": 9.05
+			},
+			"look": {
+				"ships": [
+					"seydlitz"
+				],
+				"height": 5.0,
+				"lens": 34.0
+			},
+			"happens": [
+				{
+					"kind": "torpedo",
+					"by": "petard",
+					"at": "seydlitz",
+					"hit": true,
+					"when": 0.0,
+					"watch": "victim"
+				},
+				{
+					"kind": "hit",
+					"by": "",
+					"at": "seydlitz",
+					"when": 0.0,
+					"where": "bow",
+					"side": "starboard"
+				},
+				{
+					"kind": "flooding",
+					"ship": "seydlitz",
+					"where": "bow-starboard",
+					"severity": 0.35
+				}
+			]
+		},
+		{
+			"t": 167.4,
+			"duration": 4.0,
+			"category": "famous_action",
+			"silent": true,
+			"note": "v1 mechanics kept without a line",
+			"look": {
+				"ships": [
+					"barham",
+					"warspite"
+				],
+				"frame": "individual"
+			},
+			"happens": [
+				{
+					"kind": "fire",
+					"by": "koenig",
+					"at": "barham",
+					"when": 0.3
+				}
+			]
+		},
+		{
+			"t": 168.0,
+			"duration": 2.5,
+			"category": "struck",
+			"zh": "命令其轉向的旗號延遲幾分鐘才降下執行，該分隊因而向德國主力方向多駛了幾海里；轉向方式又是各艦依次在同一點轉向，德國戰列艦得以對該點集中射擊。",
+			"en": "",
+			"tts": "命令其轉向的旗號延遲幾分鐘才降下執行，該分隊因而向德國主力方向多駛了幾海里；轉向方式又是各艦依次在同一點轉向，德國戰列艦得以對該點集中射擊。",
+			"voice": "j3_t15620",
+			"voice_seconds": {
+				"zh": 12.69,
+				"ja": 15.79,
+				"en": 13.41
+			},
+			"look": {
+				"ships": [
+					"barham",
+					"valiant",
+					"warspite",
+					"malaya"
+				],
+				"distance": 0.6,
+				"height": 40.0,
+				"lens": 44.0
+			},
+			"happens": [
+				{
+					"kind": "fire",
+					"by": "koenig",
+					"at": "valiant",
+					"when": 0.1
+				},
+				{
+					"kind": "fire",
+					"by": "grosser_kurfuerst",
+					"at": "warspite",
+					"when": 0.3
+				},
+				{
+					"kind": "fire",
+					"by": "markgraf",
+					"at": "malaya",
+					"when": 0.5
+				},
+				{
+					"kind": "flooding",
+					"ship": "malaya",
+					"where": "starboard",
+					"severity": 0.2
+				}
+			]
+		},
+		{
+			"t": 168.6,
+			"duration": 1.5,
+			"category": "famous_action",
+			"zh": "「巴勒姆」號和「馬來亞」號中彈。「馬來亞」號副砲砲廓內的發射藥起火，傷亡百餘人，經搶救保全了軍艦。",
+			"en": "",
+			"tts": "「巴勒姆」號和「馬來亞」號中彈。「馬來亞」號副砲砲廓內的發射藥起火，傷亡百餘人，經搶救保全了軍艦。",
+			"voice": "j3_t15680",
+			"voice_seconds": {
+				"zh": 7.81,
+				"ja": 8.57,
+				"en": 7.26
+			},
+			"look": {
+				"ships": [
+					"malaya"
+				],
+				"distance": 0.7,
+				"height": 6.0
+			},
+			"happens": [
+				{
+					"kind": "hit",
+					"by": "",
+					"at": "malaya",
+					"when": 0.0,
+					"where": "midships",
+					"side": "starboard",
+					"fire_level": 2.0,
+					"fire_minutes": 4.0
+				}
+			]
+		},
+		{
+			"t": 169.0,
+			"duration": 3.0,
+			"category": "struck",
+			"zh": "此後一個多小時，雙方向北追逐。貝蒂的戰列巡洋艦加速拉開距離，一度脫離接觸。第5戰列艦分隊殿後，以4艘戰列艦對抗希佩爾的5艘戰列巡洋艦和德國第3戰列艦分隊的前列各艦。",
+			"en": "",
+			"tts": "此後一個多小時，雙方向北追逐。貝蒂的戰列巡洋艦加速拉開距離，一度脫離接觸。第5戰列艦分隊殿後，以4艘戰列艦對抗希佩爾的5艘戰列巡洋艦和德國第3戰列艦分隊的前列各艦。",
+			"voice": "j3_t16900",
+			"voice_seconds": {
+				"zh": 14.08,
+				"ja": 17.71,
+				"en": 14.91
+			},
+			"look": {
+				"ships": [
+					"barham",
+					"valiant",
+					"warspite",
+					"malaya"
+				],
+				"frame": "individual",
+				"distance": 0.8,
+				"height": 32.0,
+				"lens": 44.0
+			},
+			"happens": [
+				{
+					"kind": "duel",
+					"by": "barham",
+					"at": "koenig",
+					"when": 0.4
+				}
+			]
+		},
+		{
+			"t": 170.0,
+			"duration": 4.0,
+			"category": "struck",
+			"zh": "該分隊多次中彈，但主裝甲沒有被擊穿，無一艦離隊，同時屢次命中「呂佐夫」「德弗林格」「塞德利茨」等艦。",
+			"en": "",
+			"tts": "該分隊多次中彈，但主裝甲沒有被擊穿，無一艦離隊，同時屢次命中「呂佐夫」「德弗林格」「塞德利茨」等艦。",
+			"voice": "j3_t17000",
+			"voice_seconds": {
+				"zh": 8.43,
+				"ja": 12.53,
+				"en": 11.45
+			},
+			"look": {
+				"ships": [
+					"malaya",
+					"seydlitz",
+					"derfflinger",
+					"luetzow"
+				],
+				"frame": "individual",
+				"distance": 0.8,
+				"from": "malaya",
+				"toward": "seydlitz"
+			},
+			"happens": [
+				{
+					"kind": "duel",
+					"by": "malaya",
+					"at": "seydlitz",
+					"when": 0.4
+				}
+			]
+		},
+		{
+			"t": 170.5,
+			"duration": 6.0,
+			"category": "tactic",
+			"zh": "至17時30分以後，希佩爾所部各艦已受到相當程度的損傷。",
+			"en": "",
+			"tts": "至17時30分以後，希佩爾所部各艦已受到相當程度的損傷。",
+			"voice": "j3_t17050",
+			"voice_seconds": {
+				"zh": 4.95,
+				"ja": 5.66,
+				"en": 4.63
+			},
+			"look": {
+				"ships": [
+					"luetzow",
+					"derfflinger",
+					"seydlitz"
+				],
+				"distance": 0.6,
+				"height": 6.0,
+				"lens": 32.0
+			}
+		},
+		{
+			"t": 172.0,
+			"duration": 4.0,
+			"category": "tactic",
+			"zh": "觀測條件在此階段發生變化。太陽移至西方低空，英艦位於西北方向，德方測距手迎著陽光觀測，目標隱沒在發亮的霧靄之中；德艦的輪廓在英方看來則較為清晰。",
+			"en": "",
+			"tts": "觀測條件在此階段發生變化。太陽移至西方低空，英艦位於西北方向，德方測距手迎著陽光觀測，目標隱沒在發亮的霧靄之中；德艦的輪廓在英方看來則較為清晰。",
+			"voice": "j3_t17200",
+			"voice_seconds": {
+				"zh": 13.01,
+				"ja": 18.02,
+				"en": 11.63
+			},
+			"look": {
+				"ships": [
+					"derfflinger"
+				],
+				"frame": "local",
+				"height": 7.0,
+				"lens": 46.0,
+				"from": "derfflinger",
+				"toward": "lion"
+			}
+		},
+		{
+			"t": 176.0,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "舍爾始終沒能發現大艦隊主力，原因有三：部署在英國基地外的潛艇沒有提供有價值的情報；當天升空的飛艇因雲低霧濃一無所見；前衛的偵察兵力在最後階段被迫離開了應在的位置。",
+			"en": "",
+			"tts": "舍爾始終沒能發現大艦隊主力，原因有三：部署在英國基地外的潛艇沒有提供有價值的情報；當天升空的飛艇因雲低霧濃一無所見；前衛的偵察兵力在最後階段被迫離開了應在的位置。",
+			"voice": "j3_t17600",
+			"voice_seconds": {
+				"zh": 12.23,
+				"ja": 17.11,
+				"en": 12.95
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 178.0,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "最後一點是由兩個因素造成。其一，貝蒂在17時35分以後逐步向東北、東轉向，迫使希佩爾向東避讓。其二，傑利科已在16時05分派霍勒斯·胡德海軍少將率第3戰列巡洋艦分隊，就是「無敵」「不屈」「不撓」3艦，先行南下增援，該分隊自東北方向到達戰場。",
+			"en": "",
+			"tts": "最後一點是由兩個因素造成。其一，貝蒂在17時35分以後逐步向東北、東轉向，迫使希佩爾向東避讓。其二，傑利科已在16時05分派霍勒斯·胡德海軍少將率第3戰列巡洋艦分隊，就是「無敵」「不屈」「不撓」3艦，先行南下增援，該分隊自東北方向到達戰場。",
+			"voice": "j3_t17800",
+			"voice_seconds": {
+				"zh": 21.36,
+				"ja": 26.52,
+				"en": 19.95
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 192.0,
+			"duration": 3.0,
+			"category": "struck",
+			"silent": true,
+			"note": "v1 mechanics kept without a line",
+			"look": {
+				"ships": [
+					"warspite",
+					"markgraf"
+				],
+				"frame": "individual"
+			},
+			"happens": [
+				{
+					"kind": "duel",
+					"by": "markgraf",
+					"at": "warspite",
+					"when": 0.2
+				},
+				{
+					"kind": "duel",
+					"by": "warspite",
+					"at": "markgraf",
+					"when": 0.7
+				}
+			]
+		},
+		{
+			"t": 198.0,
+			"duration": 3.0,
+			"category": "sinking",
+			"zh": "英方驅逐艦「游牧」號和「內斯特」號中彈喪失機動能力，稍後遭駛經的德國戰列艦擊沉。",
+			"en": "",
+			"tts": "英方驅逐艦「游牧」號和「內斯特」號中彈喪失機動能力，稍後遭駛經的德國戰列艦擊沉。",
+			"voice": "j3_t19800",
+			"voice_seconds": {
+				"zh": 6.73,
+				"ja": 7.25,
+				"en": 6.62
+			},
+			"look": {
+				"ships": [
+					"nomad",
+					"nestor"
+				],
+				"distance": 0.7,
+				"height": 10.0,
+				"lens": 40.0,
+				"toward": "koenig"
+			},
+			"happens": [
+				{
+					"kind": "sinking",
+					"ship": "nomad",
+					"minutes": 2.0,
+					"trim": "stern"
+				}
+			]
+		},
+		{
+			"t": 201.0,
+			"duration": 3.0,
+			"category": "struck",
+			"zh": "17時36分，為胡德擔任偵察的輕巡洋艦「切斯特」號在霧中和弗里德里希·伯迪克海軍少將指揮的德國第2偵察群4艘輕巡洋艦遭遇，幾分鐘內中彈17發，傷亡甚重。",
+			"en": "",
+			"tts": "17時36分，為胡德擔任偵察的輕巡洋艦「切斯特」號在霧中和弗里德里希·伯迪克海軍少將指揮的德國第2偵察群4艘輕巡洋艦遭遇，幾分鐘內中彈17發，傷亡甚重。",
+			"voice": "j3_t20100",
+			"voice_seconds": {
+				"zh": 13.2,
+				"ja": 16.44,
+				"en": 13.27
+			},
+			"look": {
+				"ships": [
+					"chester"
+				],
+				"height": 10.0,
+				"lens": 34.0,
+				"toward": "wiesbaden"
+			}
+		},
+		{
+			"t": 204.0,
+			"duration": 3.0,
+			"category": "tactic",
+			"zh": "艦上16歲的少年水兵約翰·康韋爾身負致命傷仍堅守砲位，後追授維多利亞十字勳章。",
+			"en": "",
+			"tts": "艦上16歲的少年水兵約翰·康韋爾身負致命傷仍堅守砲位，後追授維多利亞十字勳章。",
+			"voice": "j3_t20400",
+			"voice_seconds": {
+				"zh": 6.91,
+				"ja": 9.05,
+				"en": 8.05
+			},
+			"look": {
+				"ships": [
+					"chester"
+				],
+				"distance": 0.6,
+				"height": 6.0,
+				"lens": 34.0
+			}
+		},
+		{
+			"t": 221.0,
+			"duration": 4.0,
+			"category": "struck",
+			"silent": true,
+			"note": "v1 mechanics kept without a line",
+			"look": {
+				"ships": [
+					"wiesbaden",
+					"invincible"
+				],
+				"frame": "individual"
+			},
+			"happens": [
+				{
+					"kind": "duel",
+					"by": "invincible",
+					"at": "wiesbaden",
+					"when": 0.2
+				}
+			]
+		},
+		{
+			"t": 221.2,
+			"duration": 4.0,
+			"category": "struck",
+			"zh": "17時55分，胡德的3艘戰列巡洋艦趕到並開火，德國輕巡洋艦「威斯巴登」號輪機艙中彈，停在兩軍之間的海面上。",
+			"en": "",
+			"tts": "17時55分，胡德的3艘戰列巡洋艦趕到並開火，德國輕巡洋艦「威斯巴登」號輪機艙中彈，停在兩軍之間的海面上。",
+			"voice": "j3_t22120",
+			"voice_seconds": {
+				"zh": 8.87,
+				"ja": 10.75,
+				"en": 8.89
+			},
+			"look": {
+				"ships": [
+					"invincible",
+					"wiesbaden"
+				],
+				"frame": "individual",
+				"from": "invincible",
+				"toward": "wiesbaden"
+			},
+			"happens": [
+				{
+					"kind": "hit",
+					"by": "invincible",
+					"at": "wiesbaden",
+					"when": 0.4
+				},
+				{
+					"kind": "flooding",
+					"ship": "wiesbaden",
+					"where": "starboard",
+					"severity": 0.3
+				}
+			]
+		},
+		{
+			"t": 222.4,
+			"duration": 4.0,
+			"category": "famous_action",
+			"zh": "德國魚雷艇對胡德分隊實施魚雷攻擊，英國驅逐艦「鯊魚」號上前攔阻，遭集中射擊而喪失戰鬥力，在19時許沉沒；艦長洛夫特斯·瓊斯海軍中校陣亡，追授維多利亞十字勳章。",
+			"en": "",
+			"tts": "德國魚雷艇對胡德分隊實施魚雷攻擊，英國驅逐艦「鯊魚」號上前攔阻，遭集中射擊而喪失戰鬥力，在19時許沉沒；艦長洛夫特斯·瓊斯海軍中校陣亡，追授維多利亞十字勳章。",
+			"voice": "j3_t22240",
+			"voice_seconds": {
+				"zh": 13.01,
+				"ja": 17.59,
+				"en": 15.97
+			},
+			"look": {
+				"ships": [
+					"shark"
+				],
+				"frame": "local",
+				"height": 6.0,
+				"lens": 36.0
+			},
+			"happens": [
+				{
+					"kind": "duel",
+					"by": "pillau",
+					"at": "shark",
+					"when": 0.1,
+					"all_guns": true
+				},
+				{
+					"kind": "torpedo",
+					"by": "shark",
+					"at": "pillau",
+					"hit": false,
+					"when": 0.25
+				}
+			]
+		},
+		{
+			"t": 223.5,
+			"duration": 6.0,
+			"category": "tactic",
+			"zh": "希佩爾發現東方出現大口徑砲火，判斷英國主力自該方向到達，就向後收縮，向舍爾的戰列艦靠攏。到這時，德國艦隊前方已無偵察兵力，舍爾是在不明前方敵情的狀態下繼續北進的。",
+			"en": "",
+			"tts": "希佩爾發現東方出現大口徑砲火，判斷英國主力自該方向到達，就向後收縮，向舍爾的戰列艦靠攏。到這時，德國艦隊前方已無偵察兵力，舍爾是在不明前方敵情的狀態下繼續北進的。",
+			"voice": "j3_t22350",
+			"voice_seconds": {
+				"zh": 12.76,
+				"ja": 16.06,
+				"en": 10.65
+			},
+			"look": {
+				"ships": [
+					"luetzow",
+					"derfflinger",
+					"seydlitz",
+					"moltke",
+					"von_der_tann"
+				],
+				"motion": "hover",
+				"hover_height": 500.0
+			}
+		},
+		{
+			"t": 229.5,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "傑利科率戰列艦隊主力自西北方向接近戰場。",
+			"en": "",
+			"tts": "傑利科率戰列艦隊主力自西北方向接近戰場。",
+			"voice": "j3_t22950",
+			"voice_seconds": {
+				"zh": 3.58,
+				"ja": 3.79,
+				"en": 2.62
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 230.3,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "24艘戰列艦分為6個分隊，每分隊4艦成一路縱隊，6路縱隊並列前進。這一隊形便於航行和機動，但只有各隊前列的軍艦能夠射擊。",
+			"en": "",
+			"tts": "24艘戰列艦分為6個分隊，每分隊4艦成一路縱隊，6路縱隊並列前進。這一隊形便於航行和機動，但只有各隊前列的軍艦能夠射擊。",
+			"voice": "j3_t23030",
+			"voice_seconds": {
+				"zh": 12.15,
+				"ja": 11.71,
+				"en": 9.96
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 232.0,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "交戰之前必須展開為單縱隊，使全部主砲都可向一舷射擊。展開約需二十分鐘，向哪一側展開，取決於敵艦隊的方位。傑利科當時不掌握敵艦隊的準確方位。",
+			"en": "",
+			"tts": "交戰之前必須展開為單縱隊，使全部主砲都可向一舷射擊。展開約需二十分鐘，向哪一側展開，取決於敵艦隊的方位。傑利科當時不掌握敵艦隊的準確方位。",
+			"voice": "j3_t23200",
+			"voice_seconds": {
+				"zh": 11.03,
+				"ja": 15.7,
+				"en": 13.4
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 234.0,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "各艦報告的位置因推算誤差互不相符，貝蒂和傑利科兩部的推算位置相差幾海里。",
+			"en": "",
+			"tts": "各艦報告的位置因推算誤差互不相符，貝蒂和傑利科兩部的推算位置相差幾海里。",
+			"voice": "j3_t23400",
+			"voice_seconds": {
+				"zh": 7.13,
+				"ja": 7.97,
+				"en": 8.04
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 236.0,
+			"duration": 4.0,
+			"category": "tactic",
+			"zh": "18時01分，傑利科望見「獅」號，以信號詢問：「敵戰列艦隊在何處？」18時14分得到可用的答覆：敵戰列艦隊在南西南方向。此時雙方主力相距已不足10海里。",
+			"en": "",
+			"tts": "18時01分，傑利科望見「獅」號，以信號詢問：「敵戰列艦隊在何處？」18時14分得到可用的答覆：敵戰列艦隊在南西南方向。此時雙方主力相距已不足10海里。",
+			"voice": "j3_t23600",
+			"voice_seconds": {
+				"zh": 13.65,
+				"ja": 17.06,
+				"en": 12.07
+			},
+			"look": {
+				"ships": [
+					"iron_duke",
+					"royal_oak"
+				],
+				"distance": 0.8,
+				"height": 5.0,
+				"lens": 30.0
+			}
+		},
+		{
+			"t": 240.0,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "可供選擇的方案有兩個。向右翼縱隊展開，距敵較近，可立即投入戰鬥，但展開過程中右翼各艦將單獨承受德國戰列線的集中火力，並處於德國魚雷艇的攻擊距離之內。",
+			"en": "",
+			"tts": "可供選擇的方案有兩個。向右翼縱隊展開，距敵較近，可立即投入戰鬥，但展開過程中右翼各艦將單獨承受德國戰列線的集中火力，並處於德國魚雷艇的攻擊距離之內。",
+			"voice": "j3_t24000",
+			"voice_seconds": {
+				"zh": 11.83,
+				"ja": 15.17,
+				"en": 11.74
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 241.0,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "向左翼縱隊展開，距敵較遠，但展開完成後，英國戰列線將橫在德國艦隊的航向之前，同時位於德國艦隊與其基地之間；且英艦處於光線較暗的東側，德艦處於較亮的西側。",
+			"en": "",
+			"tts": "向左翼縱隊展開，距敵較遠，但展開完成後，英國戰列線將橫在德國艦隊的航向之前，同時位於德國艦隊與其基地之間；且英艦處於光線較暗的東側，德艦處於較亮的西側。",
+			"voice": "j3_t24100",
+			"voice_seconds": {
+				"zh": 12.75,
+				"ja": 16.68,
+				"en": 12.33
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 241.5,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "18時15分，傑利科下令以左翼縱隊為基準展開，航向東南偏東。6路縱隊展開為一條長約6海里的戰列線。後世研究者多數認為這一決定是正確的。",
+			"en": "",
+			"tts": "18時15分，傑利科下令以左翼縱隊為基準展開，航向東南偏東。6路縱隊展開為一條長約6海里的戰列線。後世研究者多數認為這一決定是正確的。",
+			"voice": "j3_t24150",
+			"voice_seconds": {
+				"zh": 13.12,
+				"ja": 18.72,
+				"en": 13.82
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 242.2,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "展開期間，戰場北部的海面極為擁擠。貝蒂的戰列巡洋艦須橫越戰列艦隊前方駛往隊首，第5戰列艦分隊須接在隊尾，另有巡洋艦和驅逐艦各隊穿插其間，航路彼此交叉，且處於德艦砲火之下。",
+			"en": "",
+			"tts": "展開期間，戰場北部的海面極為擁擠。貝蒂的戰列巡洋艦須橫越戰列艦隊前方駛往隊首，第5戰列艦分隊須接在隊尾，另有巡洋艦和驅逐艦各隊穿插其間，航路彼此交叉，且處於德艦砲火之下。",
+			"voice": "j3_t24220",
+			"voice_seconds": {
+				"zh": 15.27,
+				"ja": 20.93,
+				"en": 18.17
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 242.6,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "英國官兵事後稱此處為「風角」。此間發生數起事件。",
+			"en": "",
+			"tts": "英國官兵事後稱此處為「風角」。此間發生數起事件。",
+			"voice": "j3_t24260",
+			"voice_seconds": {
+				"zh": 5.05,
+				"ja": 6.55,
+				"en": 4.17
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 244.9,
+			"duration": 3.0,
+			"category": "sinking",
+			"zh": "英國第1巡洋艦分隊司令羅伯特·阿巴思諾特海軍少將率裝甲巡洋艦「防禦」號和「勇士」號衝出，企圖擊沉失去動力的「威斯巴登」號，接近至距德國主力約7000碼處。18時20分，「防禦」號遭德國戰列艦和戰列巡洋艦集中射擊，彈藥庫爆炸，903人全部陣亡。",
+			"en": "",
+			"tts": "英國第1巡洋艦分隊司令羅伯特·阿巴思諾特海軍少將率裝甲巡洋艦「防禦」號和「勇士」號衝出，企圖擊沉失去動力的「威斯巴登」號，接近至距德國主力約7000碼處。18時20分，「防禦」號遭德國戰列艦和戰列巡洋艦集中射擊，彈藥庫爆炸，903人全部陣亡。",
+			"voice": "j3_t24500",
+			"voice_seconds": {
+				"zh": 23.53,
+				"ja": 23.76,
+				"en": 20.73
+			},
+			"look": {
+				"ships": [
+					"defence"
+				],
+				"distance": 1.2
+			},
+			"happens": [
+				{
+					"kind": "duel",
+					"by": "luetzow",
+					"at": "defence",
+					"when": 0.0
+				},
+				{
+					"kind": "detonation",
+					"ship": "defence",
+					"when": 0.065
+				},
+				{
+					"kind": "sinking",
+					"ship": "defence",
+					"delay": 0.085,
+					"minutes": 0.6
+				}
+			]
+		},
+		{
+			"t": 246.6,
+			"duration": 1.5,
+			"category": "tactic",
+			"zh": "「勇士」號重傷，次日晨在拖航途中沉沒。",
+			"en": "",
+			"tts": "「勇士」號重傷，次日晨在拖航途中沉沒。",
+			"voice": "j3_t24660",
+			"voice_seconds": {
+				"zh": 3.67,
+				"ja": 5.14,
+				"en": 3.37
+			},
+			"look": {
+				"ships": [
+					"warrior"
+				],
+				"distance": 0.8,
+				"height": 10.0
+			}
+		},
+		{
+			"t": 247.5,
+			"duration": 2.0,
+			"category": "famous_action",
+			"zh": "第5戰列艦分隊的「厭戰」號舵機卡死，在德國戰列艦射程內連續迴旋兩周，中重型砲彈13發，仍保持浮力，之後奉命單獨返航。",
+			"en": "",
+			"tts": "第5戰列艦分隊的「厭戰」號舵機卡死，在德國戰列艦射程內連續迴旋兩周，中重型砲彈13發，仍保持浮力，之後奉命單獨返航。",
+			"voice": "j3_t24750",
+			"voice_seconds": {
+				"zh": 9.61,
+				"ja": 11.88,
+				"en": 10.02
+			},
+			"look": {
+				"ships": [
+					"warspite"
+				],
+				"motion": "hover",
+				"hover_height": 500.0
+			}
+		},
+		{
+			"t": 251.0,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "德國艦隊成單縱隊向東北行駛，其先頭正駛入英國戰列線構成的弧形之內。這一態勢就是所謂「搶佔T字橫頭」：位於橫線的一方可以全部舷側火力射擊，位於豎線的一方只有前列數艦能夠還擊。",
+			"en": "",
+			"tts": "德國艦隊成單縱隊向東北行駛，其先頭正駛入英國戰列線構成的弧形之內。這一態勢就是所謂「搶佔T字橫頭」：位於橫線的一方可以全部舷側火力射擊，位於豎線的一方只有前列數艦能夠還擊。",
+			"voice": "j3_t25100",
+			"voice_seconds": {
+				"zh": 16.48,
+				"ja": 18.31,
+				"en": 12.53
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 255.0,
+			"duration": 3.0,
+			"category": "struck",
+			"zh": "18時30分前後，英國戰列線陸續開火。自德方望去，北方至東方的海平線上只見連續的砲口閃光，不見艦影。德國第3戰列艦分隊旗艦「國王」號和戰列巡洋艦「呂佐夫」號連續中彈。",
+			"en": "",
+			"tts": "18時30分前後，英國戰列線陸續開火。自德方望去，北方至東方的海平線上只見連續的砲口閃光，不見艦影。德國第3戰列艦分隊旗艦「國王」號和戰列巡洋艦「呂佐夫」號連續中彈。",
+			"voice": "j3_t25500",
+			"voice_seconds": {
+				"zh": 14.22,
+				"ja": 19.56,
+				"en": 17.6
+			},
+			"look": {
+				"ships": [
+					"iron_duke",
+					"koenig"
+				],
+				"frame": "individual",
+				"lens": 50.0,
+				"from": "koenig",
+				"toward": "iron_duke"
+			},
+			"happens": [
+				{
+					"kind": "duel",
+					"by": "iron_duke",
+					"at": "koenig",
+					"when": 0.4
+				}
+			]
+		},
+		{
+			"t": 258.0,
+			"duration": 3.0,
+			"category": "sinking",
+			"zh": "18時34分，「德弗林格」號和「呂佐夫」號利用霧靄短暫消散的時機，命中胡德的旗艦「無敵」號。該艦舯部砲塔遭擊穿，彈藥庫爆炸，艦體斷為兩截。",
+			"en": "",
+			"tts": "18時34分，「德弗林格」號和「呂佐夫」號利用霧靄短暫消散的時機，命中胡德的旗艦「無敵」號。該艦舯部砲塔遭擊穿，彈藥庫爆炸，艦體斷為兩截。",
+			"voice": "j3_t25800",
+			"voice_seconds": {
+				"zh": 13.09,
+				"ja": 14.9,
+				"en": 10.49
+			},
+			"look": {
+				"ships": [
+					"invincible"
+				],
+				"distance": 1.2
+			},
+			"happens": [
+				{
+					"kind": "duel",
+					"by": "derfflinger",
+					"at": "invincible",
+					"when": 0.0
+				},
+				{
+					"kind": "detonation",
+					"ship": "invincible",
+					"when": 0.065,
+					"breaks": true,
+					"station": 0.0
+				},
+				{
+					"kind": "sinking",
+					"ship": "invincible",
+					"delay": 0.085,
+					"minutes": 0.6,
+					"trim": "stern",
+					"list": "upright",
+					"breaks": true,
+					"station": 0.0
+				}
+			]
+		},
+		{
+			"t": 259.0,
+			"duration": 3.0,
+			"category": "tactic",
+			"zh": "胡德和全艦1026人陣亡，6人生還。這是英方當天損失的第三艘戰列巡洋艦，損失原因和前兩艘相同。",
+			"en": "",
+			"tts": "胡德和全艦1026人陣亡，6人生還。這是英方當天損失的第三艘戰列巡洋艦，損失原因和前兩艘相同。",
+			"voice": "j3_t25900",
+			"voice_seconds": {
+				"zh": 8.52,
+				"ja": 11.3,
+				"en": 9.4
+			},
+			"look": {
+				"ships": [
+					"invincible"
+				],
+				"distance": 1.2
+			},
+			"happens": [
+				{
+					"kind": "sinking",
+					"ship": "invincible",
+					"when": "track",
+					"breaks": true,
+					"station": 0.0
+				}
+			]
+		},
+		{
+			"t": 261.0,
+			"duration": 4.0,
+			"category": "fleeing",
+			"zh": "舍爾到這時才判明，當面是大艦隊全體。18時33分，他下令實施「戰鬥迴轉」：全隊各艦自隊尾起依次、幾乎同時向右迴轉180度。",
+			"en": "",
+			"tts": "舍爾到這時才判明，當面是大艦隊全體。18時33分，他下令實施「戰鬥迴轉」：全隊各艦自隊尾起依次、幾乎同時向右迴轉180度。",
+			"voice": "j3_t26100",
+			"voice_seconds": {
+				"zh": 11.4,
+				"ja": 16.22,
+				"en": 13.54
+			},
+			"look": {
+				"ships": [
+					"friedrich_der_grosse",
+					"prinzregent_luitpold",
+					"ostfriesland"
+				],
+				"motion": "hover",
+				"hover_height": 500.0
+			}
+		},
+		{
+			"t": 262.6,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "這一機動是公海艦隊為在劣勢下脫離接觸而專門演練的。",
+			"en": "",
+			"tts": "這一機動是公海艦隊為在劣勢下脫離接觸而專門演練的。",
+			"voice": "j3_t26260",
+			"voice_seconds": {
+				"zh": 4.45,
+				"ja": 5.64,
+				"en": 4.93
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 263.5,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "幾分鐘內，德國戰列線全部轉向西南，在魚雷艇施放的煙幕掩護下隱入霧中。",
+			"en": "",
+			"tts": "幾分鐘內，德國戰列線全部轉向西南，在魚雷艇施放的煙幕掩護下隱入霧中。",
+			"voice": "j3_t26350",
+			"voice_seconds": {
+				"zh": 5.88,
+				"ja": 6.43,
+				"en": 7.29
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 265.0,
+			"duration": 8.0,
+			"category": "tactic",
+			"zh": "傑利科沒有尾追。他在1914年已向海軍部說明過這一原則：追擊撤退之敵，對方可沿途發射魚雷、佈設水雷，並可能將己方引入潛艇伏擊區。他改向東南，繼而向南行駛，保持在德國艦隊與其基地之間。",
+			"en": "",
+			"tts": "傑利科沒有尾追。他在1914年已向海軍部說明過這一原則：追擊撤退之敵，對方可沿途發射魚雷、佈設水雷，並可能將己方引入潛艇伏擊區。他改向東南，繼而向南行駛，保持在德國艦隊與其基地之間。",
+			"voice": "j3_t26500",
+			"look": {
+				"ships": [
+					"iron_duke",
+					"royal_oak",
+					"thunderer"
+				],
+				"distance": 1.2,
+				"height": 16.0,
+				"lens": 34.0
+			}
+		},
+		{
+			"t": 273.0,
+			"duration": 4.0,
+			"category": "struck",
+			"silent": true,
+			"note": "v1 mechanics kept without a line",
+			"look": {
+				"ships": [
+					"luetzow"
+				]
+			},
+			"happens": [
+				{
+					"kind": "flooding",
+					"ship": "luetzow",
+					"where": "bow",
+					"severity": 0.6
+				}
+			]
+		},
+		{
+			"t": 279.5,
+			"duration": 3.0,
+			"category": "struck",
+			"zh": "18時54分，英國戰列艦「馬爾博羅」號中魚雷一枚，仍留在隊列中。",
+			"en": "",
+			"tts": "18時54分，英國戰列艦「馬爾博羅」號中魚雷一枚，仍留在隊列中。",
+			"voice": "j3_t27950",
+			"voice_seconds": {
+				"zh": 5.4,
+				"ja": 6.79,
+				"en": 5.67
+			},
+			"look": {
+				"ships": [
+					"marlborough"
+				]
+			},
+			"happens": [
+				{
+					"kind": "torpedo",
+					"by": "wiesbaden",
+					"at": "marlborough",
+					"hit": true,
+					"when": 0.0,
+					"watch": "victim"
+				},
+				{
+					"kind": "hit",
+					"by": "",
+					"at": "marlborough",
+					"when": 0.0,
+					"where": "midships",
+					"side": "starboard"
+				},
+				{
+					"kind": "flooding",
+					"ship": "marlborough",
+					"where": "starboard",
+					"severity": 0.25
+				}
+			]
+		},
+		{
+			"t": 283.0,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "18時55分，舍爾再次下令全隊迴轉，向東駛回。舍爾這一步的意圖沒有定論。",
+			"en": "",
+			"tts": "18時55分，舍爾再次下令全隊迴轉，向東駛回。舍爾這一步的意圖沒有定論。",
+			"voice": "j3_t28300",
+			"voice_seconds": {
+				"zh": 6.89,
+				"ja": 9.46,
+				"en": 6.85
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 285.0,
+			"duration": 4.0,
+			"category": "tactic",
+			"zh": "舍爾在戰後報告和回憶錄中的解釋是：天色還早，此時西撤將招致英方整個黃昏的追擊；回頭出擊可出敵不意，打亂其部署，並可救援「威斯巴登」號。",
+			"en": "",
+			"tts": "舍爾在戰後報告和回憶錄中的解釋是：天色還早，此時西撤將招致英方整個黃昏的追擊；回頭出擊可出敵不意，打亂其部署，並可救援「威斯巴登」號。",
+			"voice": "j3_t28500",
+			"voice_seconds": {
+				"zh": 10.47,
+				"ja": 15.41,
+				"en": 11.6
+			},
+			"look": {
+				"ships": [
+					"friedrich_der_grosse"
+				],
+				"distance": 0.9,
+				"height": 9.0,
+				"lens": 36.0
+			}
+		},
+		{
+			"t": 286.5,
+			"duration": 4.0,
+			"category": "tactic",
+			"zh": "許多研究者不接受這一解釋，認為他錯估了英國艦隊的位置，企圖自英國戰列線後方穿過，結果駛向了其中段。",
+			"en": "",
+			"tts": "許多研究者不接受這一解釋，認為他錯估了英國艦隊的位置，企圖自英國戰列線後方穿過，結果駛向了其中段。",
+			"voice": "j3_t28650",
+			"voice_seconds": {
+				"zh": 8.19,
+				"ja": 10.94,
+				"en": 8.04
+			},
+			"look": {
+				"ships": [
+					"friedrich_der_grosse",
+					"ostfriesland"
+				],
+				"height": 26.0,
+				"lens": 36.0
+			}
+		},
+		{
+			"t": 289.0,
+			"duration": 4.0,
+			"category": "tactic",
+			"zh": "19時10分前後，德國艦隊的先頭再次駛入英國戰列線的弧形之內，處境較第一次更為不利：德艦在西，以晚霞為背景，輪廓清晰；英艦在東，處於昏暗的霧靄中，德方只能依據砲口閃光射擊。",
+			"en": "",
+			"tts": "19時10分前後，德國艦隊的先頭再次駛入英國戰列線的弧形之內，處境較第一次更為不利：德艦在西，以晚霞為背景，輪廓清晰；英艦在東，處於昏暗的霧靄中，德方只能依據砲口閃光射擊。",
+			"voice": "j3_t28900",
+			"voice_seconds": {
+				"zh": 13.89,
+				"ja": 18.62,
+				"en": 13.41
+			},
+			"look": {
+				"ships": [
+					"koenig",
+					"grosser_kurfuerst",
+					"markgraf"
+				],
+				"height": 2.0,
+				"lens": 30.0,
+				"from": "iron_duke",
+				"toward": "koenig"
+			}
+		},
+		{
+			"t": 293.0,
+			"duration": 4.0,
+			"category": "struck",
+			"zh": "在十餘分鐘內，「國王」「大選帝侯」「馬克格拉夫」「皇帝」「赫爾戈蘭」等艦相繼中彈，德艦共中重型砲彈三十餘發，英方只有「巨像」號中彈兩發。舍爾被迫實施第三次迴轉。",
+			"en": "",
+			"tts": "在十餘分鐘內，「國王」「大選帝侯」「馬克格拉夫」「皇帝」「赫爾戈蘭」等艦相繼中彈，德艦共中重型砲彈三十餘發，英方只有「巨像」號中彈兩發。舍爾被迫實施第三次迴轉。",
+			"voice": "j3_t29300",
+			"voice_seconds": {
+				"zh": 12.0,
+				"ja": 18.07,
+				"en": 15.8
+			},
+			"look": {
+				"ships": [
+					"koenig",
+					"grosser_kurfuerst",
+					"markgraf"
+				],
+				"distance": 0.8,
+				"height": 7.0,
+				"lens": 36.0
+			},
+			"happens": [
+				{
+					"kind": "hit",
+					"by": "",
+					"at": "koenig",
+					"when": 0.4
+				}
+			]
+		},
+		{
+			"t": 297.0,
+			"duration": 3.0,
+			"category": "famous_action",
+			"zh": "為掩護戰列艦轉向，他先後下達兩道命令。19時13分，命令戰列巡洋艦向敵衝擊，信號為「戰列巡洋艦衝向敵人，全力以赴」。",
+			"en": "",
+			"tts": "為掩護戰列艦轉向，他先後下達兩道命令。19時13分，命令戰列巡洋艦向敵衝擊，信號為「戰列巡洋艦衝向敵人，全力以赴」。",
+			"voice": "j3_t29700",
+			"voice_seconds": {
+				"zh": 9.58,
+				"ja": 13.51,
+				"en": 9.53
+			},
+			"look": {
+				"ships": [
+					"derfflinger",
+					"seydlitz",
+					"moltke",
+					"von_der_tann"
+				],
+				"distance": 0.8,
+				"height": 14.0,
+				"lens": 44.0
+			}
+		},
+		{
+			"t": 298.5,
+			"duration": 1.5,
+			"category": "famous_action",
+			"zh": "此時「呂佐夫」號已因重傷退出隊列，希佩爾正乘魚雷艇尋找可供換乘的軍艦，其餘4艘戰列巡洋艦由「德弗林格」號艦長率領。",
+			"en": "",
+			"tts": "此時「呂佐夫」號已因重傷退出隊列，希佩爾正乘魚雷艇尋找可供換乘的軍艦，其餘4艘戰列巡洋艦由「德弗林格」號艦長率領。",
+			"voice": "j3_t29850",
+			"voice_seconds": {
+				"zh": 8.48,
+				"ja": 10.97,
+				"en": 10.9
+			},
+			"look": {
+				"ships": [
+					"luetzow"
+				],
+				"frame": "local",
+				"distance": 0.8,
+				"height": 8.0,
+				"lens": 40.0
+			}
+		},
+		{
+			"t": 299.2,
+			"duration": 6.0,
+			"category": "struck",
+			"zh": "該4艦在英國戰列線的集中火力下前進幾分鐘，「德弗林格」號後部兩座砲塔相繼被毀，塔內人員幾乎全部陣亡。",
+			"en": "",
+			"tts": "該4艦在英國戰列線的集中火力下前進幾分鐘，「德弗林格」號後部兩座砲塔相繼被毀，塔內人員幾乎全部陣亡。",
+			"voice": "j3_t29920",
+			"voice_seconds": {
+				"zh": 7.85,
+				"ja": 9.72,
+				"en": 9.57
+			},
+			"look": {
+				"ships": [
+					"derfflinger"
+				],
+				"distance": 0.8,
+				"height": 6.0,
+				"lens": 30.0
+			},
+			"happens": [
+				{
+					"kind": "hit",
+					"by": "",
+					"at": "derfflinger",
+					"when": 0.0,
+					"where": "aft_turret",
+					"side": "starboard"
+				},
+				{
+					"kind": "flooding",
+					"ship": "derfflinger",
+					"where": "bow",
+					"severity": 0.1
+				}
+			]
+		},
+		{
+			"t": 300.0,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "19時15分，命令各魚雷艇隊實施攻擊並施放煙幕。19時18分，戰列艦完成第三次戰鬥迴轉，向西撤離。",
+			"en": "",
+			"tts": "19時15分，命令各魚雷艇隊實施攻擊並施放煙幕。19時18分，戰列艦完成第三次戰鬥迴轉，向西撤離。",
+			"voice": "j3_t30000",
+			"voice_seconds": {
+				"zh": 9.12,
+				"ja": 12.5,
+				"en": 9.79
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 301.5,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "4艘戰列巡洋艦隨後轉向脫離，無一沉沒。德方稱此次衝擊為「死亡衝鋒」。",
+			"en": "",
+			"tts": "4艘戰列巡洋艦隨後轉向脫離，無一沉沒。德方稱此次衝擊為「死亡衝鋒」。",
+			"voice": "j3_t30150",
+			"voice_seconds": {
+				"zh": 6.5,
+				"ja": 8.54,
+				"en": 7.56
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 309.0,
+			"duration": 4.0,
+			"category": "tactic",
+			"zh": "德國魚雷艇共發射魚雷31枚。傑利科按照事先確定的對策，在19時22分起命令戰列線分兩次向外轉向，合計約45度，以艦艉對向魚雷來襲方向。",
+			"en": "",
+			"tts": "德國魚雷艇共發射魚雷31枚。傑利科按照事先確定的對策，在19時22分起命令戰列線分兩次向外轉向，合計約45度，以艦艉對向魚雷來襲方向。",
+			"voice": "j3_t30900",
+			"look": {
+				"ships": [
+					"iron_duke",
+					"royal_oak",
+					"superb",
+					"canada"
+				],
+				"frame": "individual",
+				"distance": 1.5,
+				"height": 35.0,
+				"lens": 50.0
+			},
+			"happens": [
+				{
+					"kind": "torpedo",
+					"by": "",
+					"at": "canada",
+					"hit": false,
+					"when": 0.0,
+					"companions": 3.0,
+					"combed": true
+				}
+			]
+		},
+		{
+			"t": 310.6,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "魚雷航程末段速度降低，目標背向行駛，易於規避。31枚魚雷無一命中。代價是雙方距離拉大，接觸中斷。",
+			"en": "",
+			"tts": "魚雷航程末段速度降低，目標背向行駛，易於規避。31枚魚雷無一命中。代價是雙方距離拉大，接觸中斷。",
+			"voice": "j3_t31060",
+			"voice_seconds": {
+				"zh": 8.37,
+				"ja": 11.64,
+				"en": 10.85
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 311.5,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "等傑利科恢復原航向時，德國艦隊已在西方十餘公里以外的霧中，距日落不足一小時。",
+			"en": "",
+			"tts": "等傑利科恢復原航向時，德國艦隊已在西方十餘公里以外的霧中，距日落不足一小時。",
+			"voice": "j3_t31150",
+			"voice_seconds": {
+				"zh": 6.89,
+				"ja": 9.12,
+				"en": 7.94
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 313.0,
+			"duration": 8.0,
+			"category": "tactic",
+			"zh": "這次向外轉向是日德蘭海戰中爭論最多的問題。批評者認為，如向魚雷來襲方向轉向，同樣可以規避，且能保持接觸，在日落前繼續給德國艦隊以重大打擊。",
+			"en": "",
+			"tts": "這次向外轉向是日德蘭海戰中爭論最多的問題。批評者認為，如向魚雷來襲方向轉向，同樣可以規避，且能保持接觸，在日落前繼續給德國艦隊以重大打擊。",
+			"voice": "j3_t31300",
+			"voice_seconds": {
+				"zh": 11.74,
+				"ja": 14.26,
+				"en": 11.03
+			},
+			"look": {
+				"ships": [
+					"iron_duke",
+					"royal_oak"
+				],
+				"distance": 1.2,
+				"height": 20.0,
+				"lens": 40.0
+			}
+		},
+		{
+			"t": 315.0,
+			"duration": 8.0,
+			"category": "tactic",
+			"zh": "為傑利科辯護者指出：背向轉向是當時公認的穩妥做法之一，可以確保規避魚雷；傑利科所指揮的艦隊是英國海上優勢的全部依託，無須冒險，保持有利位置、等次日天明再戰，在他的立場上是合理的。",
+			"en": "",
+			"tts": "為傑利科辯護者指出：背向轉向是當時公認的穩妥做法之一，可以確保規避魚雷；傑利科所指揮的艦隊是英國海上優勢的全部依託，無須冒險，保持有利位置、等次日天明再戰，在他的立場上是合理的。",
+			"voice": "j3_t31500",
+			"look": {
+				"ships": [
+					"iron_duke",
+					"royal_oak",
+					"thunderer"
+				],
+				"motion": "hover",
+				"hover_height": 500.0
+			}
+		},
+		{
+			"t": 316.5,
+			"duration": 1.5,
+			"category": "tactic",
+			"zh": "溫斯頓·邱吉爾後來評論說，傑利科是交戰雙方唯一能在一個下午輸掉這場戰爭的人。",
+			"en": "",
+			"tts": "溫斯頓·邱吉爾後來評論說，傑利科是交戰雙方唯一能在一個下午輸掉這場戰爭的人。",
+			"voice": "j3_t31650",
+			"voice_seconds": {
+				"zh": 5.42,
+				"ja": 8.09,
+				"en": 6.02
+			},
+			"look": {
+				"ships": [
+					"iron_duke"
+				],
+				"distance": 0.6,
+				"height": 5.0
+			}
+		},
+		{
+			"t": 321.0,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "此後約一小時，兩支艦隊以大致平行的航向向西南、向南行駛，英國艦隊在東，德國艦隊在西，中間隔著十餘公里的霧靄，互不相見。",
+			"en": "",
+			"tts": "此後約一小時，兩支艦隊以大致平行的航向向西南、向南行駛，英國艦隊在東，德國艦隊在西，中間隔著十餘公里的霧靄，互不相見。",
+			"voice": "j3_t32100",
+			"voice_seconds": {
+				"zh": 10.84,
+				"ja": 14.88,
+				"en": 10.92
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 364.0,
+			"duration": 5.0,
+			"category": "first_fire",
+			"zh": "20時19分，貝蒂的戰列巡洋艦在前方再次和德國戰列巡洋艦接觸，距離約9公里。「塞德利茨」號再中數彈，各艦可用的主砲已所剩無幾。",
+			"en": "",
+			"tts": "20時19分，貝蒂的戰列巡洋艦在前方再次和德國戰列巡洋艦接觸，距離約9公里。「塞德利茨」號再中數彈，各艦可用的主砲已所剩無幾。",
+			"voice": "j3_t36400",
+			"voice_seconds": {
+				"zh": 10.38,
+				"ja": 14.23,
+				"en": 11.78
+			},
+			"look": {
+				"ships": [
+					"lion",
+					"derfflinger"
+				],
+				"frame": "individual",
+				"distance": 0.7,
+				"from": "lion",
+				"toward": "derfflinger"
+			}
+		},
+		{
+			"t": 368.5,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "此外，舍爾將弗朗茨·莫夫海軍少將指揮的第2戰列艦分隊一併帶出，該分隊的6艘前無畏型戰列艦最高航速只有18節，火力和防護都已落後，限制了全艦隊的機動。",
+			"en": "",
+			"tts": "此外，舍爾將弗朗茨·莫夫海軍少將指揮的第2戰列艦分隊一併帶出，該分隊的6艘前無畏型戰列艦最高航速只有18節，火力和防護都已落後，限制了全艦隊的機動。",
+			"voice": "j3_t36850",
+			"voice_seconds": {
+				"zh": 12.14,
+				"ja": 14.14,
+				"en": 11.13
+			},
+			"look": {
+				"ships": [
+					"pommern",
+					"hannover",
+					"deutschland"
+				],
+				"height": 18.0,
+				"lens": 42.0
+			}
+		},
+		{
+			"t": 369.0,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "莫夫的第2戰列艦分隊此時恰在附近，上前掩護，各艦也有中彈，隨後向西轉入暗處。20時35分前後砲聲停止。這是此次海戰中雙方主力艦之間的最後一次交火。",
+			"en": "",
+			"tts": "莫夫的第2戰列艦分隊此時恰在附近，上前掩護，各艦也有中彈，隨後向西轉入暗處。20時35分前後砲聲停止。這是此次海戰中雙方主力艦之間的最後一次交火。",
+			"voice": "j3_t36900",
+			"voice_seconds": {
+				"zh": 13.39,
+				"ja": 14.47,
+				"en": 12.57
+			},
+			"look": {
+				"ships": [
+					"pommern",
+					"hannover",
+					"deutschland"
+				],
+				"motion": "hover",
+				"hover_height": 500.0
+			}
+		},
+		{
+			"t": 374.0,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "日落時的態勢可概括如下。就損失而言，英方不利。已損失戰列巡洋艦3艘、裝甲巡洋艦1艘，另1艘裝甲巡洋艦瀕於沉沒，陣亡逾5000人。",
+			"en": "",
+			"tts": "日落時的態勢可概括如下。就損失而言，英方不利。已損失戰列巡洋艦3艘、裝甲巡洋艦1艘，另1艘裝甲巡洋艦瀕於沉沒，陣亡逾5000人。",
+			"voice": "j3_t37400",
+			"voice_seconds": {
+				"zh": 12.44,
+				"ja": 13.97,
+				"en": 12.63
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 376.5,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "德方還沒有損失主力艦，但「呂佐夫」號已無法挽救，「塞德利茨」「德弗林格」兩艦重傷，第3戰列艦分隊前列各艦都有損傷。",
+			"en": "",
+			"tts": "德方還沒有損失主力艦，但「呂佐夫」號已無法挽救，「塞德利茨」「德弗林格」兩艦重傷，第3戰列艦分隊前列各艦都有損傷。",
+			"voice": "j3_t37650",
+			"voice_seconds": {
+				"zh": 8.86,
+				"ja": 11.66,
+				"en": 8.38
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 378.0,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "就位置而言，德方不利。大艦隊位於東南，公海艦隊位於西北，傑利科橫在舍爾返回基地的航路上，其24艘戰列艦幾乎沒有受損傷。",
+			"en": "",
+			"tts": "就位置而言，德方不利。大艦隊位於東南，公海艦隊位於西北，傑利科橫在舍爾返回基地的航路上，其24艘戰列艦幾乎沒有受損傷。",
+			"voice": "j3_t37800",
+			"voice_seconds": {
+				"zh": 10.7,
+				"ja": 13.37,
+				"en": 11.63
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 380.0,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "此地此時的白晝長達十七小時左右。如次日天明時這一位置關係不變，德國艦隊將難以再次脫離。因此，夜間的問題只有一個：舍爾能否在天明之前繞過或穿過英國艦隊。",
+			"en": "",
+			"tts": "此地此時的白晝長達十七小時左右。如次日天明時這一位置關係不變，德國艦隊將難以再次脫離。因此，夜間的問題只有一個：舍爾能否在天明之前繞過或穿過英國艦隊。",
+			"voice": "j3_t38000",
+			"voice_seconds": {
+				"zh": 13.97,
+				"ja": 17.4,
+				"en": 15.37
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 386.0,
+			"duration": 6.0,
+			"category": "tactic",
+			"zh": "傑利科決定夜間不尋求主力交戰。其理由是：大艦隊沒有經過系統的夜戰訓練，探照燈的操縱和夜間射擊技術不及德方；夜間敵我難辨；主力艦在黑暗中近距離混戰，易受魚雷艇攻擊，數量優勢無從發揮。",
+			"en": "",
+			"tts": "傑利科決定夜間不尋求主力交戰。其理由是：大艦隊沒有經過系統的夜戰訓練，探照燈的操縱和夜間射擊技術不及德方；夜間敵我難辨；主力艦在黑暗中近距離混戰，易受魚雷艇攻擊，數量優勢無從發揮。",
+			"voice": "j3_t38600",
+			"voice_seconds": {
+				"zh": 17.07,
+				"ja": 19.56,
+				"en": 18.27
+			},
+			"look": {
+				"ships": [
+					"iron_duke",
+					"thunderer",
+					"royal_oak"
+				],
+				"height": 6.0,
+				"lens": 34.0
+			}
+		},
+		{
+			"t": 390.0,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "21時許，他命令戰列艦隊收攏為間隔較小的數路縱隊，以17節航速向南行駛，各驅逐艦隊配置在主力後方5海里處，兼任後衛並伺機攻擊接近之敵。",
+			"en": "",
+			"tts": "21時許，他命令戰列艦隊收攏為間隔較小的數路縱隊，以17節航速向南行駛，各驅逐艦隊配置在主力後方5海里處，兼任後衛並伺機攻擊接近之敵。",
+			"voice": "j3_t39000",
+			"voice_seconds": {
+				"zh": 11.96,
+				"ja": 14.98,
+				"en": 12.33
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 392.0,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "傑利科需要判斷舍爾的返航路線。公海艦隊返回基地有數條航道可供選擇：最近者經東南方向的號恩礁，沿日德蘭半島西岸南下；其次經赫爾戈蘭島以西南下；最遠者向西南經埃姆斯河口。",
+			"en": "",
+			"tts": "傑利科需要判斷舍爾的返航路線。公海艦隊返回基地有數條航道可供選擇：最近者經東南方向的號恩礁，沿日德蘭半島西岸南下；其次經赫爾戈蘭島以西南下；最遠者向西南經埃姆斯河口。",
+			"voice": "j3_t39200",
+			"voice_seconds": {
+				"zh": 15.03,
+				"ja": 18.43,
+				"en": 13.64
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 394.5,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "傑利科判斷舍爾將向南行駛，就將艦隊置在南方。對號恩礁一線，他只派佈雷艦「阿布迪爾」號前往增佈水雷。",
+			"en": "",
+			"tts": "傑利科判斷舍爾將向南行駛，就將艦隊置在南方。對號恩礁一線，他只派佈雷艦「阿布迪爾」號前往增佈水雷。",
+			"voice": "j3_t39450",
+			"voice_seconds": {
+				"zh": 9.53,
+				"ja": 11.26,
+				"en": 7.95
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 398.0,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "舍爾選擇的正是號恩礁航道。21時14分，他命令全艦隊返航，航向東南偏南，航速16節，並要求各艦無論遭遇何種情況都保持航向。他同時要求飛艇在拂曉偵察號恩礁海域。",
+			"en": "",
+			"tts": "舍爾選擇的正是號恩礁航道。21時14分，他命令全艦隊返航，航向東南偏南，航速16節，並要求各艦無論遭遇何種情況都保持航向。他同時要求飛艇在拂曉偵察號恩礁海域。",
+			"voice": "j3_t39800",
+			"voice_seconds": {
+				"zh": 14.2,
+				"ja": 18.02,
+				"en": 12.91
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 399.6,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "舍爾沒有其他選擇：如繞行較遠的航道，天明時仍將位於英國艦隊附近；只有取最短路線，才有可能在天明之前駛入本國雷區後方的航道。",
+			"en": "",
+			"tts": "舍爾沒有其他選擇：如繞行較遠的航道，天明時仍將位於英國艦隊附近；只有取最短路線，才有可能在天明之前駛入本國雷區後方的航道。",
+			"voice": "j3_t39960",
+			"voice_seconds": {
+				"zh": 10.47,
+				"ja": 13.58,
+				"en": 10.01
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 402.0,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "於是兩支艦隊的航線在夜間交叉。大艦隊向南，航速略高，位置在前；公海艦隊向東南，斜向穿過大艦隊的航跡，所遭遇的是配置在後方的英國驅逐艦隊。",
+			"en": "",
+			"tts": "於是兩支艦隊的航線在夜間交叉。大艦隊向南，航速略高，位置在前；公海艦隊向東南，斜向穿過大艦隊的航跡，所遭遇的是配置在後方的英國驅逐艦隊。",
+			"voice": "j3_t40200",
+			"voice_seconds": {
+				"zh": 13.79,
+				"ja": 17.54,
+				"en": 14.52
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 404.5,
+			"duration": 1.5,
+			"category": "tactic",
+			"zh": "希佩爾直到21時以後才登上「毛奇」號，恢復對偵察兵力的指揮。",
+			"en": "",
+			"tts": "希佩爾直到21時以後才登上「毛奇」號，恢復對偵察兵力的指揮。",
+			"voice": "j3_t40450",
+			"voice_seconds": {
+				"zh": 4.65,
+				"ja": 6.84,
+				"en": 5.09
+			},
+			"look": {
+				"ships": [
+					"moltke",
+					"seydlitz",
+					"von_der_tann"
+				],
+				"distance": 0.8,
+				"height": 12.0
+			}
+		},
+		{
+			"t": 450.0,
+			"duration": 6.0,
+			"category": "tactic",
+			"zh": "40號房當晚截獲並破譯了舍爾的返航命令，包括其航向和航速，也截獲了他要求飛艇偵察號恩礁的電報。海軍部在23時前後將航向和航速通報傑利科，但要求偵察號恩礁的電報以及其他數份關鍵電報沒有轉發。",
+			"en": "",
+			"tts": "40號房當晚截獲並破譯了舍爾的返航命令，包括其航向和航速，也截獲了他要求飛艇偵察號恩礁的電報。海軍部在23時前後將航向和航速通報傑利科，但要求偵察號恩礁的電報以及其他數份關鍵電報沒有轉發。",
+			"voice": "j3_t45000",
+			"voice_seconds": {
+				"zh": 13.91,
+				"ja": 19.63,
+				"en": 18.69
+			},
+			"look": {
+				"ships": [
+					"iron_duke",
+					"thunderer"
+				],
+				"distance": 0.9,
+				"height": 14.0,
+				"lens": 30.0
+			}
+		},
+		{
+			"t": 456.0,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "就傑利科收到的航向而言，如在海圖上標繪，其延長線就是指向號恩礁。但海軍部當天中午曾誤報舍爾旗艦的位置，入夜後又通報過一個明顯錯誤的德國艦隊位置，傑利科因此沒有採信這份電報。",
+			"en": "",
+			"tts": "就傑利科收到的航向而言，如在海圖上標繪，其延長線就是指向號恩礁。但海軍部當天中午曾誤報舍爾旗艦的位置，入夜後又通報過一個明顯錯誤的德國艦隊位置，傑利科因此沒有採信這份電報。",
+			"voice": "j3_t45600",
+			"voice_seconds": {
+				"zh": 13.87,
+				"ja": 15.31,
+				"en": 13.14
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 484.0,
+			"duration": 5.0,
+			"category": "first_fire",
+			"zh": "自22時至次日2時許，雙方先後發生七八次接觸，經過大體相同：雙方在數百米至兩千米的距離上相互發現，都不能確定對方是否為友艦；德艦先以識別信號試探，隨即開啟探照燈，用副砲齊射；幾分鐘後探照燈熄滅，海面復歸黑暗。",
+			"en": "",
+			"tts": "自22時至次日2時許，雙方先後發生七八次接觸，經過大體相同：雙方在數百米至兩千米的距離上相互發現，都不能確定對方是否為友艦；德艦先以識別信號試探，隨即開啟探照燈，用副砲齊射；幾分鐘後探照燈熄滅，海面復歸黑暗。",
+			"voice": "j3_t40600",
+			"voice_seconds": {
+				"zh": 17.21,
+				"ja": 22.46,
+				"en": 20.86
+			},
+			"look": {
+				"ships": [
+					"southampton",
+					"birmingham"
+				],
+				"height": 5.0,
+				"lens": 38.0,
+				"toward": "frankfurt"
+			}
+		},
+		{
+			"t": 485.0,
+			"duration": 6.0,
+			"category": "tactic",
+			"silent": true,
+			"note": "v1 mechanics kept without a line",
+			"look": {
+				"ships": [
+					"seydlitz"
+				],
+				"frame": "local"
+			},
+			"happens": [
+				{
+					"kind": "flooding",
+					"ship": "seydlitz",
+					"where": "bow-port",
+					"severity": 0.85
+				}
+			]
+		},
+		{
+			"t": 486.0,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "主要的接觸如下。22時15分前後，古迪納夫的第2輕巡洋艦分隊和德國第4偵察群在不足1000米的距離上交火。",
+			"en": "",
+			"tts": "主要的接觸如下。22時15分前後，古迪納夫的第2輕巡洋艦分隊和德國第4偵察群在不足1000米的距離上交火。",
+			"voice": "j3_t40800",
+			"voice_seconds": {
+				"zh": 7.93,
+				"ja": 9.48,
+				"en": 8.86
+			},
+			"look": {
+				"ships": [
+					"southampton",
+					"stettin"
+				],
+				"frame": "individual",
+				"distance": 0.5,
+				"height": 6.0,
+				"lens": 38.0,
+				"from": "stettin",
+				"toward": "southampton"
+			},
+			"happens": [
+				{
+					"kind": "searchlight",
+					"by": "stettin",
+					"on": "southampton",
+					"seconds": 14.0,
+					"when": 0.05
+				},
+				{
+					"kind": "duel",
+					"by": "muenchen",
+					"at": "southampton",
+					"when": 0.15,
+					"all_guns": true
+				},
+				{
+					"kind": "duel",
+					"by": "southampton",
+					"at": "stettin",
+					"when": 0.35,
+					"all_guns": true
+				}
+			]
+		},
+		{
+			"t": 489.0,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "「南安普敦」號傷亡89人，所發射的一枚魚雷擊沉德國輕巡洋艦「婦女頌」號，該艦320人陣亡，生還者只有9人。",
+			"en": "",
+			"tts": "「南安普敦」號傷亡89人，所發射的一枚魚雷擊沉德國輕巡洋艦「婦女頌」號，該艦320人陣亡，生還者只有9人。",
+			"voice": "j3_t41100",
+			"voice_seconds": {
+				"zh": 10.01,
+				"ja": 13.54,
+				"en": 10.83
+			},
+			"look": {
+				"ships": [
+					"frauenlob",
+					"southampton"
+				],
+				"frame": "individual",
+				"distance": 0.5,
+				"height": 8.0,
+				"lens": 38.0,
+				"from": "southampton",
+				"toward": "frauenlob"
+			},
+			"happens": [
+				{
+					"kind": "searchlight",
+					"by": "muenchen",
+					"on": "southampton",
+					"seconds": 16.0,
+					"when": 0.05
+				},
+				{
+					"kind": "duel",
+					"by": "stettin",
+					"at": "southampton",
+					"when": 0.1,
+					"all_guns": true
+				},
+				{
+					"kind": "torpedo",
+					"by": "southampton",
+					"at": "frauenlob",
+					"hit": true,
+					"when": 0.2
+				}
+			]
+		},
+		{
+			"t": 491.0,
+			"duration": 6.0,
+			"category": "tactic",
+			"silent": true,
+			"note": "v1 mechanics kept without a line",
+			"look": {
+				"ships": [
+					"luetzow"
+				],
+				"frame": "local"
+			},
+			"happens": [
+				{
+					"kind": "flooding",
+					"ship": "luetzow",
+					"where": "bow",
+					"severity": 0.92
+				}
+			]
+		},
+		{
+			"t": 510.0,
+			"duration": 2.0,
+			"category": "sinking",
+			"silent": true,
+			"note": "Frauenlob sinks (Harper XV wreck mark 10.45)",
+			"look": {
+				"ships": [
+					"frauenlob"
+				]
+			},
+			"happens": [
+				{
+					"kind": "sinking",
+					"ship": "frauenlob",
+					"delay": 0.0,
+					"minutes": 2.0,
+					"list": "port"
+				}
+			]
+		},
+		{
+			"t": 530.0,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "23時前後，英國第4驅逐艦隊發現右舷有一列大型艦影，疑為友艦，用燈光信號詢問，得到的答覆是探照燈和砲火。對方是德國戰列線的先頭，就是第1戰列艦分隊的「威斯特法倫」「拿騷」等艦。",
+			"en": "",
+			"tts": "23時前後，英國第4驅逐艦隊發現右舷有一列大型艦影，疑為友艦，用燈光信號詢問，得到的答覆是探照燈和砲火。對方是德國戰列線的先頭，就是第1戰列艦分隊的「威斯特法倫」「拿騷」等艦。",
+			"voice": "j3_t51500",
+			"look": {
+				"ships": [
+					"tipperary",
+					"westfalen"
+				],
+				"height": 8.0,
+				"lens": 40.0,
+				"toward": "westfalen"
+			},
+			"happens": [
+				{
+					"kind": "searchlight",
+					"by": "westfalen",
+					"on": "tipperary",
+					"seconds": 16.0,
+					"when": 0.05
+				},
+				{
+					"kind": "duel",
+					"by": "westfalen",
+					"at": "tipperary",
+					"when": 0.1,
+					"all_guns": true
+				},
+				{
+					"kind": "duel",
+					"by": "nassau",
+					"at": "tipperary",
+					"when": 0.2,
+					"all_guns": true
+				},
+				{
+					"kind": "duel",
+					"by": "rheinland",
+					"at": "tipperary",
+					"when": 0.3,
+					"all_guns": true
+				}
+			]
+		},
+		{
+			"t": 537.5,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "驅逐領艦「蒂珀雷里」號幾分鐘內起火，之後沉沒。驅逐艦「噴火」號和「拿騷」號相撞，艦體嚴重受損，仍自行返航。",
+			"en": "",
+			"tts": "驅逐領艦「蒂珀雷里」號幾分鐘內起火，之後沉沒。驅逐艦「噴火」號和「拿騷」號相撞，艦體嚴重受損，仍自行返航。",
+			"voice": "j3_t54200",
+			"voice_seconds": {
+				"zh": 8.19,
+				"ja": 11.23,
+				"en": 10.19
+			},
+			"look": {
+				"ships": [
+					"tipperary",
+					"spitfire",
+					"nassau"
+				],
+				"height": 8.0,
+				"lens": 40.0
+			},
+			"happens": [
+				{
+					"kind": "burning",
+					"ship": "tipperary",
+					"where": "bow",
+					"minutes": 150.0,
+					"level": 2,
+					"when": 0.0
+				}
+			]
+		},
+		{
+			"t": 546.0,
+			"duration": 5.0,
+			"category": "tactic",
+			"zh": "位於英國戰列線末尾的第5戰列艦分隊目睹了後方的交火，「馬來亞」號上有人辨認出德國無畏艦的輪廓。該艦艦長認為旗艦同樣看得見，在沒有得到命令的情況下不宜開火暴露位置，既沒有射擊，也沒有報告。",
+			"en": "",
+			"tts": "位於英國戰列線末尾的第5戰列艦分隊目睹了後方的交火，「馬來亞」號上有人辨認出德國無畏艦的輪廓。該艦艦長認為旗艦同樣看得見，在沒有得到命令的情況下不宜開火暴露位置，既沒有射擊，也沒有報告。",
+			"voice": "j3_t60000",
+			"voice_seconds": {
+				"zh": 14.88,
+				"ja": 19.01,
+				"en": 16.98
+			},
+			"look": {
+				"ships": [
+					"malaya",
+					"westfalen"
+				],
+				"lens": 42.0,
+				"from": "malaya",
+				"toward": "westfalen"
+			}
+		},
+		{
+			"t": 555.0,
+			"duration": 4.0,
+			"category": "famous_action",
+			"zh": "德方幾艘輕巡洋艦為規避魚雷，自本方戰列艦之間穿過，「埃爾賓」號遭戰列艦「波森」號撞擊，輪機艙進水，失去動力；「羅斯托克」號中魚雷一枚。",
+			"en": "",
+			"tts": "德方幾艘輕巡洋艦為規避魚雷，自本方戰列艦之間穿過，「埃爾賓」號遭戰列艦「波森」號撞擊，輪機艙進水，失去動力；「羅斯托克」號中魚雷一枚。",
+			"voice": "j3_t57100",
+			"voice_seconds": {
+				"zh": 10.49,
+				"ja": 14.02,
+				"en": 11.9
+			},
+			"look": {
+				"ships": [
+					"elbing",
+					"posen",
+					"rostock"
+				],
+				"distance": 0.8,
+				"height": 14.0,
+				"lens": 36.0
+			},
+			"happens": [
+				{
+					"kind": "torpedo",
+					"by": "contest",
+					"at": "rostock",
+					"hit": true,
+					"when": 0.0
+				},
+				{
+					"kind": "flooding",
+					"ship": "elbing",
+					"where": "stern",
+					"severity": 0.5
+				},
+				{
+					"kind": "flooding",
+					"ship": "rostock",
+					"where": "starboard",
+					"severity": 0.3
+				}
+			]
+		},
+		{
+			"t": 556.0,
+			"duration": 6.0,
+			"category": "sinking",
+			"zh": "此兩艦都在次日晨由德方自行鑿沉。",
+			"en": "",
+			"tts": "此兩艦都在次日晨由德方自行鑿沉。",
+			"voice": "j3_t57200",
+			"voice_seconds": {
+				"zh": 3.9,
+				"ja": 3.72,
+				"en": 2.65
+			},
+			"look": {
+				"ships": [
+					"elbing"
+				],
+				"height": 6.0,
+				"lens": 34.0
+			}
+		},
+		{
+			"t": 563.0,
+			"duration": 1.5,
+			"category": "tactic",
+			"zh": "另有幾艘英國戰列艦曾發現單獨返航的德國戰列巡洋艦「毛奇」號和「塞德利茨」號，同樣沒有開火、沒有報告。",
+			"en": "",
+			"tts": "另有幾艘英國戰列艦曾發現單獨返航的德國戰列巡洋艦「毛奇」號和「塞德利茨」號，同樣沒有開火、沒有報告。",
+			"voice": "j3_t60200",
+			"voice_seconds": {
+				"zh": 7.91,
+				"ja": 8.02,
+				"en": 8.56
+			},
+			"look": {
+				"ships": [
+					"seydlitz",
+					"revenge",
+					"marlborough"
+				],
+				"height": 10.0
+			}
+		},
+		{
+			"t": 584.5,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "午夜前後，英國驅逐艦「幸運」號和「勇猛」號相繼沉沒；驅逐領艦「布羅克」號中彈後舵機失靈，撞上友艦「雀鷹」號，後一艘在次日晨由英方自行擊沉。",
+			"en": "",
+			"tts": "午夜前後，英國驅逐艦「幸運」號和「勇猛」號相繼沉沒；驅逐領艦「布羅克」號中彈後舵機失靈，撞上友艦「雀鷹」號，後一艘在次日晨由英方自行擊沉。",
+			"voice": "j3_t59000",
+			"voice_seconds": {
+				"zh": 11.83,
+				"ja": 14.4,
+				"en": 12.0
+			},
+			"look": {
+				"ships": [
+					"fortune",
+					"westfalen",
+					"rheinland"
+				],
+				"height": 8.0,
+				"lens": 40.0
+			},
+			"happens": [
+				{
+					"kind": "searchlight",
+					"by": "westfalen",
+					"on": "fortune",
+					"seconds": 14.0,
+					"when": 0.05
+				},
+				{
+					"kind": "duel",
+					"by": "rheinland",
+					"at": "fortune",
+					"when": 0.1,
+					"all_guns": true
+				},
+				{
+					"kind": "duel",
+					"by": "westfalen",
+					"at": "fortune",
+					"when": 0.2,
+					"all_guns": true
+				},
+				{
+					"kind": "sinking",
+					"ship": "fortune",
+					"delay": 0.5,
+					"minutes": 1.5
+				}
+			]
+		},
+		{
+			"t": 594.5,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "裝甲巡洋艦「黑王子」號自傍晚起就和本隊失去聯繫，零時10分前後誤將德國戰列線認作友艦而駛近，在近距離上遭幾艘戰列艦集中射擊，爆炸沉沒，857人全部陣亡。",
+			"en": "",
+			"tts": "裝甲巡洋艦「黑王子」號自傍晚起就和本隊失去聯繫，零時10分前後誤將德國戰列線認作友艦而駛近，在近距離上遭幾艘戰列艦集中射擊，爆炸沉沒，857人全部陣亡。",
+			"voice": "j3_t59400",
+			"voice_seconds": {
+				"zh": 13.81,
+				"ja": 16.13,
+				"en": 12.74
+			},
+			"look": {
+				"ships": [
+					"black_prince",
+					"thueringen",
+					"ostfriesland"
+				],
+				"height": 8.0,
+				"lens": 40.0
+			},
+			"happens": [
+				{
+					"kind": "searchlight",
+					"by": "thueringen",
+					"on": "black_prince",
+					"seconds": 16.0,
+					"when": 0.05
+				},
+				{
+					"kind": "duel",
+					"by": "thueringen",
+					"at": "black_prince",
+					"when": 0.1,
+					"all_guns": true
+				},
+				{
+					"kind": "duel",
+					"by": "ostfriesland",
+					"at": "black_prince",
+					"when": 0.15,
+					"all_guns": true
+				},
+				{
+					"kind": "duel",
+					"by": "friedrich_der_grosse",
+					"at": "black_prince",
+					"when": 0.2,
+					"all_guns": true
+				},
+				{
+					"kind": "detonation",
+					"ship": "black_prince",
+					"when": 0.45
+				},
+				{
+					"kind": "sinking",
+					"ship": "black_prince",
+					"delay": 0.5,
+					"minutes": 1.0
+				}
+			]
+		},
+		{
+			"t": 595.2,
+			"duration": 2.0,
+			"category": "sinking",
+			"silent": true,
+			"note": "Ardent sunk by Westfalen (Harper XV wreck mark 0.10)",
+			"look": {
+				"ships": [
+					"ardent"
+				]
+			},
+			"happens": [
+				{
+					"kind": "searchlight",
+					"by": "westfalen",
+					"on": "ardent",
+					"seconds": 14.0,
+					"when": 0.0
+				},
+				{
+					"kind": "duel",
+					"by": "westfalen",
+					"at": "ardent",
+					"when": 0.05,
+					"all_guns": true
+				},
+				{
+					"kind": "sinking",
+					"ship": "ardent",
+					"delay": 0.3,
+					"minutes": 1.5
+				}
+			]
+		},
+		{
+			"t": 609.5,
+			"duration": 5.0,
+			"category": "struck",
+			"silent": true,
+			"note": "Westfalen lights up and hits Petard (Harper XV 0.25)",
+			"look": {
+				"ships": [
+					"petard"
+				]
+			},
+			"happens": [
+				{
+					"kind": "searchlight",
+					"by": "westfalen",
+					"on": "petard",
+					"seconds": 14.0,
+					"when": 0.0
+				},
+				{
+					"kind": "duel",
+					"by": "westfalen",
+					"at": "petard",
+					"when": 0.05,
+					"all_guns": true
+				}
+			]
+		},
+		{
+			"t": 612.5,
+			"duration": 5.0,
+			"category": "sinking",
+			"zh": "稍後，驅逐艦「湍流」號也在德國戰列線前方沉沒。",
+			"en": "",
+			"tts": "稍後，驅逐艦「湍流」號也在德國戰列線前方沉沒。",
+			"voice": "j3_t59700",
+			"voice_seconds": {
+				"zh": 3.71,
+				"ja": 4.66,
+				"en": 4.32
+			},
+			"look": {
+				"ships": [
+					"turbulent"
+				],
+				"distance": 1.2,
+				"height": 10.0,
+				"lens": 40.0
+			},
+			"happens": [
+				{
+					"kind": "searchlight",
+					"by": "westfalen",
+					"on": "turbulent",
+					"seconds": 14.0,
+					"when": 0.0
+				},
+				{
+					"kind": "duel",
+					"by": "westfalen",
+					"at": "turbulent",
+					"when": 0.05,
+					"all_guns": true
+				},
+				{
+					"kind": "sinking",
+					"ship": "turbulent",
+					"delay": 0.5,
+					"minutes": 2.0
+				}
+			]
+		},
+		{
+			"t": 616.0,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "公海艦隊就這樣在兩三個小時之內，自大艦隊主力後方幾海里處穿過。",
+			"en": "",
+			"tts": "公海艦隊就這樣在兩三個小時之內，自大艦隊主力後方幾海里處穿過。",
+			"voice": "j3_t60400",
+			"voice_seconds": {
+				"zh": 5.28,
+				"ja": 6.77,
+				"en": 5.79
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 618.0,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "傑利科沒能獲悉這一情況，原因可歸納為四個方面。其一，目擊者沒有報告。其二，驅逐艦的報告沒能送達。其三，傑利科本人的判斷。其四，海軍部的情報沒有得到有效利用。",
+			"en": "",
+			"tts": "傑利科沒能獲悉這一情況，原因可歸納為四個方面。其一，目擊者沒有報告。其二，驅逐艦的報告沒能送達。其三，傑利科本人的判斷。其四，海軍部的情報沒有得到有效利用。",
+			"voice": "j3_t60600",
+			"voice_seconds": {
+				"zh": 13.06,
+				"ja": 14.38,
+				"en": 13.32
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 620.0,
+			"duration": 9.0,
+			"category": "tactic",
+			"zh": "他和旗艦「鐵公爵」號上的人員聽得見後方的砲聲，也看得見閃光，但認為這是己方驅逐艦和德國輕型艦艇之間的交戰，屬意料中事。",
+			"en": "",
+			"tts": "他和旗艦「鐵公爵」號上的人員聽得見後方的砲聲，也看得見閃光，但認為這是己方驅逐艦和德國輕型艦艇之間的交戰，屬意料中事。",
+			"voice": "j3_t60800",
+			"voice_seconds": {
+				"zh": 9.65,
+				"ja": 11.23,
+				"en": 11.43
+			},
+			"look": {
+				"ships": [
+					"iron_duke",
+					"thunderer"
+				],
+				"height": 4.0,
+				"lens": 36.0
+			}
+		},
+		{
+			"t": 622.0,
+			"duration": 1.5,
+			"category": "tactic",
+			"zh": "許多驅逐艦的無線電設備已在交戰中損壞；有的艦長認為他艦已經報告；有的直至戰鬥結束仍不知道自己遭遇的是德國主力艦隊。",
+			"en": "",
+			"tts": "許多驅逐艦的無線電設備已在交戰中損壞；有的艦長認為他艦已經報告；有的直至戰鬥結束仍不知道自己遭遇的是德國主力艦隊。",
+			"voice": "j3_t61000",
+			"voice_seconds": {
+				"zh": 9.59,
+				"ja": 11.23,
+				"en": 10.05
+			},
+			"look": {
+				"ships": [
+					"petard",
+					"nerissa",
+					"turbulent"
+				],
+				"height": 15.0
+			}
+		},
+		{
+			"t": 624.0,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "上述四個方面有一個共同的根源：英國艦隊長期形成的習慣是等待上級命令，下級軍官發現情況後，並不認為報告是自己的職責。這種高度集中的指揮方式在晝間能夠保證艦隊行動整齊劃一，在夜間則成為缺陷。",
+			"en": "",
+			"tts": "上述四個方面有一個共同的根源：英國艦隊長期形成的習慣是等待上級命令，下級軍官發現情況後，並不認為報告是自己的職責。這種高度集中的指揮方式在晝間能夠保證艦隊行動整齊劃一，在夜間則成為缺陷。",
+			"voice": "j3_t61300",
+			"voice_seconds": {
+				"zh": 14.7,
+				"ja": 19.7,
+				"en": 15.53
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 651.5,
+			"duration": 6.0,
+			"category": "tactic",
+			"zh": "同一時段，德方幾艘重傷艦隻先後沉沒。「呂佐夫」號累計中重型砲彈約24發，進水約8000噸，艦艏沒入水中，螺旋槳露出水面，已無法航行。",
+			"en": "",
+			"tts": "同一時段，德方幾艘重傷艦隻先後沉沒。「呂佐夫」號累計中重型砲彈約24發，進水約8000噸，艦艏沒入水中，螺旋槳露出水面，已無法航行。",
+			"voice": "j3_t65150",
+			"voice_seconds": {
+				"zh": 11.07,
+				"ja": 15.5,
+				"en": 14.39
+			},
+			"look": {
+				"ships": [
+					"luetzow"
+				],
+				"frame": "local",
+				"distance": 0.6,
+				"height": 10.0,
+				"lens": 36.0
+			},
+			"happens": [
+				{
+					"kind": "flooding",
+					"ship": "luetzow",
+					"where": "bow",
+					"severity": 1.0
+				}
+			]
+		},
+		{
+			"t": 686.0,
+			"duration": 5.0,
+			"category": "sinking",
+			"zh": "「威斯巴登」號在兩軍之間漂流一夜後在凌晨沉沒，全艦只有一人生還。",
+			"en": "",
+			"tts": "「威斯巴登」號在兩軍之間漂流一夜後在凌晨沉沒，全艦只有一人生還。",
+			"voice": "j3_t70000",
+			"voice_seconds": {
+				"zh": 5.65,
+				"ja": 7.51,
+				"en": 6.14
+			},
+			"look": {
+				"ships": [
+					"wiesbaden"
+				],
+				"distance": 0.9,
+				"height": 10.0,
+				"bearing": 218.0,
+				"lens": 36.0
+			},
+			"happens": [
+				{
+					"kind": "sinking",
+					"ship": "wiesbaden",
+					"minutes": 3.0,
+					"list": "starboard"
+				}
+			]
+		},
+		{
+			"t": 689.8,
+			"duration": 6.0,
+			"category": "sinking",
+			"zh": "艦長下令棄艦，千餘名官兵轉移至隨行的魚雷艇，1時45分由魚雷艇G38號用魚雷將其擊沉。",
+			"en": "",
+			"tts": "艦長下令棄艦，千餘名官兵轉移至隨行的魚雷艇，1時45分由魚雷艇G38號用魚雷將其擊沉。",
+			"voice": "j3_t68800",
+			"voice_seconds": {
+				"zh": 8.53,
+				"ja": 11.76,
+				"en": 10.71
+			},
+			"look": {
+				"ships": [
+					"luetzow"
+				],
+				"distance": 0.6,
+				"height": -1.0,
+				"lens": 40.0
+			},
+			"happens": [
+				{
+					"kind": "torpedo",
+					"by": "g38",
+					"at": "luetzow",
+					"hit": true,
+					"when": 0.0,
+					"watch": "victim"
+				},
+				{
+					"kind": "sinking",
+					"ship": "luetzow",
+					"delay": 0.6,
+					"minutes": 2.0,
+					"trim": "bow"
+				}
+			]
+		},
+		{
+			"t": 704.5,
+			"duration": 3.0,
+			"category": "sinking",
+			"silent": true,
+			"note": "Tipperary sinks (Harper XV wreck mark, about 2.0)",
+			"look": {
+				"ships": [
+					"tipperary"
+				]
+			},
+			"happens": [
+				{
+					"kind": "sinking",
+					"ship": "tipperary",
+					"delay": 0.0,
+					"minutes": 2.0,
+					"trim": "bow"
+				}
+			]
+		},
+		{
+			"t": 705.0,
+			"duration": 10.0,
+			"category": "tactic",
+			"zh": "次日2時前後，天色漸明。英國第12驅逐艦隊在領艦「福克納」號率領下發現德國艦隊後段。此次攻擊在晨光中進行，目標清晰可辨，是整個夜間最有成效的一次魚雷攻擊。",
+			"en": "",
+			"tts": "次日2時前後，天色漸明。英國第12驅逐艦隊在領艦「福克納」號率領下發現德國艦隊後段。此次攻擊在晨光中進行，目標清晰可辨，是整個夜間最有成效的一次魚雷攻擊。",
+			"voice": "j3_t70500",
+			"voice_seconds": {
+				"zh": 14.84,
+				"ja": 17.69,
+				"en": 12.81
+			},
+			"look": {
+				"ships": [
+					"pommern",
+					"deutschland",
+					"hannover"
+				],
+				"height": 12.0,
+				"lens": 44.0
+			},
+			"happens": [
+				{
+					"kind": "torpedo",
+					"by": "faulknor",
+					"at": "pommern",
+					"hit": false,
+					"when": 0.1
+				},
+				{
+					"kind": "torpedo",
+					"by": "obedient",
+					"at": "deutschland",
+					"hit": false,
+					"when": 0.18
+				},
+				{
+					"kind": "torpedo",
+					"by": "marvel",
+					"at": "hannover",
+					"hit": false,
+					"when": 0.26
+				}
+			]
+		},
+		{
+			"t": 714.6,
+			"duration": 3.0,
+			"category": "sinking",
+			"silent": true,
+			"note": "Elbing scuttled (Harper XV: sunk about 2.10)",
+			"look": {
+				"ships": [
+					"elbing"
+				]
+			},
+			"happens": [
+				{
+					"kind": "sinking",
+					"ship": "elbing",
+					"delay": 0.0,
+					"minutes": 3.0,
+					"trim": "level",
+					"list": "upright"
+				}
+			]
+		},
+		{
+			"t": 715.0,
+			"duration": 4.0,
+			"category": "sinking",
+			"zh": "2時10分，一枚魚雷命中前無畏型戰列艦「波默恩」號，引爆彈藥庫，艦體斷裂沉沒，839人全部陣亡。這是德方在此次海戰中損失的唯一一艘戰列艦。",
+			"en": "",
+			"tts": "2時10分，一枚魚雷命中前無畏型戰列艦「波默恩」號，引爆彈藥庫，艦體斷裂沉沒，839人全部陣亡。這是德方在此次海戰中損失的唯一一艘戰列艦。",
+			"voice": "j3_t71600",
+			"voice_seconds": {
+				"zh": 12.21,
+				"ja": 15.94,
+				"en": 11.71
+			},
+			"look": {
+				"ships": [
+					"pommern"
+				],
+				"distance": 1.2
+			},
+			"happens": [
+				{
+					"kind": "torpedo",
+					"by": "onslaught",
+					"at": "pommern",
+					"hit": true,
+					"when": 0.0,
+					"detonates": true,
+					"companions": 2.0,
+					"breaks": true
+				},
+				{
+					"kind": "sinking",
+					"ship": "pommern",
+					"delay": 0.2,
+					"minutes": 1.2,
+					"capsizes": true,
+					"breaks": true
+				}
+			]
+		},
+		{
+			"t": 717.0,
+			"duration": 1.5,
+			"category": "tactic",
+			"zh": "「福克納」號先後發出三份報告，通報所見德國戰列艦的位置和航向，「鐵公爵」號都沒有收到，可能是受德方無線電干擾所致。",
+			"en": "",
+			"tts": "「福克納」號先後發出三份報告，通報所見德國戰列艦的位置和航向，「鐵公爵」號都沒有收到，可能是受德方無線電干擾所致。",
+			"voice": "j3_t71700",
+			"voice_seconds": {
+				"zh": 9.06,
+				"ja": 11.45,
+				"en": 6.91
+			},
+			"look": {
+				"ships": [
+					"iron_duke",
+					"thunderer"
+				],
+				"height": 20.0
+			}
+		},
+		{
+			"t": 718.7,
+			"duration": 1.5,
+			"category": "tactic",
+			"zh": "「塞德利茨」號累計中重型砲彈21發、魚雷1枚，進水約5300噸，以低速單獨返航，在號恩礁附近兩度擱淺，6月2日晨才被拖入港內。",
+			"en": "",
+			"tts": "「塞德利茨」號累計中重型砲彈21發、魚雷1枚，進水約5300噸，以低速單獨返航，在號恩礁附近兩度擱淺，6月2日晨才被拖入港內。",
+			"voice": "j3_t71870",
+			"voice_seconds": {
+				"zh": 10.83,
+				"ja": 15.94,
+				"en": 13.45
+			},
+			"look": {
+				"ships": [
+					"seydlitz"
+				],
+				"distance": 0.7,
+				"height": 8.0
+			},
+			"happens": [
+				{
+					"kind": "flooding",
+					"ship": "seydlitz",
+					"where": "bow-starboard",
+					"severity": 0.45
+				}
+			]
+		},
+		{
+			"t": 719.5,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "2時30分以後天色已明。",
+			"en": "",
+			"tts": "2時30分以後天色已明。",
+			"voice": "j3_t71950",
+			"voice_seconds": {
+				"zh": 2.61,
+				"ja": 3.67,
+				"en": 1.71
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 720.0,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "傑利科此時位於號恩礁西南約30海里處，艦隊因一夜的混亂而有所分散。他轉向北，一面收攏兵力，一面搜索敵艦，海面上已無德艦蹤影。",
+			"en": "",
+			"tts": "傑利科此時位於號恩礁西南約30海里處，艦隊因一夜的混亂而有所分散。他轉向北，一面收攏兵力，一面搜索敵艦，海面上已無德艦蹤影。",
+			"voice": "j3_t72000",
+			"voice_seconds": {
+				"zh": 10.54,
+				"ja": 13.8,
+				"en": 9.85
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 721.0,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "3時許，公海艦隊先頭抵達號恩礁，駛入本國雷區後方的航道。",
+			"en": "",
+			"tts": "3時許，公海艦隊先頭抵達號恩礁，駛入本國雷區後方的航道。",
+			"voice": "j3_t72100",
+			"voice_seconds": {
+				"zh": 5.47,
+				"ja": 7.85,
+				"en": 6.99
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 722.2,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "4時15分，他收到海軍部通報：德國艦隊已接近號恩礁。追擊已無可能，大艦隊在當日上午返航。",
+			"en": "",
+			"tts": "4時15分，他收到海軍部通報：德國艦隊已接近號恩礁。追擊已無可能，大艦隊在當日上午返航。",
+			"voice": "j3_t72220",
+			"voice_seconds": {
+				"zh": 7.22,
+				"ja": 13.25,
+				"en": 8.93
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 722.6,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "公海艦隊返港途中，戰列艦「東弗里斯蘭」號在5時20分觸及「阿布迪爾」號前一夜所佈的水雷，受傷而沒有沉沒。",
+			"en": "",
+			"tts": "公海艦隊返港途中，戰列艦「東弗里斯蘭」號在5時20分觸及「阿布迪爾」號前一夜所佈的水雷，受傷而沒有沉沒。",
+			"voice": "j3_t72260",
+			"voice_seconds": {
+				"zh": 8.15,
+				"ja": 9.05,
+				"en": 7.65
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 723.0,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "英方沉沒艦艇14艘，合計約11.33萬噸；陣亡6094人，負傷674人，被俘177人。",
+			"en": "",
+			"tts": "英方沉沒艦艇14艘，合計約11.33萬噸；陣亡6094人，負傷674人，被俘177人。",
+			"voice": "j3_t72300",
+			"voice_seconds": {
+				"zh": 8.83,
+				"ja": 12.02,
+				"en": 10.08
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 723.4,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "德方沉沒艦艇11艘，合計約6.23萬噸；陣亡2551人，負傷507人。",
+			"en": "",
+			"tts": "德方沉沒艦艇11艘，合計約6.23萬噸；陣亡2551人，負傷507人。",
+			"voice": "j3_t72380",
+			"voice_seconds": {
+				"zh": 6.98,
+				"ja": 9.0,
+				"en": 8.68
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 723.8,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "英方計戰列巡洋艦3艘，就是「不倦」「瑪麗女王」「無敵」；裝甲巡洋艦3艘，就是「防禦」「勇士」「黑王子」；驅逐艦8艘，就是「蒂珀雷里」「鯊魚」「雀鷹」「湍流」「勇猛」「幸運」「游牧」「內斯特」。",
+			"en": "",
+			"voice": "j3_t72340",
+			"look": {
+				"ships": []
+			},
+			"voice_seconds": {
+				"zh": 13.85,
+				"ja": 24.12,
+				"en": 15.27
+			}
+		},
+		{
+			"t": 724.2,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "德方計戰列巡洋艦1艘，就是「呂佐夫」；前無畏型戰列艦1艘，就是「波默恩」；輕巡洋艦4艘，就是「威斯巴登」「埃爾賓」「羅斯托克」「婦女頌」；魚雷艇5艘，就是V4、V27、V29、V48、S35。",
+			"en": "",
+			"voice": "j3_t72420",
+			"look": {
+				"ships": []
+			},
+			"voice_seconds": {
+				"zh": 14.83,
+				"ja": 19.46,
+				"en": 16.33
+			}
+		},
+		{
+			"t": 724.6,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "砲術方面，據通行統計，英方主力艦共發射重型砲彈4534發，命中123發，命中率2.71%；德方發射3597發，命中124發，命中率3.39%。",
+			"en": "",
+			"tts": "砲術方面，據通行統計，英方主力艦共發射重型砲彈4534發，命中123發，命中率2.71%；德方發射3597發，命中124發，命中率3.39%。",
+			"voice": "j3_t72460",
+			"voice_seconds": {
+				"zh": 15.74,
+				"ja": 18.53,
+				"en": 16.94
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 725.0,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "判斷勝負須先確定衡量標準。以損失計，德方佔優。德方損失的艦艇噸位略多於英方之半，陣亡人數不及英方之半。德國當局當時就據此宣布獲勝。",
+			"en": "",
+			"tts": "判斷勝負須先確定衡量標準。以損失計，德方佔優。德方損失的艦艇噸位略多於英方之半，陣亡人數不及英方之半。德國當局當時就據此宣布獲勝。",
+			"voice": "j3_t72500",
+			"voice_seconds": {
+				"zh": 12.73,
+				"ja": 15.29,
+				"en": 12.23
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 725.4,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "以戰後的海上態勢計，英方佔優。傑利科返回斯卡帕灣後，在6月2日晚報告：戰列艦隊已補充完畢，可在四小時內再度出海。",
+			"en": "",
+			"tts": "以戰後的海上態勢計，英方佔優。傑利科返回斯卡帕灣後，在6月2日晚報告：戰列艦隊已補充完畢，可在四小時內再度出海。",
+			"voice": "j3_t72540",
+			"voice_seconds": {
+				"zh": 10.26,
+				"ja": 12.98,
+				"en": 11.58
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 725.7,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "德方幾艘戰列巡洋艦的修理耗時三至四個月。封鎖未曾中斷一日。",
+			"en": "",
+			"tts": "德方幾艘戰列巡洋艦的修理耗時三至四個月。封鎖未曾中斷一日。",
+			"voice": "j3_t72570",
+			"voice_seconds": {
+				"zh": 5.41,
+				"ja": 9.22,
+				"en": 6.42
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 726.0,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "公海艦隊出擊的目的在於削弱大艦隊、改變兵力對比，這一目的沒有達到：英方損失戰列巡洋艦3艘，雙方無畏型戰列艦的數量對比沒有改變，一個月後大艦隊的可用兵力已超過戰前。",
+			"en": "",
+			"tts": "公海艦隊出擊的目的在於削弱大艦隊、改變兵力對比，這一目的沒有達到：英方損失戰列巡洋艦3艘，雙方無畏型戰列艦的數量對比沒有改變，一個月後大艦隊的可用兵力已超過戰前。",
+			"voice": "j3_t72600",
+			"voice_seconds": {
+				"zh": 12.56,
+				"ja": 17.09,
+				"en": 14.79
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 726.3,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "以各自的作戰企圖計，雙方都沒有實現。德方企圖殲滅英國艦隊之一部而避免與其主力交戰，結果遭遇其主力，依靠三次戰鬥迴轉和夜間突破才脫身。",
+			"en": "",
+			"tts": "以各自的作戰企圖計，雙方都沒有實現。德方企圖殲滅英國艦隊之一部而避免與其主力交戰，結果遭遇其主力，依靠三次戰鬥迴轉和夜間突破才脫身。",
+			"voice": "j3_t72630",
+			"voice_seconds": {
+				"zh": 11.67,
+				"ja": 15.14,
+				"en": 12.58
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 726.6,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "英方企圖殲滅公海艦隊，兩度取得有利陣位而沒能擴大戰果，夜間又失去了已經佔據的截擊位置。",
+			"en": "",
+			"tts": "英方企圖殲滅公海艦隊，兩度取得有利陣位而沒能擴大戰果，夜間又失去了已經佔據的截擊位置。",
+			"voice": "j3_t72660",
+			"voice_seconds": {
+				"zh": 7.18,
+				"ja": 10.08,
+				"en": 8.56
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 726.9,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "當時美國報紙有一句評語概括了這一結果：德國艦隊襲擊了它的獄卒，但它仍然在獄中。德國方面自己的結論最能說明問題。",
+			"en": "",
+			"tts": "當時美國報紙有一句評語概括了這一結果：德國艦隊襲擊了它的獄卒，但它仍然在獄中。德國方面自己的結論最能說明問題。",
+			"voice": "j3_t72690",
+			"voice_seconds": {
+				"zh": 9.14,
+				"ja": 11.69,
+				"en": 8.8
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 727.2,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "1916年7月4日，舍爾在呈德皇的報告中寫道：即使艦隊決戰取得最有利的結果，也不能迫使英國媾和；能夠在可以預見的時間內擊敗英國的，只有針對其海上貿易的潛艇戰。",
+			"en": "",
+			"tts": "1916年7月4日，舍爾在呈德皇的報告中寫道：即使艦隊決戰取得最有利的結果，也不能迫使英國媾和；能夠在可以預見的時間內擊敗英國的，只有針對其海上貿易的潛艇戰。",
+			"voice": "j3_t72720",
+			"voice_seconds": {
+				"zh": 13.11,
+				"ja": 17.59,
+				"en": 12.84
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 727.5,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "公海艦隊此後在1916年8月、10月和1918年4月三度出擊，都沒有和英國主力艦交戰。德國在1917年2月1日恢復無限制潛艇戰，美國在同年4月6日對德宣戰。就此而言，日德蘭海戰沒有改變海上的兵力對比，但促成了德國戰爭指導方針的轉變。",
+			"en": "",
+			"tts": "公海艦隊此後在1916年8月、10月和1918年4月三度出擊，都沒有和英國主力艦交戰。德國在1917年2月1日恢復無限制潛艇戰，美國在同年4月6日對德宣戰。就此而言，日德蘭海戰沒有改變海上的兵力對比，但促成了德國戰爭指導方針的轉變。",
+			"voice": "j3_t72750",
+			"voice_seconds": {
+				"zh": 18.52,
+				"ja": 27.67,
+				"en": 26.97
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 727.9,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "英方損失較大的原因，主要在於自身：3艘戰列巡洋艦都是砲塔中彈後火焰蔓延至彈藥庫而爆炸沉沒，首要原因是發射藥管理，其次才是裝甲薄弱。德艦遭受同類命中而無一爆炸。",
+			"en": "",
+			"voice": "j3_t72790",
+			"look": {
+				"ships": []
+			},
+			"voice_seconds": {
+				"zh": 13.73,
+				"ja": 20.57,
+				"en": 14.41
+			}
+		},
+		{
+			"t": 728.15,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "雙方各有自身的弱點。英方的弱點有四項。其一，戰列巡洋艦防護薄弱。",
+			"en": "",
+			"voice": "j3_t72815",
+			"look": {
+				"ships": []
+			},
+			"voice_seconds": {
+				"zh": 5.68,
+				"ja": 8.47,
+				"en": 6.62
+			}
+		},
+		{
+			"t": 728.25,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "該艦種出自第一海務大臣約翰·費舍爾的設想，以戰列艦的主砲配合較高航速，代價是削減裝甲，其預定用途是偵察和追擊巡洋艦，而不是和敵主力艦列隊對戰。",
+			"en": "",
+			"tts": "該艦種出自第一海務大臣約翰·費舍爾的設想，以戰列艦的主砲配合較高航速，代價是削減裝甲，其預定用途是偵察和追擊巡洋艦，而不是和敵主力艦列隊對戰。",
+			"voice": "j3_t72825",
+			"voice_seconds": {
+				"zh": 13.13,
+				"ja": 16.37,
+				"en": 15.38
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 728.4,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "其二，發射藥管理鬆弛。多格灘海戰後，英國戰列巡洋艦隊為提高射速，普遍在砲塔和揚彈通道內預置發射藥，並使防火門保持開啟；砲塔一旦中彈起火，火焰可經揚彈通道直達彈藥庫。",
+			"en": "",
+			"tts": "其二，發射藥管理鬆弛。多格灘海戰後，英國戰列巡洋艦隊為提高射速，普遍在砲塔和揚彈通道內預置發射藥，並使防火門保持開啟；砲塔一旦中彈起火，火焰可經揚彈通道直達彈藥庫。",
+			"voice": "j3_t72840",
+			"voice_seconds": {
+				"zh": 15.2,
+				"ja": 20.5,
+				"en": 14.14
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 728.55,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "其三，穿甲彈性能不良，命中而不能貫穿。「呂佐夫」「德弗林格」「塞德利茨」三艦各中重型砲彈二十發上下，除「呂佐夫」號外都返回港口。",
+			"en": "",
+			"voice": "j3_t72855",
+			"look": {
+				"ships": []
+			},
+			"voice_seconds": {
+				"zh": 11.28,
+				"ja": 14.47,
+				"en": 10.44
+			}
+		},
+		{
+			"t": 728.65,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "原因是穿甲彈以較大傾角命中厚裝甲時，往往在貫穿之前破碎或提前爆炸。",
+			"en": "",
+			"voice": "j3_t72865",
+			"look": {
+				"ships": []
+			},
+			"voice_seconds": {
+				"zh": 6.47,
+				"ja": 7.1,
+				"en": 5.18
+			}
+		},
+		{
+			"t": 728.75,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "其四，通信和報告制度存在缺陷。午後第5戰列艦分隊兩次沒能及時隨隊轉向；傍晚傑利科在展開之前不掌握敵艦隊方位；夜間德國艦隊自後方穿過而無人報告。三者性質相同。",
+			"en": "",
+			"voice": "j3_t72875",
+			"look": {
+				"ships": []
+			},
+			"voice_seconds": {
+				"zh": 13.68,
+				"ja": 19.01,
+				"en": 17.61
+			}
+		},
+		{
+			"t": 728.9,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "德方的長處在於訓練和損害管制：交戰初期的測距、戰鬥迴轉的實施、夜間戰鬥、重傷艦隻的搶救，都優於英方。",
+			"en": "",
+			"tts": "德方的長處在於訓練和損害管制：交戰初期的測距、戰鬥迴轉的實施、夜間戰鬥、重傷艦隻的搶救，都優於英方。",
+			"voice": "j3_t72890",
+			"voice_seconds": {
+				"zh": 7.8,
+				"ja": 12.96,
+				"en": 9.37
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 729.0,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "德方的缺陷在於偵察：舍爾在一天之內兩次在不明敵情的狀態下將艦隊駛入英國戰列線的集中火力之下，其得以脫身，部分有賴於訓練，部分有賴於霧靄和日落。",
+			"en": "",
+			"tts": "德方的缺陷在於偵察：舍爾在一天之內兩次在不明敵情的狀態下將艦隊駛入英國戰列線的集中火力之下，其得以脫身，部分有賴於訓練，部分有賴於霧靄和日落。",
+			"voice": "j3_t72900",
+			"voice_seconds": {
+				"zh": 10.89,
+				"ja": 14.95,
+				"en": 11.28
+			},
+			"look": {
+				"ships": []
+			}
+		},
+		{
+			"t": 729.15,
+			"duration": 0.4,
+			"category": "tactic",
+			"zh": "這些都不能改變一個基本事實：以16艘無畏艦對28艘，公海艦隊無法在正面決戰中取勝。",
+			"en": "",
+			"tts": "這些都不能改變一個基本事實：以16艘無畏艦對28艘，公海艦隊無法在正面決戰中取勝。",
+			"voice": "j3_t72915",
+			"voice_seconds": {
+				"zh": 7.44,
+				"ja": 10.44,
+				"en": 9.9
+			},
+			"look": {
+				"ships": []
+			}
+		}
+	]
+}

@@ -1,0 +1,670 @@
+{
+ "underlays": [
+  {
+   "id": "jacar_01_p04",
+   "title": "No.1 · 第１号 日本海海戦当日朝敵艦発見時に於る哨艦配備図 · p4 (fit 0.4 km)",
+   "file": "charts/C05110095900_p04.jpg",
+   "image_size": [
+    2400,
+    1697
+   ],
+   "pixel_to_km": [
+    0.205559,
+    -0.001392,
+    -354.98798,
+    -0.000563,
+    -0.215421,
+    74.077134
+   ],
+   "group": "Japanese official history 1905 (JACAR C05110095600)"
+  },
+  {
+   "id": "jacar_01_p05",
+   "title": "No.1 · 第１号 日本海海戦当日朝敵艦発見時に於る哨艦配備図 · p5 (fit 0.6 km)",
+   "file": "charts/C05110095900_p05.jpg",
+   "image_size": [
+    2400,
+    1697
+   ],
+   "pixel_to_km": [
+    0.205796,
+    -0.000364,
+    -274.967721,
+    0.000687,
+    -0.215486,
+    71.026732
+   ],
+   "group": "Japanese official history 1905 (JACAR C05110095600)"
+  },
+  {
+   "id": "jacar_02_p01",
+   "title": "No.2 · 第２号 日本海海戦当日軍艦和泉敵艦隊と触接航跡図 · p1 (fit 1.2 km)",
+   "file": "charts/C05110096000_p01.jpg",
+   "image_size": [
+    2400,
+    3393
+   ],
+   "pixel_to_km": [
+    0.076799,
+    0.007999,
+    -150.162004,
+    0.002706,
+    -0.082801,
+    91.118945
+   ],
+   "group": "Japanese official history 1905 (JACAR C05110095600)"
+  },
+  {
+   "id": "jacar_03_p02",
+   "title": "No.3 · 第３号 日本海海戦行動航跡図 · p2 (fit 0.5 km)",
+   "file": "charts/C05110096100_p02.jpg",
+   "image_size": [
+    2400,
+    1697
+   ],
+   "pixel_to_km": [
+    0.164043,
+    -0.00025,
+    -213.575387,
+    0.001739,
+    -0.163276,
+    481.08091
+   ],
+   "group": "Japanese official history 1905 (JACAR C05110095600)"
+  },
+  {
+   "id": "jacar_03_p03",
+   "title": "No.3 · 第３号 日本海海戦行動航跡図 · p3 (fit 0.4 km)",
+   "file": "charts/C05110096100_p03.jpg",
+   "image_size": [
+    2400,
+    1697
+   ],
+   "pixel_to_km": [
+    0.159034,
+    -0.001554,
+    -67.722754,
+    0.000912,
+    -0.15904,
+    480.225465
+   ],
+   "group": "Japanese official history 1905 (JACAR C05110095600)"
+  },
+  {
+   "id": "jacar_03_p04",
+   "title": "No.3 · 第３号 日本海海戦行動航跡図 · p4 (fit 0.2 km)",
+   "file": "charts/C05110096100_p04.jpg",
+   "image_size": [
+    2400,
+    1697
+   ],
+   "pixel_to_km": [
+    0.165693,
+    -0.002815,
+    -213.942971,
+    -0.000375,
+    -0.168938,
+    284.197313
+   ],
+   "group": "Japanese official history 1905 (JACAR C05110095600)"
+  },
+  {
+   "id": "jacar_03_p05",
+   "title": "No.3 · 第３号 日本海海戦行動航跡図 · p5 (fit 0.3 km)",
+   "file": "charts/C05110096100_p05.jpg",
+   "image_size": [
+    2400,
+    1697
+   ],
+   "pixel_to_km": [
+    0.159071,
+    -0.002149,
+    -65.972834,
+    0.000539,
+    -0.163648,
+    275.102401
+   ],
+   "group": "Japanese official history 1905 (JACAR C05110095600)"
+  },
+  {
+   "id": "jacar_03_p06",
+   "title": "No.3 · 第３号 日本海海戦行動航跡図 · p6 (fit 0.1 km)",
+   "file": "charts/C05110096100_p06.jpg",
+   "image_size": [
+    2400,
+    1697
+   ],
+   "pixel_to_km": [
+    0.161047,
+    -0.002245,
+    -213.993032,
+    -0.00105,
+    -0.167069,
+    60.367537
+   ],
+   "group": "Japanese official history 1905 (JACAR C05110095600)"
+  },
+  {
+   "id": "jacar_03_p07",
+   "title": "No.3 · 第３号 日本海海戦行動航跡図 · p7 (fit 0.6 km)",
+   "file": "charts/C05110096100_p07.jpg",
+   "image_size": [
+    2400,
+    1697
+   ],
+   "pixel_to_km": [
+    0.157687,
+    -0.002699,
+    -53.564542,
+    -0.001216,
+    -0.166385,
+    55.701117
+   ],
+   "group": "Japanese official history 1905 (JACAR C05110095600)"
+  },
+  {
+   "id": "jacar_04_p09",
+   "title": "No.4 · 第４号 日本海海戦第１合戦航跡図 · p9 (fit 0.9 km)",
+   "file": "charts/C05110096200_p09.jpg",
+   "image_size": [
+    2400,
+    3393
+   ],
+   "pixel_to_km": [
+    0.180628,
+    0.011518,
+    -223.537447,
+    0.008143,
+    -0.172752,
+    441.846415
+   ],
+   "group": "Japanese official history 1905 (JACAR C05110095600)"
+  },
+  {
+   "id": "jacar_06_p05",
+   "title": "No.6 · 第６号 日本海海戦第２合戦分図 · p5 (fit 2.5 km)",
+   "file": "charts/C05110096400_p05.jpg",
+   "image_size": [
+    2400,
+    1697
+   ],
+   "pixel_to_km": [
+    0.139214,
+    0.011052,
+    -182.767248,
+    0.008656,
+    -0.138878,
+    160.705355
+   ],
+   "group": "Japanese official history 1905 (JACAR C05110095600)"
+  },
+  {
+   "id": "jacar_11_p02",
+   "title": "No.11 · 第１１号 日本海海戦航跡分図 · p2 (fit 3.6 km)",
+   "file": "charts/C05110096900_p02.jpg",
+   "image_size": [
+    2400,
+    1697
+   ],
+   "pixel_to_km": [
+    0.522685,
+    -0.007068,
+    -707.634847,
+    -0.000201,
+    -0.526634,
+    508.097227
+   ],
+   "group": "Japanese official history 1905 (JACAR C05110095600)"
+  },
+  {
+   "id": "jacar_14_p01",
+   "title": "No.14 · 第１４号 第３戦隊日本海海戦航跡図 · p1 (fit 1.9 km)",
+   "file": "charts/C05110097200_p01.jpg",
+   "image_size": [
+    2400,
+    1697
+   ],
+   "pixel_to_km": [
+    0.418719,
+    -0.012113,
+    -442.827074,
+    -0.009029,
+    -0.416226,
+    486.273578
+   ],
+   "group": "Japanese official history 1905 (JACAR C05110095600)"
+  },
+  {
+   "id": "jacar_15_p01",
+   "title": "No.15 · 第１５号 軍艦千歳日本海海戦 · p1 (fit 0.3 km)",
+   "file": "charts/C05110097300_p01.jpg",
+   "image_size": [
+    2400,
+    1697
+   ],
+   "pixel_to_km": [
+    0.311393,
+    -0.010297,
+    -254.9343,
+    -0.007604,
+    -0.315037,
+    433.924983
+   ],
+   "group": "Japanese official history 1905 (JACAR C05110095600)"
+  },
+  {
+   "id": "jacar_20_p01",
+   "title": "No.20 · 第２０号 第４戦隊日本海海戦航跡図 · p1 (fit 0.9 km)",
+   "file": "charts/C05110097800_p01.jpg",
+   "image_size": [
+    2400,
+    3393
+   ],
+   "pixel_to_km": [
+    0.14887,
+    0.001908,
+    -129.147257,
+    0.001555,
+    -0.145839,
+    437.247395
+   ],
+   "group": "Japanese official history 1905 (JACAR C05110095600)"
+  },
+  {
+   "id": "jacar_21_p01",
+   "title": "No.21 · 第２１号 第５戦隊日本海海戦航跡図第１ · p1 (fit 0.0 km)",
+   "file": "charts/C05110097900_p01.jpg",
+   "image_size": [
+    2400,
+    3393
+   ],
+   "pixel_to_km": [
+    0.072336,
+    -0.001442,
+    -129.697306,
+    -0.001187,
+    -0.073274,
+    123.111342
+   ],
+   "group": "Japanese official history 1905 (JACAR C05110095600)"
+  },
+  {
+   "id": "jacar_22_p01",
+   "title": "No.22 · 第２２号 第５戦隊日本海海戦航跡図第２ · p1 (fit 0.3 km)",
+   "file": "charts/C05110098000_p01.jpg",
+   "image_size": [
+    2400,
+    3393
+   ],
+   "pixel_to_km": [
+    0.160617,
+    -0.003983,
+    -139.531717,
+    -0.003719,
+    -0.157109,
+    427.938513
+   ],
+   "group": "Japanese official history 1905 (JACAR C05110095600)"
+  },
+  {
+   "id": "jacar_24_p01",
+   "title": "No.24 · 第２４号 第６戦隊日本海海戦第１合戦航跡図 · p1 (fit 0.0 km)",
+   "file": "charts/C05110098200_p01.jpg",
+   "image_size": [
+    2400,
+    1697
+   ],
+   "pixel_to_km": [
+    0.032262,
+    -0.000186,
+    -32.5229,
+    -1e-05,
+    -0.032666,
+    26.807081
+   ],
+   "group": "Japanese official history 1905 (JACAR C05110095600)"
+  },
+  {
+   "id": "jacar_25_p01",
+   "title": "No.25 · 第２５号 第６戦隊日本海海戦航跡図 · p1 (fit 1.4 km)",
+   "file": "charts/C05110098300_p01.jpg",
+   "image_size": [
+    2400,
+    3393
+   ],
+   "pixel_to_km": [
+    0.175688,
+    -0.001048,
+    -155.689116,
+    -0.001168,
+    -0.167117,
+    397.839062
+   ],
+   "group": "Japanese official history 1905 (JACAR C05110095600)"
+  },
+  {
+   "id": "jacar_26_p01",
+   "title": "No.26 · 第２６号 第７戦隊日本海海戦航跡図 · p1 (fit 2.4 km)",
+   "file": "charts/C05110098400_p01.jpg",
+   "image_size": [
+    2400,
+    1697
+   ],
+   "pixel_to_km": [
+    0.144055,
+    0.006487,
+    -266.353504,
+    -0.000106,
+    -0.142977,
+    126.649122
+   ],
+   "group": "Japanese official history 1905 (JACAR C05110095600)"
+  },
+  {
+   "id": "jacar_27_p01",
+   "title": "No.27 · 第２７号 第７戦隊第１小隊日本海海戦航跡図 · p1 (fit 2.3 km)",
+   "file": "charts/C05110098500_p01.jpg",
+   "image_size": [
+    2400,
+    3393
+   ],
+   "pixel_to_km": [
+    0.207057,
+    0.002324,
+    -274.9505,
+    -0.003061,
+    -0.206217,
+    488.863716
+   ],
+   "group": "Japanese official history 1905 (JACAR C05110095600)"
+  },
+  {
+   "id": "jacar_28_p01",
+   "title": "No.28 · 第２８号 仮装巡洋艦信濃丸日本海海戦航跡図 · p1 (fit 2.5 km)",
+   "file": "charts/C05110098600_p01.jpg",
+   "image_size": [
+    2400,
+    1697
+   ],
+   "pixel_to_km": [
+    0.41707,
+    0.044308,
+    -613.729621,
+    0.014862,
+    -0.41968,
+    417.960946
+   ],
+   "group": "Japanese official history 1905 (JACAR C05110095600)"
+  },
+  {
+   "id": "jacar_29_p01",
+   "title": "No.29 · 第２９号 仮装巡洋艦佐渡丸日本海海戦航跡図 · p1 (fit 0.2 km)",
+   "file": "charts/C05110098700_p01.jpg",
+   "image_size": [
+    2400,
+    1697
+   ],
+   "pixel_to_km": [
+    0.192305,
+    -0.003581,
+    -348.717662,
+    -0.003097,
+    -0.198753,
+    137.170033
+   ],
+   "group": "Japanese official history 1905 (JACAR C05110095600)"
+  },
+  {
+   "id": "jacar_31_p01",
+   "title": "No.31 · 第３１号 仮装巡洋艦満洲丸日本海海戦航跡図 · p1 (fit 0.0 km)",
+   "file": "charts/C05110098900_p01.jpg",
+   "image_size": [
+    2400,
+    3393
+   ],
+   "pixel_to_km": [
+    0.135778,
+    -0.000249,
+    -236.864026,
+    0.007206,
+    -0.120929,
+    154.150547
+   ],
+   "group": "Japanese official history 1905 (JACAR C05110095600)"
+  },
+  {
+   "id": "jacar_32_p01",
+   "title": "No.32 · 第３２号 仮装巡洋艦亞米利加丸日本海海戦航跡図 · p1 (fit 1.1 km)",
+   "file": "charts/C05110099000_p01.jpg",
+   "image_size": [
+    2400,
+    3393
+   ],
+   "pixel_to_km": [
+    0.1746,
+    -0.000974,
+    -243.815701,
+    0.002273,
+    -0.174978,
+    368.662014
+   ],
+   "group": "Japanese official history 1905 (JACAR C05110095600)"
+  },
+  {
+   "id": "jacar_33_p01",
+   "title": "No.33 · 第３３号 仮装巡洋艦亞米利加丸敵艦捜索航跡図 · p1 (fit 5.5 km)",
+   "file": "charts/C05110099100_p01.jpg",
+   "image_size": [
+    2400,
+    3393
+   ],
+   "pixel_to_km": [
+    0.620007,
+    0.001993,
+    -1135.030482,
+    0.006779,
+    -0.67152,
+    596.644438
+   ],
+   "group": "Japanese official history 1905 (JACAR C05110095600)"
+  },
+  {
+   "id": "jacar_34_p01",
+   "title": "No.34 · 第３４号 水雷母艦熊野丸日本海海戦航跡図 · p1 (fit 2.3 km)",
+   "file": "charts/C05110099200_p01.jpg",
+   "image_size": [
+    2400,
+    3393
+   ],
+   "pixel_to_km": [
+    0.177393,
+    0.005278,
+    -187.901679,
+    0.002836,
+    -0.172958,
+    449.443956
+   ],
+   "group": "Japanese official history 1905 (JACAR C05110095600)"
+  },
+  {
+   "id": "jacar_35_p01",
+   "title": "No.35 · 第３５号 仮装砲艦平壌丸韓国東岸捜索航跡図 · p1 (fit 1.4 km)",
+   "file": "charts/C05110099300_p01.jpg",
+   "image_size": [
+    2400,
+    3393
+   ],
+   "pixel_to_km": [
+    0.183334,
+    -0.003624,
+    -283.355833,
+    -0.003384,
+    -0.183425,
+    497.796421
+   ],
+   "group": "Japanese official history 1905 (JACAR C05110095600)"
+  },
+  {
+   "id": "jacar_37_p01",
+   "title": "No.37 · 第３７号 第３駆逐隊日本海海戦航跡図 · p1 (fit 0.0 km)",
+   "file": "charts/C05110099500_p01.jpg",
+   "image_size": [
+    2400,
+    3393
+   ],
+   "pixel_to_km": [
+    0.06207,
+    0.00802,
+    -132.343134,
+    0.003076,
+    -0.062725,
+    120.902502
+   ],
+   "group": "Japanese official history 1905 (JACAR C05110095600)"
+  },
+  {
+   "id": "jacar_39_p01",
+   "title": "No.39 · 第３９号 軍艦叢雲日本海海戦航跡図 · p1 (fit 2.6 km)",
+   "file": "charts/C05110099700_p01.jpg",
+   "image_size": [
+    2400,
+    3393
+   ],
+   "pixel_to_km": [
+    0.152875,
+    0.016971,
+    -243.393595,
+    0.015758,
+    -0.154866,
+    378.453519
+   ],
+   "group": "Japanese official history 1905 (JACAR C05110095600)"
+  },
+  {
+   "id": "jacar_41_p01",
+   "title": "No.41 · 第４１号 軍艦陽炎日本海海戦航跡図 · p1 (fit 2.2 km)",
+   "file": "charts/C05110099900_p01.jpg",
+   "image_size": [
+    2400,
+    3393
+   ],
+   "pixel_to_km": [
+    0.208465,
+    0.018356,
+    -265.606407,
+    0.016047,
+    -0.207531,
+    533.272057
+   ],
+   "group": "Japanese official history 1905 (JACAR C05110095600)"
+  },
+  {
+   "id": "jacar_42_p01",
+   "title": "No.42 · 第４２号 第９艇隊日本海海戦航跡図 · p1 (fit 0.6 km)",
+   "file": "charts/C05110100000_p01.jpg",
+   "image_size": [
+    2400,
+    3393
+   ],
+   "pixel_to_km": [
+    0.105008,
+    -0.001382,
+    -198.960904,
+    -0.000441,
+    -0.10557,
+    224.701592
+   ],
+   "group": "Japanese official history 1905 (JACAR C05110095600)"
+  },
+  {
+   "id": "jacar_43_p01",
+   "title": "No.43 · 第４３号 第１４艇隊日本海海戦航跡図 · p1 (fit 1.1 km)",
+   "file": "charts/C05110100100_p01.jpg",
+   "image_size": [
+    2400,
+    1697
+   ],
+   "pixel_to_km": [
+    0.312755,
+    0.017977,
+    -309.85498,
+    0.027869,
+    -0.311064,
+    333.066535
+   ],
+   "group": "Japanese official history 1905 (JACAR C05110095600)"
+  },
+  {
+   "id": "jacar_44_p01",
+   "title": "No.44 · 第４４号 第１５艇隊日本海海戦航跡図 · p1 (fit 1.1 km)",
+   "file": "charts/C05110100200_p01.jpg",
+   "image_size": [
+    2400,
+    3393
+   ],
+   "pixel_to_km": [
+    0.173614,
+    0.019096,
+    -185.616184,
+    0.0176,
+    -0.172852,
+    424.054207
+   ],
+   "group": "Japanese official history 1905 (JACAR C05110095600)"
+  },
+  {
+   "id": "jacar_45_p01",
+   "title": "No.45 · 第４５号 水雷艇白鷹日本海海戦航跡図 · p1 (fit 1.6 km)",
+   "file": "charts/C05110100300_p01.jpg",
+   "image_size": [
+    2400,
+    3393
+   ],
+   "pixel_to_km": [
+    0.060911,
+    0.003402,
+    -137.250053,
+    0.002517,
+    -0.063988,
+    91.812895
+   ],
+   "group": "Japanese official history 1905 (JACAR C05110095600)"
+  },
+  {
+   "id": "jacar_46_p01",
+   "title": "No.46 · 第４６号 第１９艇隊日本海海戦航跡図 · p1 (fit 2.6 km)",
+   "file": "charts/C05110100400_p01.jpg",
+   "image_size": [
+    2400,
+    3393
+   ],
+   "pixel_to_km": [
+    0.205391,
+    0.018934,
+    -261.891661,
+    0.013817,
+    -0.21055,
+    548.579945
+   ],
+   "group": "Japanese official history 1905 (JACAR C05110095600)"
+  },
+  {
+   "id": "jacar_48_p01",
+   "title": "No.48 · 第４８号 敵艦「イルツイシ」沈没位置図 · p1 (fit 0.6 km)",
+   "file": "charts/C05110100600_p01.jpg",
+   "image_size": [
+    2400,
+    3393
+   ],
+   "pixel_to_km": [
+    0.046358,
+    0.001147,
+    123.417843,
+    0.060744,
+    0.017486,
+    -49.329111
+   ],
+   "group": "Japanese official history 1905 (JACAR C05110095600)"
+  }
+ ]
+}
