@@ -12,12 +12,14 @@
   {
    "id": "usa",
    "en": "American",
-   "zh": "美國"
+   "zh": "美國",
+   "ja": "アメリカ"
   },
   {
    "id": "japan",
    "en": "Japanese",
-   "zh": "日本"
+   "zh": "日本",
+   "ja": "日本"
   }
  ],
  "view": {
@@ -35,5 +37,10 @@
   ]
  },
  "default_underlay": "",
- "reading_hint": "The tracks follow Morison's fold-out chart (vol. V, Battleship Night Action), digitised and registered on Savo Island, timed by its own time circles; the Japanese side is checked against Atago's and the 4th Destroyer Squadron's battle reports (JACAR). The chart scans are not yet an underlay. The coast is Natural Earth's 1:10m land. Hulls are to scale when zoomed in. Drag the map to pan, wheel or pinch to zoom."
+ "reading_hint": "The tracks follow Morison's fold-out chart (vol. V, Battleship Night Action), digitised and registered on Savo Island, timed by its own time circles; the Japanese side is checked against Atago's and the 4th Destroyer Squadron's battle reports (JACAR). The chart scans are not yet an underlay. The coast is Natural Earth's 1:10m land. Hulls are to scale when zoomed in. Drag the map to pan, wheel or pinch to zoom.",
+ "title_ja": "第三次ソロモン海戦",
+ "days_ja": [
+  "11月14日",
+  "11月15日"
+ ]
 }

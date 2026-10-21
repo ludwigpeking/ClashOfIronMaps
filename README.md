@@ -1,5 +1,7 @@
 # Clash of Iron Maps
 
+**日本語：** 黄海海戦（1894年）、日本海海戦（1905年）、ユトランド沖海戦（1916年）、第三次ソロモン海戦（1942年）の各艦の航跡を、公式の航跡図と戦闘報告から一分ごとに再構成したアニメーション地図です。砲撃・魚雷・命中・沈没を地図上に示し、残っている航跡図の画像を下に重ねて照合できます。画面は日本語が既定で、海戦名の横の言語メニューで English に切り替えられます。
+
 Animated track maps of four naval battles of the steam-and-steel age, reconstructed from the official track charts and reports:
 
 | Battle | Date | Link |
@@ -24,6 +26,7 @@ The maps come from a game and documentary project about these battles. They are 
 - **Chart marks** are positions read off the official charts. **Clashes** lists any places where two hulls touch. **Action** shows gunfire and torpedoes.
 - **Trail** sets how much of each track is drawn behind the ship. **Names** shows ship names in English or Chinese.
 - **Edit pins** and the **Story editor** (the <kbd>`</kbd> key) are the project's editing tools. Your changes are saved in your own browser only.
+- The page opens in Japanese. The menu beside the battle name switches it to English (or add `?lang=en` to the address). **Names** chooses the language of ship and place names separately.
 
 ## Running it locally
 
@@ -39,6 +42,7 @@ Then open http://127.0.0.1:8000/. VS Code's Live Server also works.
 
 ```
 index.html            the whole app (plain HTML, CSS and JavaScript, no dependencies)
+ui_text.js            the page's words in Japanese, looked up by their English
 data/<battle>/        jutland, tsushima, yalu, guadalcanal
   battle.json         clock, days, sides, first view, weapon reaches of the period
   tracks.json         every ship's track at half-minute steps

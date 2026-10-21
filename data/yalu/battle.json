@@ -12,12 +12,14 @@
   {
    "id": "japan",
    "en": "Japanese",
-   "zh": "日本"
+   "zh": "日本",
+   "ja": "日本"
   },
   {
    "id": "china",
    "en": "Chinese",
-   "zh": "北洋"
+   "zh": "北洋",
+   "ja": "清国"
   }
  ],
  "view": {
@@ -31,5 +33,10 @@
  "searchlight_reach_km": 3.0,
  "scuttled_by_own_side": {},
  "default_underlay": "",
- "reading_hint": "No official track charts are digitised for this battle yet: there are no chart marks or chart scans. The coast is Natural Earth's 1:10m land. Hulls are to scale when zoomed in. Drag the map to pan, wheel or pinch to zoom."
+ "reading_hint": "No official track charts are digitised for this battle yet: there are no chart marks or chart scans. The coast is Natural Earth's 1:10m land. Hulls are to scale when zoomed in. Drag the map to pan, wheel or pinch to zoom.",
+ "title_ja": "黄海海戦",
+ "days_ja": [
+  "9月17日",
+  "9月18日"
+ ]
 }

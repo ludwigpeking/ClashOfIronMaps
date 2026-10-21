@@ -12,12 +12,14 @@
   {
    "id": "britain",
    "en": "British",
-   "zh": "英國"
+   "zh": "英國",
+   "ja": "イギリス"
   },
   {
    "id": "germany",
    "en": "German",
-   "zh": "德國"
+   "zh": "德國",
+   "ja": "ドイツ"
   }
  ],
  "view": {
@@ -34,5 +36,10 @@
    "g38"
   ]
  },
- "default_underlay": "harper_02"
+ "default_underlay": "harper_02",
+ "title_ja": "ユトランド沖海戦",
+ "days_ja": [
+  "5月31日",
+  "6月1日"
+ ]
 }

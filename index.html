@@ -1,7 +1,8 @@
 <meta charset="utf-8">
 <title>Clash of Iron Maps</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans+Condensed:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans+Condensed:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;600&display=swap">
+<script src="ui_text.js?v=20261021"></script>
 <style>
 /* Layout: a chart table - the map fills the screen, one control strip on
    top, a ship panel on the right (below the map on a phone). */
@@ -22,7 +23,7 @@
   --land: #d9cfb6;         /* chart buff */
   --shoal: #cbdbe3;        /* under 10 m: Horns Reef, the coastal banks */
   --depth-line: rgba(36, 89, 138, 0.35);  /* 20 m line */
-  --font-ui: "IBM Plex Sans Condensed", "Arial Narrow", Arial, sans-serif;
+  --font-ui: "IBM Plex Sans Condensed", "Arial Narrow", Arial, "Noto Sans JP", sans-serif;
   --font-data: "IBM Plex Mono", Consolas, "Courier New", monospace;
 }
 @media (prefers-color-scheme: dark) {
@@ -182,14 +183,17 @@ body.film canvas { cursor: default; }
   <h1><select id="battle" aria-label="Battle" title="Which battle">
       <option value="jutland">Jutland 日德蘭</option><option value="tsushima">Tsushima 對馬</option>
       <option value="yalu">Yalu 黃海</option><option value="guadalcanal">Guadalcanal 瓜島</option>
-    </select> · track editor</h1>
+    </select> · <span id="appSubtitle">track editor</span></h1>
+  <select id="language" aria-label="Language" title="Language / 言語">
+    <option value="ja">日本語</option><option value="en">English</option>
+  </select>
   <div class="group">
     <button id="play" type="button">Play</button>
     <span class="clock" id="clock">—</span>
   </div>
   <input type="range" id="time" min="0" max="730" step="0.5" value="0" aria-label="Battle time">
   <div class="group">
-    <label for="speed">Speed</label>
+    <label for="speed">Playback speed</label>
     <select id="speed">
       <option value="1">1 min/s</option><option value="3" selected>3 min/s</option>
       <option value="8">8 min/s</option><option value="20">20 min/s</option>
@@ -209,8 +213,8 @@ body.film canvas { cursor: default; }
     <select id="trail"><option value="0">none</option><option value="10" selected>10 min</option>
       <option value="30">30 min</option><option value="9999">all</option></select>
     <label for="names">Names</label>
-    <select id="names"><option value="off">off</option><option value="en" selected>English</option>
-      <option value="zh">中文</option></select>
+    <select id="names"><option value="off">off</option><option value="ja">日本語</option>
+      <option value="en" selected>English</option><option value="zh">中文</option></select>
     <button id="edit" type="button">Edit pins</button>
     <button id="storyToggle" type="button" title="The story editor - the game's event editor (` key)">Story editor `</button>
   </div>
@@ -236,7 +240,7 @@ body.film canvas { cursor: default; }
     </section>
     <section>
       <h2>Pins</h2>
-      <div id="pinList" class="hint">No pins yet. Turn on <b>Edit pins</b>, then drag a ship to where she should be at this minute. The track builder bends her track through every pin.</div>
+      <div id="pinList" class="hint"></div>
       <div id="saveStatus" class="status"></div>
     </section>
     <section>
@@ -249,7 +253,7 @@ body.film canvas { cursor: default; }
         <span><span class="swatch" style="background:var(--burst)"></span>hit</span>
         <span><span class="swatch" style="background:var(--torpedo)"></span>torpedo</span>
       </div>
-      <p class="hint">Gunfire is a line in the firing side's colour from the guns to the target, with the range on it and salvoes running along it; a torpedo runs at <span id="torpedoKnots">about 29</span> knots and stops at its reach (<span id="torpedoReach">11</span> km). A red dashed line or a red cross marks fire or a torpedo that could not have reached: a wrong ship, a wrong time or a wrong track. The story editor (` key) flags these; pick one to go there and correct it.</p>
+      <p class="hint" id="actionHint"></p>
       <p class="hint" id="readingHint">Dashed lines (Traced night lines) are the night tracks traced from Harper XV, and fainter from Groos 35 as that chart places them; the ships at night should sail on the Harper lines. Dots are positions read off the official track charts (Harper 1919 British, Groos 1925 German) within three minutes of the shown time; a ringed dot is the selected ship's own mark. Hulls are to scale when zoomed in. Drag the map to pan, wheel or pinch to zoom.</p>
       </details>
       <p class="hint" id="loadStatus">Loading tracks…</p>
@@ -288,6 +292,63 @@ body.film canvas { cursor: default; }
     document.body.classList.add("film");
     document.documentElement.setAttribute("data-theme", "light");
   }
+  // The page's language: ?lang= in the link (outside film mode), else the one
+  // last chosen, else Japanese. Every word on screen goes through
+  // translated(), which looks the English up in ui_text.js.
+  var UI_LANGUAGES = ["ja", "en"];
+  var uiLanguage = filmMode ? "en" : (filmParameters.get("lang") || "");
+  if (!filmMode && UI_LANGUAGES.indexOf(uiLanguage) < 0) {
+    try { uiLanguage = localStorage.getItem("maps-language") || "ja"; } catch (error) { uiLanguage = "ja"; }
+    if (UI_LANGUAGES.indexOf(uiLanguage) < 0) { uiLanguage = "ja"; }
+  }
+  document.documentElement.lang = uiLanguage;
+  function translated(english, values) {
+    var table = (window.UI_TEXT && window.UI_TEXT[uiLanguage]) || {};
+    var words = table[english] !== undefined ? table[english] : english;
+    if (values) {
+      Object.keys(values).forEach(function (name) { words = words.split("{" + name + "}").join(String(values[name])); });
+    }
+    return words;
+  }
+  // The fixed words of the page (menus, labels, hints, tooltips).
+  function translateStaticPage() {
+    var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    var textNodes = [];
+    while (walker.nextNode()) { textNodes.push(walker.currentNode); }
+    textNodes.forEach(function (node) {
+      if (node.parentNode && node.parentNode.tagName === "SCRIPT") { return; }
+      var words = node.nodeValue.trim();
+      if (!words) { return; }
+      var rendered = translated(words);
+      if (rendered !== words) { node.nodeValue = node.nodeValue.replace(words, rendered); }
+    });
+    Array.prototype.forEach.call(document.querySelectorAll("[title], [aria-label], [placeholder]"), function (node) {
+      ["title", "aria-label", "placeholder"].forEach(function (attribute) {
+        var words = node.getAttribute(attribute);
+        if (words) { node.setAttribute(attribute, translated(words)); }
+      });
+    });
+  }
+  translateStaticPage();
+  var languageMenu = document.getElementById("language");
+  languageMenu.value = uiLanguage;
+  languageMenu.addEventListener("change", function () {
+    try { localStorage.setItem("maps-language", languageMenu.value); } catch (error) { }
+    var address = new URL(location.href);
+    address.searchParams.set("lang", languageMenu.value);
+    location.href = address.href;
+  });
+  // A ship's name in the page's language (Japanese where the data has it).
+  function displayName(ship) {
+    return uiLanguage === "ja" && ship.names && ship.names.ja ? ship.names.ja : ship.en;
+  }
+  // A ship in a menu: her name in the page's language, with the English (or
+  // Chinese) beside it.
+  function shipOptionText(ship) {
+    if (uiLanguage === "ja") { return displayName(ship) + (displayName(ship) !== ship.en ? " " + ship.en : ""); }
+    return ship.en + (ship.zh ? " " + ship.zh : "");
+  }
+  function byDisplayName(first, second) { return displayName(first).localeCompare(displayName(second), uiLanguage); }
   function labelFontFamily() {
     return filmMode ? '"FilmFont", ' + cssColour("--font-ui") : cssColour("--font-ui");
   }
@@ -302,7 +363,7 @@ body.film canvas { cursor: default; }
   window.addEventListener("hashchange", function () { location.reload(); });
   function sideName(side) {
     var found = BATTLE.sides.filter(function (entry) { return entry.id === side; })[0];
-    return found ? found.en : side;
+    return found ? (found[uiLanguage] || found.en) : side;
   }
   var canvas = document.getElementById("map");
   var context = canvas.getContext("2d");
@@ -336,8 +397,9 @@ body.film canvas { cursor: default; }
 
   function clockText(minute) {
     var total = Math.round(BATTLE.clock_zero_minutes + minute);
-    var day = BATTLE.days[total >= 1440 ? 1 : 0];
-    return day + " " + clockShort(minute) + " " + BATTLE.clock_zone;
+    var days = (uiLanguage === "ja" && BATTLE.days_ja) || BATTLE.days;
+    var day = days[total >= 1440 ? 1 : 0];
+    return day + " " + clockShort(minute) + " " + translated(BATTLE.clock_zone);
   }
   function clockShort(minute) {
     var total = Math.round(BATTLE.clock_zero_minutes + minute) % 1440;
@@ -404,8 +466,8 @@ body.film canvas { cursor: default; }
     var key = pinKey(pin.ship, pin.t).replace("@", "_").replace(".", "-");
     if (!state.store) {
       try { localStorage.setItem(storagePrefix + "pins", JSON.stringify(state.pins)); } catch (error) { }
-      saveStatus.textContent = window.claude ? "Pins are kept in this browser only: sign in to claude.ai to share them with Claude."
-                                             : "Pins are kept in this browser only.";
+      saveStatus.textContent = window.claude ? translated("Pins are kept in this browser only: sign in to claude.ai to share them with Claude.")
+                                             : translated("Pins are kept in this browser only.");
       saveStatus.className = "status warn";
       return;
     }
@@ -416,12 +478,13 @@ body.film canvas { cursor: default; }
         ship: pin.ship, t: pin.t, x: Math.round(pin.x * 1000) / 1000, y: Math.round(pin.y * 1000) / 1000,
         note: pin.note || ""
       });
-      saveStatus.textContent = "Saving…";
+      saveStatus.textContent = translated("Saving…");
       saveStatus.className = "status";
       write.then(function () {
-        saveStatus.textContent = "Saved. Claude reads these pins for the next build.";
+        saveStatus.textContent = translated("Saved. Claude reads these pins for the next build.");
       }).catch(function (error) {
-        saveStatus.textContent = "Not saved (" + (error && error.code ? error.code : "error") + "). Your pins stay on this page; try again.";
+        saveStatus.textContent = translated("Not saved ({code}). Your pins stay on this page; try again.",
+                                            { code: error && error.code ? error.code : "error" });
         saveStatus.className = "status warn";
       });
     }, 400);
@@ -461,7 +524,7 @@ body.film canvas { cursor: default; }
     context.beginPath(); context.moveTo(left, bottom); context.lineTo(left + barPixels, bottom); context.stroke();
     context.font = filmMode ? "20px " + labelFontFamily() : "12px " + cssColour("--font-data");
     var nauticalMiles = (barKm / 1.852).toFixed(1);
-    context.fillText(filmMode && filmLanguage === "ja" ? barKm + " km（" + nauticalMiles + " 海里）"
+    context.fillText((filmMode ? filmLanguage : uiLanguage) === "ja" ? barKm + " km（" + nauticalMiles + " 海里）"
                      : barKm + " km (" + nauticalMiles + " nm)", left, bottom - 8);
   }
 
@@ -502,6 +565,11 @@ body.film canvas { cursor: default; }
   function shipLabel(ship, nameMode, tag) {
     var full = (ship.names && ship.names[nameMode]) || (nameMode === "zh" && ship.zh ? ship.zh : ship.en);
     if (!tag.abbreviate || /^[A-Z]{1,2}\d+$/.test(full)) { return full; }
+    // A minor ship's navy prefix is dropped on the map and her short name
+    // kept whole: "USS Walke" cut to four letters read "USS ." (user
+    // 2026-10-21). The panel still names her in full.
+    var prefixed = /^(?:USS|HMS|SMS|HMAS|HNLMS) (.+)$/.exec(full);
+    if (prefixed) { return prefixed[1]; }
     // Japanese names stay whole: a Russian name in katakana cut to two
     // characters reads as nothing.
     if (nameMode === "ja") { return full; }
@@ -655,14 +723,14 @@ body.film canvas { cursor: default; }
     var summary = document.getElementById("clashSummary");
     var list = document.getElementById("clashList");
     list.innerHTML = "";
-    if (!state.clashes.length) { summary.textContent = "No clashes in this build."; return; }
+    if (!state.clashes.length) { summary.textContent = translated("No clashes in this build."); return; }
     var opposing = state.clashes.filter(function (clash) { return clash.sides === "opposing"; }).length;
-    summary.textContent = state.clashes.length + " places where two ships come closer than they could have (" +
-      opposing + " between opposing ships). Click one to go there.";
+    summary.textContent = translated("{count} places where two ships come closer than they could have ({opposing} between opposing ships). Click one to go there.",
+                                     { count: state.clashes.length, opposing: opposing });
     state.clashes.forEach(function (clash) {
       var button = document.createElement("button");
       button.type = "button";
-      var names = clash.ships.map(function (id) { var ship = state.shipById[id]; return ship ? ship.en : id; });
+      var names = clash.ships.map(function (id) { var ship = state.shipById[id]; return ship ? displayName(ship) : id; });
       var left = document.createElement("span");
       left.textContent = clockShort(clash.at) + " " + names.join(" / ");
       var right = document.createElement("span");
@@ -790,7 +858,7 @@ body.film canvas { cursor: default; }
 
   function shipName(id) {
     var ship = id && state.shipById[id];
-    return ship ? ship.en : (id || "—");
+    return ship ? displayName(ship) : (id || "—");
   }
   function shipPosition(id, minute) {
     var ship = id && state.shipById[id];
@@ -915,8 +983,8 @@ body.film canvas { cursor: default; }
     var rangeKm = null;
     [shooter, target, happening.ship || null, happening.over || null].forEach(function (id) {
       if (!id) { return; }
-      if (!state.shipById[id]) { problems.push(id + " is not in the cast"); }
-      else if (!shipPosition(id, minute)) { problems.push(shipName(id) + " is not on the map then"); }
+      if (!state.shipById[id]) { problems.push(translated("{ship} is not in the cast", { ship: id })); }
+      else if (!shipPosition(id, minute)) { problems.push(translated("{ship} is not on the map then", { ship: shipName(id) })); }
     });
     var from = shooter && shipPosition(shooter, minute), to = target && shipPosition(target, minute);
     if (from && to) { rangeKm = Math.hypot(from[0] - to[0], from[1] - to[1]); }
@@ -924,14 +992,15 @@ body.film canvas { cursor: default; }
     var scuttling = shooter && target && (SCUTTLED_BY_OWN_SIDE[target] || []).indexOf(shooter) >= 0;
     if (shooterShip && targetShip && shooterShip.side === targetShip.side && !scuttling &&
         ["fire", "duel", "hit", "torpedo", "searchlight"].indexOf(happening.kind) >= 0) {
-      problems.push("both on the same side");
+      problems.push(translated("both on the same side"));
     }
     var reachKm = { fire: GUN_REACH_KM, duel: GUN_REACH_KM, hit: GUN_REACH_KM, torpedo: TORPEDO_REACH_KM,
                     searchlight: SEARCHLIGHT_REACH_KM }[happening.kind];
     if (reachKm && rangeKm !== null && rangeKm > reachKm) {
-      problems.push("beyond " + happening.kind + " reach (" + reachKm + " km)");
+      problems.push(translated("beyond {kind} reach ({reach} km)",
+                               { kind: translated(HAPPENING_LABELS[happening.kind] || happening.kind).split(" ").pop(), reach: reachKm }));
     }
-    var text = (HAPPENING_LABELS[happening.kind] || happening.kind).split(" ").pop();
+    var text = translated(HAPPENING_LABELS[happening.kind] || happening.kind).split(" ").pop();
     var names = [shooter, target, happening.ship, happening.over, happening.near].filter(function (id) { return !!id; });
     if (names.length) { text += " " + names.map(shipName).join(" → "); }
     if (rangeKm !== null) { text += " " + rangeKm.toFixed(1) + " km"; }
@@ -947,8 +1016,9 @@ body.film canvas { cursor: default; }
   }
   function lineText(entry) {
     var event = entry.event || {};
-    var translated = story.i18n[String(event.t)] || {};
-    return event.zh || event.en || translated.en || (event.silent ? "(silent)" : "");
+    var translations = story.i18n[String(event.t)] || {};
+    if (uiLanguage === "ja" && translations.ja) { return translations.ja; }
+    return event.zh || event.en || translations.en || (event.silent ? translated("(silent)") : "");
   }
 
   // ---- the panel
@@ -978,53 +1048,53 @@ body.film canvas { cursor: default; }
     var live = story.entries.filter(function (entry) { return entry.event && !entry.deleted; });
     var flagged = live.filter(entryFlagged).length;
     var edited = story.entries.filter(function (entry) { return entry.edited; }).length;
-    summary.textContent = live.length + " story events; " + flagged + " with a happening out of reach, on the wrong side " +
-      "or off the map; " + edited + " edited here" +
-      (unsavedCount() ? ", " + unsavedCount() + " not saved yet (💾 Save or Ctrl+S)" : "") +
-      ". The editor is the game's own (` opens and closes it).";
+    summary.textContent = translated("{count} story events; {flagged} with a happening out of reach, on the wrong side or off the map; {edited} edited here",
+                                     { count: live.length, flagged: flagged, edited: edited }) +
+      (unsavedCount() ? translated(", {unsaved} not saved yet (💾 Save or Ctrl+S)", { unsaved: unsavedCount() }) : "") +
+      translated(". The editor is the game's own (` opens and closes it).");
   }
   function renderStoryEditor() {
     renderStorySummary();
     if (storyEditor.hidden) { return; }
     storyEditor.innerHTML = "";
     var head = element("div", "story-head");
-    head.appendChild(element("strong", "", "事件 Story"));
+    head.appendChild(element("strong", "", translated("事件 Story")));
     var filter = document.createElement("select");
     [["flagged", "需檢查 flagged"], ["happens", "有發生 with happenings"], ["all", "全部 all"], ["edited", "已改 edited"]]
       .forEach(function (choice) {
         var option = document.createElement("option");
-        option.value = choice[0]; option.textContent = choice[1];
+        option.value = choice[0]; option.textContent = translated(choice[1]);
         filter.appendChild(option);
       });
     filter.value = story.filter;
-    filter.title = "Which events the list shows";
+    filter.title = translated("Which events the list shows");
     filter.addEventListener("change", function () {
       story.filter = filter.value;
       writePreference("storyFilter", story.filter);
       renderStoryEditor();
     });
     head.appendChild(filter);
-    story.saveButton = button("", "Save the changed events (Ctrl+S)", saveStory);
+    story.saveButton = button("", translated("Save the changed events (Ctrl+S)"), saveStory);
     story.saveButton.classList.add("save");
     head.appendChild(story.saveButton);
     refreshSaveButton();
-    head.appendChild(button("✚ 新增 add", "Add an event at the map's time", addStoryEvent));
-    var removeButton = button("🗑 刪除 delete", "Delete this event (click twice)", function () {
+    head.appendChild(button(translated("✚ 新增 add"), translated("Add an event at the map's time"), addStoryEvent));
+    var removeButton = button(translated("🗑 刪除 delete"), translated("Delete this event (click twice)"), function () {
       if (!story.selectedKey) { return; }
       if (!removeButton.dataset.armed) {
         removeButton.dataset.armed = "1";
-        removeButton.textContent = "再按一次 click again";
+        removeButton.textContent = translated("再按一次 click again");
         return;
       }
       deleteStoryEvent(story.selectedKey);
     });
     removeButton.classList.add("danger");
     head.appendChild(removeButton);
-    head.appendChild(button("▶ 跳至 jump", "Go to this event on the map", function () { jumpToEntry(story.byKey[story.selectedKey]); }));
-    head.appendChild(button("↶ 還原 undo", "Back to the event as the story file has it", function () {
+    head.appendChild(button(translated("▶ 跳至 jump"), translated("Go to this event on the map"), function () { jumpToEntry(story.byKey[story.selectedKey]); }));
+    head.appendChild(button(translated("↶ 還原 undo"), translated("Back to the event as the story file has it"), function () {
       if (story.selectedKey) { forgetStoryEdit(story.selectedKey); }
     }));
-    head.appendChild(button("✕", "Close (`)", function () { toggleStoryEditor(false); }));
+    head.appendChild(button("✕", translated("Close (`)"), function () { toggleStoryEditor(false); }));
     storyEditor.appendChild(head);
     storyStatus = element("div", "status", story.lastStatus || "");
     storyEditor.appendChild(storyStatus);
@@ -1040,7 +1110,8 @@ body.film canvas { cursor: default; }
       var bad = checks.some(function (check) { return check.problems.length > 0; });
       if (bad) { row.classList.add("bad"); }
       row.appendChild(element("span", "when", clockShort(entry.event.t)));
-      row.appendChild(element("span", "kind", STORY_KIND_LABELS[entry.event.category] || entry.event.category || ""));
+      row.appendChild(element("span", "kind", STORY_KIND_LABELS[entry.event.category] ? translated(STORY_KIND_LABELS[entry.event.category])
+                                                                                     : entry.event.category || ""));
       row.appendChild(element("span", "line", lineText(entry)));
       var happens = element("span", "happens");
       checks.forEach(function (check) {
@@ -1052,7 +1123,7 @@ body.film canvas { cursor: default; }
       row.addEventListener("click", function () { selectStoryEntry(entry.key, true); });
       list.appendChild(row);
     });
-    if (!list.childNodes.length) { list.appendChild(element("div", "hint", "No events in this list.")); }
+    if (!list.childNodes.length) { list.appendChild(element("div", "hint", translated("No events in this list."))); }
     storyEditor.appendChild(list);
     var entry = story.selectedKey && story.byKey[story.selectedKey];
     if (entry && entry.event) { storyEditor.appendChild(buildStoryForm(entry)); }
@@ -1104,44 +1175,44 @@ body.film canvas { cursor: default; }
   function numberInput(value, range, title) {
     var input = document.createElement("input");
     input.type = "number"; input.min = String(range[0]); input.max = String(range[1]); input.step = String(range[2]);
-    input.value = String(value); input.title = title || "";
+    input.value = String(value); input.title = translated(title || "");
     return input;
   }
   function choiceSelect(values, labels, value, title) {
     var select = document.createElement("select");
     values.forEach(function (choice, index) {
       var option = document.createElement("option");
-      option.value = choice; option.textContent = labels ? labels[index] : choice;
+      option.value = choice; option.textContent = labels ? translated(labels[index]) : translated(choice);
       select.appendChild(option);
     });
     select.value = values.indexOf(value) >= 0 ? value : values[0];
-    select.title = title || "";
+    select.title = translated(title || "");
     return select;
   }
   function shipSelect(value, emptyLabel, title) {
     var select = document.createElement("select");
     var empty = document.createElement("option");
-    empty.value = ""; empty.textContent = emptyLabel || "—";
+    empty.value = ""; empty.textContent = translated(emptyLabel || "—");
     select.appendChild(empty);
     BATTLE.sides.map(function (entry) { return entry.id; }).forEach(function (side) {
       var group = document.createElement("optgroup");
       group.label = sideName(side);
       state.ships.filter(function (ship) { return ship.side === side; })
-        .sort(function (first, second) { return first.en.localeCompare(second.en); })
+        .sort(byDisplayName)
         .forEach(function (ship) {
           var option = document.createElement("option");
-          option.value = ship.id; option.textContent = ship.en + (ship.zh ? " " + ship.zh : "");
+          option.value = ship.id; option.textContent = shipOptionText(ship);
           group.appendChild(option);
         });
       select.appendChild(group);
     });
     select.value = value || "";
-    select.title = title || "";
+    select.title = translated(title || "");
     return select;
   }
   function gridCell(grid, labelText, control, title) {
-    var label = element("label", "", labelText);
-    label.title = title || control.title || "";
+    var label = element("label", "", translated(labelText));
+    label.title = translated(title || control.title || "");
     grid.appendChild(label);
     grid.appendChild(control);
     return control;
@@ -1164,7 +1235,7 @@ body.film canvas { cursor: default; }
     if (FIELD_CHOICES[controlKind]) { return choiceSelect(FIELD_CHOICES[controlKind], null, String(value), title); }
     if (controlKind === "flag") {
       var check = document.createElement("input");
-      check.type = "checkbox"; check.checked = !!value; check.title = title;
+      check.type = "checkbox"; check.checked = !!value; check.title = translated(title);
       return check;
     }
     return numberInput(value === null || value === undefined || value === "" ? 0 : value, NUMBER_RANGES[controlKind] || [0, 999, 0.01], title);
@@ -1181,28 +1252,30 @@ body.film canvas { cursor: default; }
     // ---- THE LINE
     var lineGrid = element("div", "story-grid");
     form.clock = gridCell(lineGrid, "時刻 clock", Object.assign(document.createElement("input"),
-      { type: "text", value: clockWithSeconds(event.t), title: "The event's moment, " + BATTLE.clock_zone + " (H:MM or H:MM:SS)" }));
+      { type: "text", value: clockWithSeconds(event.t),
+        title: translated("The event's moment, {zone} (H:MM or H:MM:SS)", { zone: translated(BATTLE.clock_zone) }) }));
     form.duration = gridCell(lineGrid, "時長 min", numberInput(event.duration || 3, [0.5, 60, 0.5],
       "How long the event holds the camera and the subtitle, in battle minutes"));
     form.category = gridCell(lineGrid, "類別 category", choiceSelect(STORY_KINDS, STORY_KINDS.map(function (kind) {
-      return STORY_KIND_LABELS[kind] + " " + kind; }), event.category, "The heading over the subtitle; it does not move the camera"));
+      return uiLanguage === "ja" ? STORY_KIND_LABELS[kind] : STORY_KIND_LABELS[kind] + " " + kind; }), event.category,
+      "The heading over the subtitle; it does not move the camera"));
     box.appendChild(lineGrid);
 
     // ---- WHAT WE LOOK AT
-    box.appendChild(element("div", "story-section", "看 Look"));
+    box.appendChild(element("div", "story-section", translated("看 Look")));
     var picker = element("div", "story-picker");
     var sideMenu = choiceSelect(BATTLE.sides.map(function (entry) { return entry.id; }),
-      BATTLE.sides.map(function (entry) { return entry.en; }), BATTLE.sides[0].id, "Side");
+      BATTLE.sides.map(function (entry) { return sideName(entry.id); }), BATTLE.sides[0].id, "Side");
     var typeMenu = choiceSelect(["capital", "cruiser", "small"], ["主力艦 BB/BC", "巡洋艦 CA/CL", "驅逐/雷擊 DD/TB"], "capital", "Type");
     var nameMenu = document.createElement("select");
     function refreshNames() {
       nameMenu.innerHTML = "";
       var wanted = { capital: ["BB", "BC"], cruiser: ["CA", "CL"], small: ["DD", "TB", "AUX"] }[typeMenu.value];
       state.ships.filter(function (ship) { return ship.side === sideMenu.value && wanted.indexOf(ship.type) >= 0; })
-        .sort(function (first, second) { return first.en.localeCompare(second.en); })
+        .sort(byDisplayName)
         .forEach(function (ship) {
           var option = document.createElement("option");
-          option.value = ship.id; option.textContent = ship.en + (ship.zh ? " " + ship.zh : "");
+          option.value = ship.id; option.textContent = shipOptionText(ship);
           nameMenu.appendChild(option);
         });
     }
@@ -1210,17 +1283,17 @@ body.film canvas { cursor: default; }
     typeMenu.addEventListener("change", refreshNames);
     refreshNames();
     picker.appendChild(sideMenu); picker.appendChild(typeMenu); picker.appendChild(nameMenu);
-    picker.appendChild(button("✚ 艦艇 add", "Add the picked ship to the ships we look at; none = the fleets", function () {
+    picker.appendChild(button(translated("✚ 艦艇 add"), translated("Add the picked ship to the ships we look at; none = the fleets"), function () {
       if (nameMenu.value && form.cast.indexOf(nameMenu.value) < 0) { form.cast.push(nameMenu.value); renderCast(); formChanged(); }
     }));
     box.appendChild(picker);
     var castBox = element("div", "story-cast");
     function renderCast() {
       castBox.innerHTML = "";
-      if (!form.cast.length) { castBox.appendChild(element("span", "hint", "none = the fleets")); }
+      if (!form.cast.length) { castBox.appendChild(element("span", "hint", translated("none = the fleets"))); }
       form.cast.forEach(function (id, index) {
         var chip = element("span", "chip", shipName(id));
-        chip.appendChild(button("✕", "Remove", function () { form.cast.splice(index, 1); renderCast(); formChanged(); }));
+        chip.appendChild(button("✕", translated("Remove"), function () { form.cast.splice(index, 1); renderCast(); formChanged(); }));
         castBox.appendChild(chip);
       });
     }
@@ -1247,12 +1320,12 @@ body.film canvas { cursor: default; }
     var seaplaneLabel = element("label", "check-label");
     form.seaplane = Object.assign(document.createElement("input"), { type: "checkbox", checked: !!look.seaplane });
     seaplaneLabel.appendChild(form.seaplane);
-    seaplaneLabel.appendChild(document.createTextNode(" 水上飛機 ride the seaplane"));
+    seaplaneLabel.appendChild(document.createTextNode(" " + translated("水上飛機 ride the seaplane")));
     box.appendChild(seaplaneLabel);
 
     // ---- WHAT HAPPENS
     var happensHead = element("div", "story-picker");
-    happensHead.appendChild(element("span", "story-section", "發生 Happens"));
+    happensHead.appendChild(element("span", "story-section", translated("發生 Happens")));
     var addKind = choiceSelect([""].concat(HAPPENING_KINDS), ["+ 加一項 add …"].concat(HAPPENING_KINDS.map(function (kind) {
       return HAPPENING_LABELS[kind]; })), "", "Add a happening");
     addKind.addEventListener("change", function () {
@@ -1270,11 +1343,11 @@ body.film canvas { cursor: default; }
       var kind = HAPPENING_KINDS.indexOf(happening.kind) >= 0 ? happening.kind : "fire";
       var rowBox = element("div", "happening");
       var rowHead = element("div", "happening-head");
-      rowHead.appendChild(element("strong", "", HAPPENING_LABELS[kind]));
+      rowHead.appendChild(element("strong", "", translated(HAPPENING_LABELS[kind])));
       var checkLine = element("span", "check");
       rowHead.appendChild(checkLine);
       var row = { kind: kind, fields: {}, spare: deepCopy(happening), checkLine: checkLine };
-      rowHead.appendChild(button("✕", "Remove this happening", function () {
+      rowHead.appendChild(button("✕", translated("Remove this happening"), function () {
         form.happenings.splice(form.happenings.indexOf(row), 1);
         rowBox.remove();
         formChanged();
@@ -1300,18 +1373,18 @@ body.film canvas { cursor: default; }
     var silentLabel = element("label", "check-label");
     form.silent = Object.assign(document.createElement("input"), { type: "checkbox", checked: !!event.silent });
     silentLabel.appendChild(form.silent);
-    silentLabel.appendChild(document.createTextNode(" 無聲 silent"));
+    silentLabel.appendChild(document.createTextNode(" " + translated("無聲 silent")));
     flagRow.appendChild(silentLabel);
     form.note = Object.assign(document.createElement("input"), { type: "text", value: event.note || "",
-                                                                 placeholder: "備註 note" });
+                                                                 placeholder: translated("備註 note") });
     form.note.className = "grow";
     flagRow.appendChild(form.note);
     box.appendChild(flagRow);
     var subtitles = element("div", "story-subtitles");
-    var translated = story.i18n[String(event.t)] || {};
-    form.zh = Object.assign(document.createElement("textarea"), { value: event.zh || "", placeholder: "中文字幕 zh" });
+    var translations = story.i18n[String(event.t)] || {};
+    form.zh = Object.assign(document.createElement("textarea"), { value: event.zh || "", placeholder: translated("中文字幕 zh") });
     form.en = Object.assign(document.createElement("textarea"), { value: event.en || "",
-                                                                  placeholder: translated.en || "English subtitle" });
+                                                                  placeholder: translations.en || translated("English subtitle") });
     subtitles.appendChild(form.zh); subtitles.appendChild(form.en);
     box.appendChild(subtitles);
     if (entry.why) { box.appendChild(element("div", "why", (entry.author === "claude" ? "Claude: " : "") + entry.why)); }
@@ -1432,7 +1505,7 @@ body.film canvas { cursor: default; }
     });
     keepDrafts();
     refreshSaveButton();
-    setStoryStatus("Not saved yet: press 💾 Save (Ctrl+S).");
+    setStoryStatus(translated("Not saved yet: press 💾 Save (Ctrl+S)."));
   }
   function keepDrafts() {
     var drafts = {};
@@ -1464,8 +1537,8 @@ body.film canvas { cursor: default; }
     var saveButton = story.saveButton;
     if (!saveButton) { return; }
     var count = unsavedCount();
-    saveButton.textContent = story.saving ? "保存中 saving…" :
-      (count ? "💾 保存 save (" + count + ")" : "✓ 已保存 saved");
+    saveButton.textContent = story.saving ? translated("保存中 saving…") :
+      (count ? translated("💾 保存 save ({count})", { count: count }) : translated("✓ 已保存 saved"));
     saveButton.disabled = story.saving || !count;
     saveButton.classList.toggle("dirty", count > 0);
     renderStorySummary();
@@ -1479,13 +1552,13 @@ body.film canvas { cursor: default; }
       keepDrafts();
       refreshSaveButton();
       renderStoryEditor();
-      setStoryStatus(window.claude ? "Saved in this browser only: sign in to claude.ai to share your edits with Claude."
-                                   : "Saved in this browser only.", true);
+      setStoryStatus(window.claude ? translated("Saved in this browser only: sign in to claude.ai to share your edits with Claude.")
+                                   : translated("Saved in this browser only."), true);
       return;
     }
     story.saving = true;
     refreshSaveButton();
-    setStoryStatus("Saving " + keys.length + "…");
+    setStoryStatus(translated("Saving {count}…", { count: keys.length }));
     Promise.all(keys.map(function (key) {
       var mark = story.unsaved[key];
       var reference = state.store.collection(storyCollection).doc(documentKey(key));
@@ -1502,10 +1575,12 @@ body.film canvas { cursor: default; }
       refreshSaveButton();
       renderStoryEditor();
       if (failures.length) {
-        setStoryStatus(failures.length + " not saved (" + (failures[0].code || "error") + "); press Save to try again.", true);
+        setStoryStatus(translated("{count} not saved ({code}); press Save to try again.",
+                                  { count: failures.length, code: failures[0].code || "error" }), true);
       } else {
-        setStoryStatus("Saved " + keys.length + (keys.length === 1 ? " event" : " events") +
-          ". Claude folds these edits into story_events.json.");
+        setStoryStatus(translated(keys.length === 1 ? "Saved {count} event. Claude folds these edits into story_events.json."
+                                                    : "Saved {count} events. Claude folds these edits into story_events.json.",
+                                  { count: keys.length }));
       }
     });
   }
@@ -1517,7 +1592,7 @@ body.film canvas { cursor: default; }
     applyStoryEdits();
     renderStoryEditor();
     draw();
-    setStoryStatus("Back to the story file's event; press 💾 Save (Ctrl+S) to keep that.");
+    setStoryStatus(translated("Back to the story file's event; press 💾 Save (Ctrl+S) to keep that."));
   }
   function addStoryEvent() {
     var key = "new_" + Date.now().toString(36);
@@ -1647,7 +1722,7 @@ body.film canvas { cursor: default; }
         context.textAlign = "center";
         context.lineWidth = 3;
         context.strokeStyle = cssColour("--sea");
-        var beyondRangeNote = filmMode && filmLanguage === "ja" ? "（射程外）" : " – beyond gun range";
+        var beyondRangeNote = (filmMode ? filmLanguage : uiLanguage) === "ja" ? "（射程外）" : " – beyond gun range";
         var rangeText = rangeKm.toFixed(1) + " km" + (outOfReach ? beyondRangeNote : "");
         context.strokeText(rangeText, middle[0], middle[1] - 5);
         context.fillStyle = colour;
@@ -1724,8 +1799,8 @@ body.film canvas { cursor: default; }
       if (age > TORPEDO_SHOWN_AFTER_RUN_MINUTES * 2 && !selectedEvent) { return; }
       if (!targetAtLaunch) { return; }
       var struckPoint = toScreen(targetAtLaunch[0], targetAtLaunch[1]);
-      var note = event.by ? "torpedo from " + shipName(event.by) + " " + clock + ": " + shipName(event.by) +
-        " is not on the map then" : "torpedo " + clock + " from an unseen boat";
+      var note = event.by ? translated("torpedo from {ship} {clock}: {ship} is not on the map then", { ship: shipName(event.by), clock: clock })
+                          : translated("torpedo {clock} from an unseen boat", { clock: clock });
       outlinedText(note, struckPoint[0] + 9, struckPoint[1] + 16, event.by ? bad : colour);
       if (event.hit && age <= 1.5) { burst(struckPoint, 14, bad); }
       return;
@@ -1735,7 +1810,8 @@ body.film canvas { cursor: default; }
       // the chart records the launch only
       if (age > TORPEDO_SHOWN_AFTER_RUN_MINUTES * 2 && !selectedEvent) { return; }
       launchMark(start, colour);
-      outlinedText(launcherName + " fires torpedoes " + clock + " (target not recorded)", start[0] + 9, start[1] + 16, colour);
+      outlinedText(translated("{ship} fires torpedoes {clock} (target not recorded)", { ship: launcherName, clock: clock }),
+                   start[0] + 9, start[1] + 16, colour);
       return;
     }
     var gapKm = Math.hypot(targetAtLaunch[0] - launch[0], targetAtLaunch[1] - launch[1]);
@@ -1749,8 +1825,9 @@ body.film canvas { cursor: default; }
       context.beginPath(); context.moveTo(start[0], start[1]); context.lineTo(far[0], far[1]); context.stroke();
       context.setLineDash([]);
       launchMark(start, bad);
-      outlinedText("torpedo " + launcherName + " → " + shipName(event.at) + " " + clock + ": " + gapKm.toFixed(1) +
-        " km apart, reach " + TORPEDO_REACH_KM + " km", far[0] + 9, far[1] + 16, bad);
+      outlinedText(translated("torpedo {from} → {to} {clock}: {gap} km apart, reach {reach} km",
+                              { from: launcherName, to: shipName(event.at), clock: clock, gap: gapKm.toFixed(1), reach: TORPEDO_REACH_KM }),
+                   far[0] + 9, far[1] + 16, bad);
       return;
     }
     var run = gapKm / TORPEDO_KM_PER_MINUTE;
@@ -1777,8 +1854,9 @@ body.film canvas { cursor: default; }
     context.lineTo(head[0] + Math.cos(runAngle - 2.4) * 6, head[1] + Math.sin(runAngle - 2.4) * 6);
     context.closePath(); context.fill();
     if (!filmMode) {
-      outlinedText("torpedo " + launcherName + " → " + shipName(event.at) + " " + clock + ", " + gapKm.toFixed(1) + " km" +
-        (share >= 1 ? (event.hit ? ": hit" : ": miss") : ""), start[0] + 9, start[1] + 16, colour);
+      outlinedText(translated("torpedo {from} → {to} {clock}, {gap} km",
+                              { from: launcherName, to: shipName(event.at), clock: clock, gap: gapKm.toFixed(1) }) +
+        (share >= 1 ? translated(event.hit ? ": hit" : ": miss") : ""), start[0] + 9, start[1] + 16, colour);
     }
     if (event.hit && share >= 1 && age <= runMinutes + 1.5) { burst(head, 14, bad); }
   }
@@ -1966,13 +2044,14 @@ body.film canvas { cursor: default; }
     context.fillStyle = cssColour("--land");
     context.fill(state.coast.landPath, "evenodd");
     context.restore();
-    var chinese = document.getElementById("names").value === "zh";
+    var placeLanguage = document.getElementById("names").value;
     context.fillStyle = cssColour("--muted");
     context.font = filmMode ? "22px " + labelFontFamily() : "italic 12px " + cssColour("--font-ui");
     context.textAlign = "center";
     state.coast.labels.forEach(function (label) {
       var spot = toScreen(label.x, label.y);
-      var placeName = filmMode ? (label[filmLanguage] || label.text) : (chinese ? label.zh : label.text);
+      var placeName = filmMode ? (label[filmLanguage] || label.text)
+                               : (placeLanguage === "zh" || placeLanguage === "ja" ? label[placeLanguage] || label.text : label.text);
       context.fillText(placeName, spot[0], spot[1]);
     });
     context.textAlign = "left";
@@ -1986,7 +2065,7 @@ body.film canvas { cursor: default; }
     if (plateOnly()) {
       context.fillStyle = cssColour("--muted");
       context.font = "12px " + cssColour("--font-ui");
-      context.fillText("This plate has no latitude/longitude grid: shown on its own, without the ships.", 16, 20);
+      context.fillText(translated("This plate has no latitude/longitude grid: shown on its own, without the ships."), 16, 20);
       return;
     }
     drawGrid();
@@ -2012,13 +2091,13 @@ body.film canvas { cursor: default; }
     var ship = state.shipById[state.selectedId];
     if (!ship) {
       shipInfo.className = "hint";
-      shipInfo.textContent = "Click a ship on the map to see her track, her marks on the official charts and how far she sits from them.";
+      shipInfo.textContent = translated("Click a ship on the map to see her track, her marks on the official charts and how far she sits from them.");
       return;
     }
     var position = positionAt(ship.track, state.minute);
     var speed = speedKnotsAt(ship.track, state.minute);
     var mark = nearestOwnMark(ship.id, state.minute);
-    var miss = "no chart mark within 3 min";
+    var miss = translated("no chart mark within 3 min");
     if (mark && position) {
       miss = Math.hypot(mark[4] - position[0], mark[5] - position[1]).toFixed(1) + " km (" + mark[0].replace("_", " ") + ")";
     }
@@ -2027,17 +2106,21 @@ body.film canvas { cursor: default; }
     shipInfo.innerHTML = "";
     var name = document.createElement("div");
     name.className = "ship-name";
-    name.textContent = ship.en + (ship.zh ? "  " + ship.zh : "");
+    name.textContent = uiLanguage === "ja" ? displayName(ship) + (displayName(ship) !== ship.en ? "  " + ship.en : "")
+                                           : ship.en + (ship.zh ? "  " + ship.zh : "");
     var facts = document.createElement("dl");
     facts.className = "facts";
     [["Side", sideName(ship.side)], ["Class", ship.class.replace(/_/g, " ")],
-     ["Type, tons", ship.type + ", " + (ship.tons || 0).toLocaleString("en-GB") + " t"],
-     ["Position", position ? position[0].toFixed(1) + " E, " + position[1].toFixed(1) + " N km" : "not at sea now"],
-     ["Speed", speed !== null ? speed.toFixed(1) + " kn" : "-"],
+     ["Type, tons", translated(ship.type) + ", " + (ship.tons || 0).toLocaleString("en-GB") + " t"],
+     ["Position", position ? translated("{east} {eastSide}, {north} {northSide} km",
+                                        { east: Math.abs(position[0]).toFixed(1), eastSide: translated(position[0] < 0 ? "W" : "E"),
+                                          north: Math.abs(position[1]).toFixed(1), northSide: translated(position[1] < 0 ? "S" : "N") })
+                           : translated("not at sea now")],
+     ["Speed", speed !== null ? speed.toFixed(1) + translated(" kn") : "-"],
      ["Chart marks", String(markCount)], ["Off chart", miss],
      ["Sinks", ship.sinks_at !== null && ship.sinks_at !== undefined ? clockText(ship.sinks_at) : "-"]
     ].forEach(function (pair) {
-      var term = document.createElement("dt"); term.textContent = pair[0];
+      var term = document.createElement("dt"); term.textContent = translated(pair[0]);
       var value = document.createElement("dd"); value.textContent = pair[1];
       facts.appendChild(term); facts.appendChild(value);
     });
@@ -2051,7 +2134,7 @@ body.film canvas { cursor: default; }
     pinList.innerHTML = "";
     if (!all.length) {
       pinList.className = "hint";
-      pinList.innerHTML = "No pins yet. Turn on <b>Edit pins</b>, then drag a ship to where she should be at this minute. The track builder bends her track through every pin.";
+      pinList.textContent = translated("No pins yet. Turn on Edit pins, then drag a ship to where she should be at this minute. The track builder bends her track through every pin.");
       return;
     }
     pinList.className = "";
@@ -2062,18 +2145,18 @@ body.film canvas { cursor: default; }
       when.type = "button";
       when.className = "when";
       var ship = state.shipById[pin.ship];
-      when.textContent = (ship ? ship.en : pin.ship) + " " + clockShort(pin.t);
-      when.title = "Jump to this pin";
+      when.textContent = (ship ? displayName(ship) : pin.ship) + " " + clockShort(pin.t);
+      when.title = translated("Jump to this pin");
       when.addEventListener("click", function () { state.selectedId = pin.ship; setMinute(pin.t); });
       var note = document.createElement("input");
       note.type = "text";
       note.id = "note-" + pinKey(pin.ship, pin.t).replace(/[@.]/g, "-");
-      note.placeholder = "note (optional)";
+      note.placeholder = translated("note (optional)");
       note.value = pin.note || "";
       note.addEventListener("change", function () { pin.note = note.value; savePin(pin); });
       var remove = document.createElement("button");
       remove.type = "button";
-      remove.textContent = "Remove";
+      remove.textContent = translated("Remove");
       remove.addEventListener("click", function () { removePin(pin); draw(); });
       row.appendChild(when); row.appendChild(note); row.appendChild(remove);
       pinList.appendChild(row);
@@ -2104,7 +2187,7 @@ body.film canvas { cursor: default; }
   }
   function setPlaying(playing) {
     state.playing = playing;
-    playButton.textContent = playing ? "Pause" : "Play";
+    playButton.textContent = translated(playing ? "Pause" : "Play");
     playButton.classList.toggle("on", playing);
     if (playing) { requestAnimationFrame(tick); }
   }
@@ -2190,7 +2273,7 @@ body.film canvas { cursor: default; }
   editButton.addEventListener("click", function () {
     state.editing = !state.editing;
     editButton.classList.toggle("on", state.editing);
-    editButton.textContent = state.editing ? "Editing: drag a ship" : "Edit pins";
+    editButton.textContent = translated(state.editing ? "Editing: drag a ship" : "Edit pins");
   });
   ["showMarks", "showTraced", "showClashes", "showAction", "showCoast", "trail", "names", "opacity"].forEach(function (id) {
     document.getElementById(id).addEventListener("input", draw);
@@ -2239,13 +2322,15 @@ body.film canvas { cursor: default; }
   var notesFold = document.getElementById("notesFold");
   function foldNotes(folded) {
     notes.classList.toggle("folded", folded);
-    notesFold.textContent = folded ? "Notes" : "Hide notes";
+    notesFold.textContent = translated(folded ? "Notes" : "Hide notes");
     try { localStorage.setItem(storagePrefix + "notes-folded", folded ? "1" : ""); } catch (error) { }
   }
   notesFold.addEventListener("click", function () { foldNotes(!notes.classList.contains("folded")); });
   try { if (localStorage.getItem(storagePrefix + "notes-folded")) { foldNotes(true); } } catch (error) { }
 
   // ---- load ----------------------------------------------------------------
+  // ship and place names follow the page's language until the viewer picks others
+  document.getElementById("names").value = uiLanguage === "ja" ? "ja" : "en";
   ["showMarks", "showTraced", "showClashes", "showAction", "showCoast", "trail", "names", "opacity"].forEach(function (id) {
     if (filmMode) { return; }
     var element = document.getElementById(id);
@@ -2256,8 +2341,8 @@ body.film canvas { cursor: default; }
   // Opened straight from disk the browser refuses to load the data files:
   // say how to run it instead of failing quietly.
   if (location.protocol === "file:") {
-    loadStatus.textContent = "Opened as a file, the page cannot load its data. Open it through a local server: " +
-      "Live Server in VS Code (Open with Live Server), or python -m http.server in this page's folder.";
+    loadStatus.textContent = translated("Opened as a file, the page cannot load its data. Open it through a local server: " +
+      "Live Server in VS Code (Open with Live Server), or python -m http.server in this page's folder.");
     loadStatus.className = "hint status warn";
     var fileNotice = document.createElement("div");
     fileNotice.className = "file-notice";
@@ -2265,19 +2350,27 @@ body.film canvas { cursor: default; }
     document.getElementById("stage").appendChild(fileNotice);
   }
   function dataPath(name) { return battleFolder + name; }
+  // The Action note: what the firing lines and the torpedo runs mean.
+  function writeActionHint(torpedoKnots, torpedoReachKm) {
+    document.getElementById("actionHint").textContent = translated(
+      "Gunfire is a line in the firing side's colour from the guns to the target, with the range on it and salvoes running " +
+      "along it; a torpedo runs at about {knots} knots and stops at its reach ({reach} km). A red dashed line or a red cross " +
+      "marks fire or a torpedo that could not have reached: a wrong ship, a wrong time or a wrong track. The story editor " +
+      "(` key) flags these; pick one to go there and correct it.", { knots: torpedoKnots, reach: torpedoReachKm });
+  }
+  writeActionHint(29, 11);
   fetch(dataPath("battle.json")).then(function (response) { return response.json(); }).then(function (battle) {
     BATTLE = battle;
-    document.title = battle.title + " Track Editor";
+    document.title = "Clash of Iron Maps · " + (uiLanguage === "ja" && battle.title_ja ? battle.title_ja : battle.title);
     GUN_REACH_KM = battle.gun_reach_km;
     TORPEDO_REACH_KM = battle.torpedo_reach_km;
     TORPEDO_KM_PER_MINUTE = battle.torpedo_km_per_minute;
     SEARCHLIGHT_REACH_KM = battle.searchlight_reach_km;
     SCUTTLED_BY_OWN_SIDE = battle.scuttled_by_own_side || {};
-    document.getElementById("firstSideName").textContent = battle.sides[0].en;
-    document.getElementById("secondSideName").textContent = battle.sides[1].en;
-    document.getElementById("torpedoKnots").textContent = "about " + Math.round(battle.torpedo_km_per_minute * 60 / 1.852);
-    document.getElementById("torpedoReach").textContent = String(battle.torpedo_reach_km);
-    if (battle.reading_hint) { document.getElementById("readingHint").textContent = battle.reading_hint; }
+    document.getElementById("firstSideName").textContent = sideName(battle.sides[0].id);
+    document.getElementById("secondSideName").textContent = sideName(battle.sides[1].id);
+    writeActionHint(Math.round(battle.torpedo_km_per_minute * 60 / 1.852), battle.torpedo_reach_km);
+    if (battle.reading_hint) { document.getElementById("readingHint").textContent = translated(battle.reading_hint); }
     if (battle.view) {
       state.centreX = battle.view.x; state.centreY = battle.view.y;
       state.pixelsPerKm = battle.view.pixels_per_km ||
@@ -2286,7 +2379,7 @@ body.film canvas { cursor: default; }
     return loadBattleFiles();
   }).catch(function () {
     if (location.protocol !== "file:") {
-      loadStatus.textContent = "The battle's files did not load. Reload the page.";
+      loadStatus.textContent = translated("The battle's files did not load. Reload the page.");
     }
   });
   function loadBattleFiles() { return Promise.all([
@@ -2332,11 +2425,11 @@ body.film canvas { cursor: default; }
       var groupName = chart.group || "Charts";
       if (!groups[groupName]) {
         groups[groupName] = document.createElement("optgroup");
-        groups[groupName].label = groupName;
+        groups[groupName].label = translated(groupName);
         underlaySelect.appendChild(groups[groupName]);
       }
       var option = document.createElement("option");
-      option.value = chart.id; option.textContent = chart.title + (chart.plate_only ? " (no grid: viewer)" : "");
+      option.value = chart.id; option.textContent = chart.title + (chart.plate_only ? translated(" (no grid: viewer)") : "");
       groups[groupName].appendChild(option);
     });
     var storedUnderlay = filmMode ? "" : readPreference("underlay", BATTLE.default_underlay || "");
@@ -2352,8 +2445,8 @@ body.film canvas { cursor: default; }
       underlaySelect.value = storedUnderlay;
       underlaySelect.dispatchEvent(new Event("change"));
     }
-    loadStatus.textContent = state.ships.length + " ships, " + state.marks.length + " chart marks, " +
-      state.underlays.length + " chart scans.";
+    loadStatus.textContent = translated("{ships} ships, {marks} chart marks, {scans} chart scans.",
+                                        { ships: state.ships.length, marks: state.marks.length, scans: state.underlays.length });
     resize();
     setMinute(0);
     if (filmMode) {
@@ -2469,7 +2562,7 @@ body.film canvas { cursor: default; }
   if (window.claude && window.claude.use) {
     window.claude.use("db").then(function (store) {
       if (!store) {
-        saveStatus.textContent = "Pins are kept in this browser only here.";
+        saveStatus.textContent = translated("Pins are kept in this browser only here.");
         saveStatus.className = "status warn";
         return;
       }
@@ -2496,7 +2589,7 @@ body.film canvas { cursor: default; }
           draw();
         }
       }, function () {
-        setStoryStatus("The shared story edits could not be read just now; reload to try again.", true);
+        setStoryStatus(translated("The shared story edits could not be read just now; reload to try again."), true);
       });
       store.collection(pinCollection).onSnapshot(function (snapshot) {
         var fresh = {};
@@ -2510,7 +2603,7 @@ body.film canvas { cursor: default; }
         renderPins();
         draw();
       }, function () {
-        saveStatus.textContent = "The shared pins could not be read just now; reload to try again.";
+        saveStatus.textContent = translated("The shared pins could not be read just now; reload to try again.");
         saveStatus.className = "status warn";
       });
     });
