@@ -392,6 +392,10 @@ body.film canvas { cursor: default; }
   function writePreference(key, value) {
     try { localStorage.setItem(storagePrefix + key, value); } catch (error) { }
   }
+  // The Names choice is kept per page language: English names picked on an
+  // English visit hid the Japanese names on the Japanese page (user
+  // 2026-10-21: "the japanese ship names are not in").
+  function preferenceName(id) { return id === "names" ? "names-" + uiLanguage : id; }
 
   function cssColour(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
 
@@ -2278,7 +2282,7 @@ body.film canvas { cursor: default; }
   ["showMarks", "showTraced", "showClashes", "showAction", "showCoast", "trail", "names", "opacity"].forEach(function (id) {
     document.getElementById(id).addEventListener("input", draw);
     document.getElementById(id).addEventListener("change", function () {
-      writePreference(id, document.getElementById(id).type === "checkbox" ? String(document.getElementById(id).checked) : document.getElementById(id).value);
+      writePreference(preferenceName(id), document.getElementById(id).type === "checkbox" ? String(document.getElementById(id).checked) : document.getElementById(id).value);
       draw();
     });
   });
@@ -2334,7 +2338,7 @@ body.film canvas { cursor: default; }
   ["showMarks", "showTraced", "showClashes", "showAction", "showCoast", "trail", "names", "opacity"].forEach(function (id) {
     if (filmMode) { return; }
     var element = document.getElementById(id);
-    var stored = readPreference(id, null);
+    var stored = readPreference(preferenceName(id), null);
     if (stored === null) { return; }
     if (element.type === "checkbox") { element.checked = stored === "true"; } else { element.value = stored; }
   });
